@@ -7,46 +7,83 @@ import java.util.Objects;
  */
 public class Note implements Comparable<Note> {
 
-  private Pitch pitch;
-  private int start;
-  private int duration;
+  //Never null
+  private final Pitch pitch;
+
+  //Invariant: [0,100)
+  private final int octave;
+
+  //Invariant: [0,..)
+  private final int start;
+
+  //Invariant: [0,..)
+  private final int duration;
 
   /**
-   * Constructs a Note
-   *
-   * @param pitch the name of the musical pitch
-   * @param beginning the start time of the note
-   * @param beats the duration of the note
+   * Represents the names of the musical pitches, from C to B. Uses sharps, and no representation
+   * of flats.
    */
-  public Note(Pitch pitch, int beginning, int beats) {
-    ensureNoteValues(beginning, beats);
-    this.pitch = Objects.requireNonNull(pitch);
-    this.start = beginning;
-    this.duration = beats;
-  }
+  public enum Pitch {
+    C("C"), C_SHARP("C#"), D("D"), D_SHARP("D#"), E("E"), F("F"), F_SHARP("F#"), G("G"),
+    G_SHARP("G#"), A("A"), A_SHARP("A#"), B("B");
 
-  /**
-   * Ensures that the beginning time is not negative. Also ensures that the beats are not less
-   * than 1 (a note with 0 beats is meaningless).
-   *
-   * @param beginning the start time of the note
-   * @param beats the duration of the note
-   * @throws IllegalArgumentException if {@code beginning} is negative, or if {@code beats} is less
-   * than 1.
-   */
-  private static void ensureNoteValues(int beginning, int beats) {
-    if (beginning < 0 || beats < 1) {
-      throw new IllegalArgumentException("Must be non-negative");
+    private final String symbol;
+
+    /**
+     * Constructs a Pitch
+     * @param representation the symbol to represent this Pitch
+     */
+    Pitch(String representation) {
+      this.symbol = representation;
+    }
+
+    /**
+     * Returns the padded representation of this pitch given an octave, roughly centered, with the
+     * octave, in a string of length 5
+     *
+     * @param octave the octave to be appended
+     * @return the string
+     */
+    public String getPaddedRepresentation(int octave) {
+      if (octave < 10) {
+        if (symbol.length() == 1) {
+          return "  " + symbol + octave + " ";
+        } else {
+          return " " + symbol + octave + " ";
+        }
+      } else {
+        if (symbol.length() == 1) {
+          return " " + symbol + octave + " ";
+        } else {
+          return " " + symbol + octave;
+        }
+      }
+    }
+
+    @Override
+    public String toString() {
+      return this.symbol;
     }
   }
 
   /**
-   * Returns this Note's pitch.
+   * Constructs a note with given arguments
    *
-   * @return this Note's pitch
+   * @param start    the beat where the note starts from [0,..)
+   * @param pitch    the pitch of the note on the chromatic scale
+   * @param octave   the octave of the note from [0,100)
+   * @param duration the duration of the note beyond its first beat from [0,..)
+   * @throws IllegalArgumentException if any of the ranges are violated
    */
-  public Pitch getPitch() {
-    return this.pitch;
+  public Note(Pitch pitch, int octave, int start, int duration) {
+    if (start < 0 || octave < 0 || octave >= 100 || duration < 0 || pitch == null) {
+      throw new IllegalArgumentException("Impossible arguments!");
+    }
+
+    this.pitch = pitch;
+    this.octave = octave;
+    this.start = start;
+    this.duration = duration;
   }
 
   /**
@@ -59,6 +96,24 @@ public class Note implements Comparable<Note> {
   }
 
   /**
+   * Returns this Note's pitch.
+   *
+   * @return this Note's pitch
+   */
+  public Pitch getPitch() {
+    return this.pitch;
+  }
+
+  /**
+   * Returns this Note's octave.
+   *
+   * @return this Note's octave
+   */
+  public int getOctave() {
+    return this.octave;
+  }
+
+  /**
    * Returns this Note's duration (in beats).
    *
    * @return this Note's duration
@@ -67,52 +122,25 @@ public class Note implements Comparable<Note> {
     return this.duration;
   }
 
-  /**
-   * Changes the pitch of this note to the given pitch.
-   *
-   * @param newPitch the new pitch for this note
-   */
-  public void changePitch(Pitch newPitch) {
-    this.pitch = Objects.requireNonNull(newPitch);
-  }
-
-  /**
-   * Changes the starting time of this Note.
-   *
-   * @param newStart the new starting time for this Note.
-   * @throws IllegalArgumentException if the newStart is negative.
-   */
-  public void changeStart(int newStart) {
-    if (newStart < 0) { throw new IllegalArgumentException("Must be non-negative"); }
-    this.start = newStart;
-  }
-
-  /**
-   * Changes the duration of this Note.
-   *
-   * @param newDuration the new length of this Note.
-   * @throws IllegalArgumentException if the given duration is less than 1.
-   */
-  public void changeDuration(int newDuration) {
-    if (newDuration < 1) { throw new IllegalArgumentException("Must be greater than zero"); }
-    this.duration = newDuration;
-  }
-
   @Override
   public String toString() {
     return pitch.toString();
   }
 
+  /**
+   * Compares by octave (lower is lower), then by pitch (ordered least to greatest int this.PITCH),
+   * then by duration (lower is lower)
+   */
   @Override
   public int compareTo(Note that) {
-    int pitchCompared = this.pitch.compareTo(that.getPitch());
-    if (pitchCompared != 0) { return pitchCompared; }
-    else {
-      int startCompared = Integer.compare(this.start, that.getStart());
-      if (startCompared != 0) { return startCompared; }
-      else {
-        return Integer.compare(this.duration, that.getDuration());
+    if (this.octave == that.octave) {
+      if (this.pitch == that.pitch) {
+        return Integer.compare(this.duration, that.duration);
+      } else {
+        return this.pitch.compareTo(that.pitch);
       }
+    } else {
+      return Integer.compare(this.octave, that.octave);
     }
   }
 
@@ -120,12 +148,22 @@ public class Note implements Comparable<Note> {
   public boolean equals(Object obj) {
     if (! (obj instanceof Note)) { return false; }
     Note that = (Note) obj;
-    return this.pitch.equals(that.pitch) && this.start == that.start
+    return this.pitch == that.pitch && this.start == that.start && this.octave == that.octave
       && this.duration == that.duration;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pitch, start, duration);
+    return Objects.hash(start, pitch, octave, duration);
+  }
+
+  /**
+   * Determines if this note is playing during the given beat
+   *
+   * @param beat the beat to check
+   * @return true if this note starts or continues during this beat, false otherwise
+   */
+  public boolean playsDuring(int beat) {
+    return (this.start <= beat) && (this.start + this.duration >= beat);
   }
 }
