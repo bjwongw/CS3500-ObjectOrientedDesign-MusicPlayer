@@ -10,7 +10,8 @@ import javax.swing.*;
  */
 public class GuiViewFrame extends javax.swing.JFrame implements IMusicView {
 
-  private final JPanel displayPanel; // You may want to refine this to a subtype of JPanel
+  // You may want to refine this to a subtype of JPanel (did that by making it Concrete...)
+  private final ConcreteGuiViewPanel displayPanel;
 
   /**
    * Creates new GuiView
@@ -19,6 +20,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicView {
     this.displayPanel = new ConcreteGuiViewPanel();
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     this.getContentPane().add(displayPanel);
+    this.setTitle("Music Player");
     this.pack();
   }
 
