@@ -16,7 +16,7 @@ public final class Note implements Comparable<Note> {
   //Invariant: [0,..)
   private final int start;
 
-  //Invariant: [0,..)
+  //Invariant: [1,..)
   private final int duration;
 
   //MIDI instrument to play the note with
@@ -62,7 +62,7 @@ public final class Note implements Comparable<Note> {
    * @throws IllegalArgumentException if any of the ranges are violated
    */
   public Note(Pitch pitch, int octave, int start, int duration, int instrument, int volume) {
-    if (start < 0 || octave < 0 || octave >= 100 || duration < 0 || pitch == null) {
+    if (start < 0 || octave < 0 || octave >= 100 || duration < 1 || pitch == null) {
       throw new IllegalArgumentException("Impossible arguments!");
     }
 
@@ -135,7 +135,7 @@ public final class Note implements Comparable<Note> {
    * @return true if this note starts or continues during this beat, false otherwise
    */
   public boolean playsDuring(int beat) {
-    return (this.start <= beat) && (this.start + this.duration >= beat);
+    return (this.start <= beat) && (this.start + this.duration > beat);
   }
 
   @Override
