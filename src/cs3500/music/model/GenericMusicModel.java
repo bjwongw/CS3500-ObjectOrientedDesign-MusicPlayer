@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
 public class GenericMusicModel implements IMusicModel {
 
   private final Map<Integer, Set<Note>> notes;
-  private Note lowestNote;
-  private Note highestNote;
+  private Note lowestNote = null;
+  private Note highestNote = null;
 
   /**
    * Constructs the default Generic Music Model.
    */
   public GenericMusicModel() {
-    this.notes = new TreeMap<>();
+    this.notes = new HashMap<>();
   }
 
   /**
@@ -39,7 +39,11 @@ public class GenericMusicModel implements IMusicModel {
     if (beat < 0) {
       throw new IllegalArgumentException("Cannot have a negative start time");
     }
-    return new HashSet<>(this.notes.get(beat));
+    Set<Note> s = this.notes.get(beat);
+    if (s == null) {
+      return new HashSet<>();
+    }
+    return new HashSet<>(s);
   }
 
   @Override
@@ -56,10 +60,10 @@ public class GenericMusicModel implements IMusicModel {
       set.add(note);
     }
 
-    if(note.compareTo(this.lowestNote) < 0) {
+    if (this.lowestNote == null || note.compareTo(this.lowestNote) < 0) {
       this.lowestNote = note;
     }
-    if(note.compareTo(this.highestNote) > 0) {
+    if (this.highestNote == null || note.compareTo(this.highestNote) > 0) {
       this.highestNote = note;
     }
   }
@@ -120,7 +124,8 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   /**
-   * Creates a list containing every pitch string between the lowestNote and highestNote (inclusively).
+   * Creates a list containing every pitch string between the lowestNote and highestNote
+   * (inclusively).
    *
    * @param lowestPitch  the lower bound
    * @param highestPitch the upper bound
@@ -169,38 +174,37 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   /**
-   * Creates a list of strings. The first entry is the given pitch string. It is centered
-   * based on the given width parameter (e.g. if width was 5 and the Pitch was C#, the resulting
-   * entry would be "  C# ". The following strings represent either rests (lack of a note
-   * represented by a string full of spaces), or notes. The start of a note is represented by an X,
-   * which is also centered like the pitch (e.g. "  X  "). If the note is more than one duration
-   * long, each following beat that the note is held is represented by a | (e.g. "  |  ").
+   * Creates a list of strings. The first entry is the given pitch string. It is centered based on
+   * the given width parameter (e.g. if width was 5 and the Pitch was C#, the resulting entry would
+   * be "  C# ". The following strings represent either rests (lack of a note represented by a
+   * string full of spaces), or notes. The start of a note is represented by an X, which is also
+   * centered like the pitch (e.g. "  X  "). If the note is more than one duration long, each
+   * following beat that the note is held is represented by a | (e.g. "  |  ").
    *
    * <p>It is assumed that the given set of notes are all in the same pitch as the one given.</p>
    *
-   * @param pitchString  the pitch for this list of strings
-   * @param notes  all the notes corresponding to the given pitch
-   * @param length the length of the list (number of beats + 1 for the pitch symbol)
-   * @param width  the desired length of each string
+   * @param pitchString the pitch for this list of strings
+   * @param notes       all the notes corresponding to the given pitch
+   * @param length      the length of the list (number of beats + 1 for the pitch symbol)
+   * @param width       the desired length of each string
    * @return a list of strings corresponding to the rests and notes for the given pitch.
    */
-  private List<String> createPitchStrings(String pitchString, Set<Note> notes, int length, int width) {
+  private List<String> createPitchStrings(String pitchString, Set<Note> notes, int length, int
+          width) {
     List<String> result = new ArrayList<>(length);
+
+    for (int i = 0; i < length; i++) {
+      result.add(i, centerString("", width));
+    }
 
     result.add(centerString(pitchString, width));
 
-    for(Note n : notes) {
-      if(n.toString() == pitchString) {
+    for (Note n : notes) {
+      if (n.toString() == pitchString) {
         result.add(n.getStart(), centerString("X", width));
-        for(int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
+        for (int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
           result.add(i, centerString("|", width));
         }
-      }
-    }
-
-    for(int i = 0; i < length; i ++) {
-      if(result.get(i) == null) {
-        result.add(i, centerString("", width));
       }
     }
 
@@ -239,8 +243,9 @@ public class GenericMusicModel implements IMusicModel {
       List<List<String>> pitchNotes = new ArrayList<>(pitchRange.size());
 
       int k = 0;
-      for(String s : pitchRange) {
-        pitchNotes.add(createPitchStrings(pitchRange.get(k), this.getNotes(), this.maxBeat() + 1, 5));
+      for (String s : pitchRange) {
+        pitchNotes.add(createPitchStrings(pitchRange.get(k), this.getNotes(), this.maxBeat() +
+                1, 5));
         k++;
       }
 
