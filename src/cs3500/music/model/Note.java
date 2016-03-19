@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Represents a musical note, consisting of a pitch and octave.
  */
-public class Note implements Comparable<Note> {
+public final class Note implements Comparable<Note> {
 
   //Never null
   private final Pitch pitch;
@@ -19,11 +19,11 @@ public class Note implements Comparable<Note> {
   //Invariant: [0,..)
   private final int duration;
 
-  //Volume to play the note at
-  private final int volume;
-
   //MIDI instrument to play the note with
   private final int instrument;
+
+  //Volume to play the note at
+  private final int volume;
 
   /**
    * Represents the names of the musical pitches, from C to B. Uses sharps, and no representation
@@ -61,7 +61,7 @@ public class Note implements Comparable<Note> {
    * @param instrument the MIDI instrument to play the note with
    * @throws IllegalArgumentException if any of the ranges are violated
    */
-  public Note(Pitch pitch, int octave, int start, int duration, int volume, int instrument) {
+  public Note(Pitch pitch, int octave, int start, int duration, int instrument, int volume) {
     if (start < 0 || octave < 0 || octave >= 100 || duration < 0 || pitch == null) {
       throw new IllegalArgumentException("Impossible arguments!");
     }
@@ -70,8 +70,8 @@ public class Note implements Comparable<Note> {
     this.octave = octave;
     this.start = start;
     this.duration = duration;
-    this.volume = volume;
     this.instrument = instrument;
+    this.volume = volume;
   }
 
   /**
@@ -111,21 +111,21 @@ public class Note implements Comparable<Note> {
   }
 
   /**
-   * Returns this Note's volume.
-   *
-   * @return this Note's volume
-   */
-  public int getVolume() {
-    return volume;
-  }
-
-  /**
    * Returns this Note's MIDI instrument.
    *
    * @return this Note's instrument
    */
   public int getInstrument() {
     return instrument;
+  }
+
+  /**
+   * Returns this Note's volume.
+   *
+   * @return this Note's volume
+   */
+  public int getVolume() {
+    return volume;
   }
 
   /**
@@ -178,12 +178,12 @@ public class Note implements Comparable<Note> {
     }
     Note that = (Note) obj;
     return this.pitch == that.pitch && this.start == that.start && this.octave == that.octave
-      && this.duration == that.duration && this.volume == that.volume && this.instrument ==
-      that.instrument;
+      && this.duration == that.duration && this.instrument == that.instrument && this.volume ==
+      that.volume;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(start, pitch, octave, duration, volume, instrument);
+    return Objects.hash(start, pitch, octave, duration, instrument, volume);
   }
 }

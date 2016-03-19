@@ -56,6 +56,9 @@ public class NoteTest {
   public void testGetPitch() {
     assertEquals(Note.Pitch.F_SHARP, fSharp4.getPitch());
     assertEquals(Note.Pitch.B, b10.getPitch());
+    assertEquals(Note.Pitch.A_SHARP, aSharp4.getPitch());
+    assertEquals(Note.Pitch.G, g6.getPitch());
+    assertEquals(Note.Pitch.C, c4.getPitch());
   }
 
   /**
@@ -172,6 +175,48 @@ public class NoteTest {
     assertTrue(0 < d3.compareTo(new Note(Note.Pitch.D, 3, 13, 2, 0, 0)));
     assertTrue(0 < gSharp7.compareTo(new Note(Note.Pitch.G_SHARP, 7, 40, 1, 0, 0)));
     assertTrue(0 < fSharp4.compareTo(new Note(Note.Pitch.F_SHARP, 4, 6, 1, 0, 0)));
+  }
+
+  /**
+   * Tests for the method compareTo when the two notes have the same pitch, start time, and
+   * duration, but different instruments.
+   */
+  @Test
+  public void testCompareTo_sameUpToInstrument() {
+    assertTrue(0 > new Note(Note.Pitch.A, 4, 3, 2, 5, 2).compareTo(
+      new Note(Note.Pitch.A, 4, 3, 2, 2, 1)));
+    assertTrue(0 > new Note(Note.Pitch.G, 7, 10, 20, 3, 19).compareTo(
+      new Note(Note.Pitch.G, 7, 10, 20, 0, 23)));
+    assertTrue(0 > new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 7).compareTo(
+      new Note(Note.Pitch.F_SHARP, 9, 11, 1, 12, 4)));
+    assertTrue(0 > new Note(Note.Pitch.D, 3, 4, 5, 6, 7).compareTo(
+      new Note(Note.Pitch.D, 3, 4, 5, 3, 7)));
+
+    assertTrue(0 < b10.compareTo(new Note(Note.Pitch.B, 10, 33, 7, 3, 0)));
+    assertTrue(0 < e1.compareTo(new Note(Note.Pitch.E, 1, 0, 1, 5, 0)));
+    assertTrue(0 < fSharp4.compareTo(new Note(Note.Pitch.F_SHARP, 4, 6, 2, 7, 0)));
+    assertTrue(0 < c0.compareTo(new Note(Note.Pitch.C, 0, 0, 4, 1, 0)));
+  }
+
+  /**
+   * Tests for the method compareTo when the two notes have the same pitch, start time, duration,
+   * and instrument, but different volumes.
+   */
+  @Test
+  public void testCompareTo_sameUpToVolume() {
+    assertTrue(0 > new Note(Note.Pitch.D, 3, 4, 5, 6, 7).compareTo(
+      new Note(Note.Pitch.D, 3, 4, 5, 6, 0)));
+    assertTrue(0 > new Note(Note.Pitch.G, 7, 10, 20, 3, 19).compareTo(
+      new Note(Note.Pitch.G, 7, 10, 20, 3, 3)));
+    assertTrue(0 > new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 7).compareTo(
+      new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 4)));
+    assertTrue(0 > new Note(Note.Pitch.B, 4, 3, 2, 5, 2).compareTo(
+      new Note(Note.Pitch.B, 4, 3, 2, 5, 1)));
+
+    assertTrue(0 < b10.compareTo(new Note(Note.Pitch.B, 10, 33, 7, 0, 3)));
+    assertTrue(0 < fSharp4.compareTo(new Note(Note.Pitch.F_SHARP, 4, 6, 2, 0, 132)));
+    assertTrue(0 < c0.compareTo(new Note(Note.Pitch.C, 0, 0, 4, 0, 43)));
+    assertTrue(0 < e1.compareTo(new Note(Note.Pitch.E, 1, 0, 1, 0, 87)));
   }
 
   /**

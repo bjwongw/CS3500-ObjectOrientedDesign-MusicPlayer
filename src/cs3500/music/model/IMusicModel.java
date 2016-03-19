@@ -5,14 +5,14 @@ import java.util.Set;
 /**
  * Specifies operations for any music model.
  */
-public interface IMusicModel<K> {
+public interface IMusicModel {
 
   /**
    * Returns all the notes in this music model.
    *
    * @return all the notes in this music model
    */
-  Set<K> getNotes();
+  Set<Note> getNotes();
 
   /**
    * Returns all the notes that start on the given beat.
@@ -21,7 +21,7 @@ public interface IMusicModel<K> {
    * @return all the notes that start on the given beat.
    * @throws IllegalArgumentException if the given beat is negative
    */
-  Set<K> notesToPlay(int beat);
+  Set<Note> notesToPlay(int beat);
 
   /**
    * Adds the given note to the IMusicModel. If the given note is the same as one already in the
@@ -29,7 +29,7 @@ public interface IMusicModel<K> {
    *
    * @param note the given note to add to the model
    */
-  void addNote(K note);
+  void addNote(Note note);
 
   /**
    * Removes this note from the IMusicModel. If this note is not in the model, an exception will be
@@ -38,7 +38,7 @@ public interface IMusicModel<K> {
    * @param note the note to remove from the model
    * @throws IllegalArgumentException if the given note is not in the model
    */
-  void removeNote(K note);
+  void removeNote(Note note);
 
   /**
    * Exchanges the first given note with the second note.
@@ -47,7 +47,7 @@ public interface IMusicModel<K> {
    * @param newNote the note to replace the original note with
    * @throws IllegalArgumentException if the first note argument is not in the model
    */
-  void editNote(K note, K newNote);
+  void editNote(Note note, Note newNote);
 
   /**
    * Overlays the given IMusicModel on top of this music model. Note collisions are dealt with in

@@ -1,11 +1,12 @@
 package cs3500.music.model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Specifies operations for any generic music model
  */
-public class GenericMusicModel implements IMusicModel<Note> {
+public class GenericMusicModel implements IMusicModel {
 
   private final Map<Integer, Set<Note>> notes;
 
@@ -21,12 +22,11 @@ public class GenericMusicModel implements IMusicModel<Note> {
    *
    * @return the set of Notes
    */
+  @Override
   public Set<Note> getNotes() {
     Set<Note> result = new HashSet<>();
-    for (Set<Note> s : this.notes.values()) {
-      for (Note n : s) {
-        result.add(n);
-      }
+    for (Set<Note> n : this.notes.values()) {
+      result.addAll(n.stream().collect(Collectors.toList()));
     }
     return result;
   }
@@ -86,20 +86,10 @@ public class GenericMusicModel implements IMusicModel<Note> {
     otherNotes.forEach(this::addNote);
   }
 
-  @Override
-  public void addMusicToTail(IMusicModel otherMusic) {
-    int lastBeat = maxBeat();
-    Set<Note> otherNotes = otherMusic.getNotes();
-    for (Note n : otherNotes) {
-      this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
-              (), n.getVolume(), n.getInstrument()));
-    }
-  }
-
   /**
    * Determines the last beat to occur in this model.
    *
-   * @return the last beat to occur in the this model.
+   * @return the last beat to occur in the this model
    */
   private int maxBeat() {
     int maxBeat = 0;
@@ -111,6 +101,16 @@ public class GenericMusicModel implements IMusicModel<Note> {
       }
     }
     return maxBeat;
+  }
+
+  @Override
+  public void addMusicToTail(IMusicModel otherMusic) {
+    int lastBeat = maxBeat();
+    Set<Note> otherNotes = otherMusic.getNotes();
+    for (Note n : otherNotes) {
+      this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
+              (), n.getVolume(), n.getInstrument()));
+    }
   }
 
   /**
@@ -223,7 +223,8 @@ public class GenericMusicModel implements IMusicModel<Note> {
   }
 
   /**
-   * Returns all notes in this composition as a map from the pitch string of a note ("pitchoctave") to the set of notes with that pitch string.
+   * Returns all notes in this composition as a map from the pitch string of a note ("pitchoctave")
+   * to the set of notes with that pitch string.
    *
    * @return the map from pitch string to set of notes
    */
