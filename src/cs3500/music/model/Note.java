@@ -25,7 +25,6 @@ public class Note implements Comparable<Note> {
   //MIDI instrument to play the note with
   private final int instrument;
 
-
   /**
    * Represents the names of the musical pitches, from C to B. Uses sharps, and no representation
    * of flats.
@@ -45,33 +44,6 @@ public class Note implements Comparable<Note> {
       this.symbol = representation;
     }
 
-    /**
-     * Returns the padded representation of this pitch given an octave, roughly centered, with the
-     * octave, in a string of length 5
-     *
-     * @param octave the octave to be appended
-     * @return the string
-     */
-    public String getPaddedRepresentation(int octave) {
-      if (octave < 10) {
-        if (symbol.length() == 1) {
-          return "  " + symbol + octave + " ";
-        } else {
-          return " " + symbol + octave + " ";
-        }
-      } else {
-        if (symbol.length() == 1) {
-          return " " + symbol + octave + " ";
-        } else {
-          return " " + symbol + octave;
-        }
-      }
-    }
-
-    public String getStringWithOctave(int o) {
-      return this.symbol + Integer.toString(o);
-    }
-
     @Override
     public String toString() {
       return this.symbol;
@@ -85,6 +57,8 @@ public class Note implements Comparable<Note> {
    * @param pitch    the pitch of the note on the chromatic scale
    * @param octave   the octave of the note from [0,100)
    * @param duration the duration of the note beyond its first beat from [0,..)
+   * @param volume   the volume to play the Note
+   * @param instrument the MIDI instrument to play the note with
    * @throws IllegalArgumentException if any of the ranges are violated
    */
   public Note(Pitch pitch, int octave, int start, int duration, int volume, int instrument) {
@@ -136,28 +110,59 @@ public class Note implements Comparable<Note> {
     return this.duration;
   }
 
+  /**
+   * Returns this Note's volume.
+   *
+   * @return this Note's volume
+   */
   public int getVolume() {
     return volume;
   }
 
+  /**
+   * Returns this Note's MIDI instrument.
+   *
+   * @return this Note's instrument
+   */
   public int getInstrument() {
     return instrument;
   }
 
+  /**
+   * Determines if this note is playing during the given beat
+   *
+   * @param beat the beat to check
+   * @return true if this note starts or continues during this beat, false otherwise
+   */
+  public boolean playsDuring(int beat) {
+    return (this.start <= beat) && (this.start + this.duration >= beat);
+  }
+
   @Override
   public String toString() {
-    return pitch.getStringWithOctave(this.octave);
+    return pitch.toString() + Integer.toString(octave);
   }
 
   /**
-   * Compares by octave (lower is lower), then by pitch (ordered least to greatest int this.PITCH),
-   * then by duration (lower is lower)
+   * Compares by octave, then by pitch, then start, duration, instrument, and finally volume.
    */
   @Override
   public int compareTo(Note that) {
     if (this.octave == that.octave) {
       if (this.pitch == that.pitch) {
-        return Integer.compare(this.duration, that.duration);
+        if (this.start == that.start) {
+          if (this.duration == that.duration) {
+            if (this.instrument == that.instrument) {
+              return Integer.compare(this.volume, that.volume);
+            } else {
+              return Integer.compare(this.instrument, that.instrument);
+            }
+          } else {
+            return Integer.compare(this.duration, that.duration);
+          }
+        } else {
+          return Integer.compare(this.start, that.start);
+        }
       } else {
         return this.pitch.compareTo(that.pitch);
       }
@@ -173,21 +178,12 @@ public class Note implements Comparable<Note> {
     }
     Note that = (Note) obj;
     return this.pitch == that.pitch && this.start == that.start && this.octave == that.octave
-            && this.duration == that.duration;
+      && this.duration == that.duration && this.volume == that.volume && this.instrument ==
+      that.instrument;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(start, pitch, octave, duration);
-  }
-
-  /**
-   * Determines if this note is playing during the given beat
-   *
-   * @param beat the beat to check
-   * @return true if this note starts or continues during this beat, false otherwise
-   */
-  public boolean playsDuring(int beat) {
-    return (this.start <= beat) && (this.start + this.duration >= beat);
+    return Objects.hash(start, pitch, octave, duration, volume, instrument);
   }
 }

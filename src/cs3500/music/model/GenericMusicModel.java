@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 /**
  * Specifies operations for any generic music model
  */
-public class GenericMusicModel implements IMusicModel {
+public class GenericMusicModel implements IMusicModel<Note> {
 
   private final Map<Integer, Set<Note>> notes;
   private Note lowestNote = null;

@@ -1,36 +1,35 @@
 package cs3500.music.model;
 
-import java.util.List;
 import java.util.Set;
 
 /**
  * Specifies operations for any music model.
  */
-public interface IMusicModel {
+public interface IMusicModel<K> {
 
   /**
-   * Returns all the Notes in this music model.
+   * Returns all the notes in this music model.
    *
-   * @return all the Notes in this music model
+   * @return all the notes in this music model
    */
-  Set<Note> getNotes();
+  Set<K> getNotes();
 
   /**
-   * Returns all the Notes that start on the given beat.
+   * Returns all the notes that start on the given beat.
    *
    * @param beat the desired point in time in the model to play associated notes
-   * @return all the Notes that start on the given beat.
-   * @throws IllegalArgumentException if the given note is not in the model
+   * @return all the notes that start on the given beat.
+   * @throws IllegalArgumentException if the given beat is negative
    */
-  Set<Note> notesToPlay(int beat);
+  Set<K> notesToPlay(int beat);
 
   /**
-   * Adds the given Note to the IMusicModel. If the given note is the same as one already in the
+   * Adds the given note to the IMusicModel. If the given note is the same as one already in the
    * model (by Note.equals(...)), it will not be added.
    *
    * @param note the given note to add to the model
    */
-  void addNote(Note note);
+  void addNote(K note);
 
   /**
    * Removes this note from the IMusicModel. If this note is not in the model, an exception will be
@@ -39,17 +38,16 @@ public interface IMusicModel {
    * @param note the note to remove from the model
    * @throws IllegalArgumentException if the given note is not in the model
    */
-  void removeNote(Note note);
+  void removeNote(K note);
 
   /**
-   * Edits the given note to have the given pitch, octave, and start time.
+   * Exchanges the first given note with the second note.
    *
-   * @param note  the given note to edit
-   * @param pitch the new pitch
-   * @param start the new start time
-   * @throws IllegalArgumentException if the given start value is negative
+   * @param note  the note to change
+   * @param newNote the note to replace the original note with
+   * @throws IllegalArgumentException if the first note argument is not in the model
    */
-  void editNote(Note note, Note.Pitch pitch, int octave, int start, int duration, int volume, int instrument);
+  void editNote(K note, K newNote);
 
   /**
    * Overlays the given IMusicModel on top of this music model. Note collisions are dealt with in
@@ -69,7 +67,7 @@ public interface IMusicModel {
   void addMusicToTail(IMusicModel otherMusic);
 
   /**
-   * Returns a String that represents all the Notes in this model. The result is also printed into
+   * Returns a String that represents all the notes in this model. The result is also printed into
    * the console.
    *
    * <p>The return String is viewed as a table. The leftmost column shows all the beats in the
