@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Represents a musical note, consisting of a pitch and octave.
  */
-public class Note implements Comparable<Note> {
+public final class Note implements Comparable<Note> {
 
   //Never null
   private final Pitch pitch;

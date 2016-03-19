@@ -41,14 +41,4 @@ public class PitchTest {
     assertEquals("A#", aSharpPitch.toString());
     assertEquals("B", bPitch.toString());
   }
-
-  /**
-   * Tests for the method getPaddedRepresentation.
-   */
-  @Test
-  public void testGetPaddedRepresentation() {
-    assertEquals("  C0 ", cPitch.getPaddedRepresentation(0));
-    assertEquals(" D#4 ", dSharpPitch.getPaddedRepresentation(4));
-    assertEquals("  A2 ", aPitch.getPaddedRepresentation(2));
-  }
 }
