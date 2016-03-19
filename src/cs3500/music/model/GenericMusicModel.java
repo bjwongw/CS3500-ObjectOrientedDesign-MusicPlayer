@@ -71,13 +71,9 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   @Override
-  public void editNote(Note note, Note.Pitch pitch, int octave, int start, int duration, int
-          volume, int instrument) {
-    if (start < 0) {
-      throw new IllegalArgumentException("Cannot have a negative start time");
-    }
+  public void editNote(Note note, Note newNote) {
     removeNote(note);
-    addNote(new Note(pitch, octave, start, duration, volume, instrument));
+    addNote(newNote);
   }
 
   @Override
@@ -139,7 +135,7 @@ public class GenericMusicModel implements IMusicModel {
         lowestOctave += 1;
       }
       Note.Pitch pitchSymbol = pitches.get(i % pitches.size());
-      result.add(pitchSymbol.getStringWithOctave(lowestOctave));
+      result.add(pitchSymbol.toString() + lowestOctave);
     }
     return result;
   }
@@ -189,11 +185,13 @@ public class GenericMusicModel implements IMusicModel {
 
     result.add(0, centerString(pitchString, width));
 
-    for (Note n : notes) {
-      if (n.toString().equals(pitchString)) {
-        result.add(n.getStart(), centerString("X", width));
-        for (int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
-          result.add(i, centerString("|", width));
+    if(!(notes == null)) {
+      for (Note n : notes) {
+        if (n.toString().equals(pitchString)) {
+          result.add(n.getStart() + 1, centerString("X", width));
+          for (int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
+            result.add(i+1, centerString("|", width));
+          }
         }
       }
     }
@@ -249,9 +247,10 @@ public class GenericMusicModel implements IMusicModel {
       List<String> beatNumbers = createBeatRange(maxBeat());
       List<List<String>> pitchNotes = new ArrayList<>(pitchRange.size());
 
+      Map<String, Set<Note>> noteMap = this.getPitchMap();
       int k = 0;
       for (String s : pitchRange) {
-        pitchNotes.add(createPitchStrings(pitchRange.get(k), this.getNotes(), this.maxBeat() +
+        pitchNotes.add(createPitchStrings(pitchRange.get(k), noteMap.get(pitchRange.get(k)), this.maxBeat() +
                 1, 5));
         k++;
       }
