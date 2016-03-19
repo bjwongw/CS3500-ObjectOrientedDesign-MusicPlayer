@@ -5,7 +5,7 @@ import javax.sound.midi.*;
 /**
  * A skeleton for MIDI playback
  */
-public class MidiViewImpl implements YourViewInterfaceHere {
+public class MidiViewImpl { //implements YourViewInterfaceHere {
   private final Synthesizer synth;
   private final Receiver receiver;
 
@@ -16,6 +16,7 @@ public class MidiViewImpl implements YourViewInterfaceHere {
       this.synth.open();
     } catch (MidiUnavailableException e) {
       e.printStackTrace();
+      throw new RuntimeException();
     }
   }
   /**

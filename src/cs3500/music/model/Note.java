@@ -19,6 +19,13 @@ public class Note implements Comparable<Note> {
   //Invariant: [0,..)
   private final int duration;
 
+  //Volume to play the note at
+  private final int volume;
+
+  //MIDI instrument to play the note with
+  private final int instrument;
+
+
   /**
    * Represents the names of the musical pitches, from C to B. Uses sharps, and no representation
    * of flats.
@@ -31,6 +38,7 @@ public class Note implements Comparable<Note> {
 
     /**
      * Constructs a Pitch
+     *
      * @param representation the symbol to represent this Pitch
      */
     Pitch(String representation) {
@@ -60,6 +68,10 @@ public class Note implements Comparable<Note> {
       }
     }
 
+    public String getStringWithOctave(int o) {
+      return this.symbol + Integer.toString(o);
+    }
+
     @Override
     public String toString() {
       return this.symbol;
@@ -75,7 +87,7 @@ public class Note implements Comparable<Note> {
    * @param duration the duration of the note beyond its first beat from [0,..)
    * @throws IllegalArgumentException if any of the ranges are violated
    */
-  public Note(Pitch pitch, int octave, int start, int duration) {
+  public Note(Pitch pitch, int octave, int start, int duration, int volume, int instrument) {
     if (start < 0 || octave < 0 || octave >= 100 || duration < 0 || pitch == null) {
       throw new IllegalArgumentException("Impossible arguments!");
     }
@@ -84,6 +96,8 @@ public class Note implements Comparable<Note> {
     this.octave = octave;
     this.start = start;
     this.duration = duration;
+    this.volume = volume;
+    this.instrument = instrument;
   }
 
   /**
@@ -122,9 +136,17 @@ public class Note implements Comparable<Note> {
     return this.duration;
   }
 
+  public int getVolume() {
+    return volume;
+  }
+
+  public int getInstrument() {
+    return instrument;
+  }
+
   @Override
   public String toString() {
-    return pitch.toString();
+    return pitch.getStringWithOctave(this.octave);
   }
 
   /**
@@ -146,10 +168,12 @@ public class Note implements Comparable<Note> {
 
   @Override
   public boolean equals(Object obj) {
-    if (! (obj instanceof Note)) { return false; }
+    if (!(obj instanceof Note)) {
+      return false;
+    }
     Note that = (Note) obj;
     return this.pitch == that.pitch && this.start == that.start && this.octave == that.octave
-      && this.duration == that.duration;
+            && this.duration == that.duration;
   }
 
   @Override

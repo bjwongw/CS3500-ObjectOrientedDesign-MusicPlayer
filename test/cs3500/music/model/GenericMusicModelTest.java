@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -44,29 +45,29 @@ public class GenericMusicModelTest {
   public void initData() {
     musicModel1 = new GenericMusicModel();
     musicModel2 = new GenericMusicModel();
-    c0 = new Note(new Pitch(Pitch.PitchSymbol.C, 0), 0, 4);
-    c4 = new Note(new Pitch(Pitch.PitchSymbol.C, 4), 3, 1);
-    cSharp3 = new Note(new Pitch(Pitch.PitchSymbol.C_SHARP, 3), 2, 2);
-    cSharp7 = new Note(new Pitch(Pitch.PitchSymbol.C_SHARP, 7), 10, 3);
-    d3 = new Note(new Pitch(Pitch.PitchSymbol.D, 3), 13, 4);
-    d6 = new Note(new Pitch(Pitch.PitchSymbol.D, 6), 0, 1);
-    dSharp0 = new Note(new Pitch(Pitch.PitchSymbol.D_SHARP, 0), 21, 3);
-    dSharp9 = new Note(new Pitch(Pitch.PitchSymbol.D_SHARP, 9), 8, 8);
-    e1 = new Note(new Pitch(Pitch.PitchSymbol.E, 1), 0, 1);
-    e2 = new Note(new Pitch(Pitch.PitchSymbol.E, 2), 2, 1);
-    f3 = new Note(new Pitch(Pitch.PitchSymbol.F, 3), 0, 7);
-    f5 = new Note(new Pitch(Pitch.PitchSymbol.F, 5), 5, 5);
-    fSharp4 = new Note(new Pitch(Pitch.PitchSymbol.F_SHARP, 4), 6, 2);
-    fSharp9 = new Note(new Pitch(Pitch.PitchSymbol.F_SHARP, 9), 6, 2);
-    g0 = new Note(new Pitch(Pitch.PitchSymbol.G, 0), 3, 1);
-    g6 = new Note(new Pitch(Pitch.PitchSymbol.G, 6), 10, 4);
-    gSharp5 = new Note(new Pitch(Pitch.PitchSymbol.G_SHARP, 5), 3, 1);
-    gSharp7 = new Note(new Pitch(Pitch.PitchSymbol.G_SHARP, 7), 40, 2);
-    a8 = new Note(new Pitch(Pitch.PitchSymbol.A, 8), 32, 2);
-    a10 = new Note(new Pitch(Pitch.PitchSymbol.A, 10), 32, 2);
-    aSharp4 = new Note(new Pitch(Pitch.PitchSymbol.A_SHARP, 4), 14, 10);
-    aSharp9 = new Note(new Pitch(Pitch.PitchSymbol.A_SHARP, 9), 22, 9);
-    b10 = new Note(new Pitch(Pitch.PitchSymbol.B, 10), 33, 7);
+    c0 = new Note(Note.Pitch.C, 0, 0, 4, 0, 0);
+    c4 = new Note(Note.Pitch.C, 4, 3, 1, 0, 0);
+    cSharp3 = new Note(Note.Pitch.C_SHARP, 3, 2, 2, 0, 0);
+    cSharp7 = new Note(Note.Pitch.C_SHARP, 7, 10, 3, 0, 0);
+    d3 = new Note(Note.Pitch.D, 3, 13, 4, 0, 0);
+    d6 = new Note(Note.Pitch.D, 6, 0, 1, 0, 0);
+    dSharp0 = new Note(Note.Pitch.D_SHARP, 0, 21, 3, 0, 0);
+    dSharp9 = new Note(Note.Pitch.D_SHARP, 9, 8, 8, 0, 0);
+    e1 = new Note(Note.Pitch.E, 1, 0, 1, 0, 0);
+    e2 = new Note(Note.Pitch.E, 2, 2, 1, 0, 0);
+    f3 = new Note(Note.Pitch.F, 3, 0, 7, 0, 0);
+    f5 = new Note(Note.Pitch.F, 5, 5, 5, 0, 0);
+    fSharp4 = new Note(Note.Pitch.F_SHARP, 4, 6, 2, 0, 0);
+    fSharp9 = new Note(Note.Pitch.F_SHARP, 9, 6, 2, 0, 0);
+    g0 = new Note(Note.Pitch.G, 0, 3, 1, 0, 0);
+    g6 = new Note(Note.Pitch.G, 6, 10, 4, 0, 0);
+    gSharp5 = new Note(Note.Pitch.G_SHARP, 5, 3, 1, 0, 0);
+    gSharp7 = new Note(Note.Pitch.G_SHARP, 7, 40, 2, 0, 0);
+    a8 = new Note(Note.Pitch.A, 8, 32, 2, 0, 0);
+    a10 = new Note(Note.Pitch.A, 10, 32, 2, 0, 0);
+    aSharp4 = new Note(Note.Pitch.A_SHARP, 4, 14, 10, 0, 0);
+    aSharp9 = new Note(Note.Pitch.A_SHARP, 9, 22, 9, 0, 0);
+    b10 = new Note(Note.Pitch.B, 10, 33, 7, 0, 0);
   }
 
   /**
@@ -96,7 +97,7 @@ public class GenericMusicModelTest {
     noteList.add(g6);
     assertNotEquals(noteList, musicModel1.getNotes());
     Collections.sort(noteList); // getNotes returns a sorted list because the notes are stored in
-                                // a treeMap. Therefore, noteList needs to be sorted to be equal
+    // a treeMap. Therefore, noteList needs to be sorted to be equal
     assertEquals(noteList, musicModel1.getNotes());
   }
 
@@ -117,7 +118,7 @@ public class GenericMusicModelTest {
   @Test
   public void testNotesToPlay_noNotes() {
     initData();
-    List<Note> noteList = musicModel1.notesToPlay(3);
+    Set<Note> noteList = musicModel1.notesToPlay(3);
     assertEquals(0, noteList.size());
   }
 
@@ -130,7 +131,7 @@ public class GenericMusicModelTest {
     musicModel1.addNote(c0);
     musicModel1.addNote(aSharp4);
     musicModel1.addNote(e1);
-    List<Note> notesBeat0 = musicModel1.notesToPlay(0);
+    Set<Note> notesBeat0 = musicModel1.notesToPlay(0);
     assertEquals(2, notesBeat0.size());
     assertTrue(notesBeat0.contains(c0));
     assertTrue(notesBeat0.contains(e1));
@@ -142,16 +143,16 @@ public class GenericMusicModelTest {
   @Test
   public void testNotesToPlay_beat10() {
     initData();
-    Note e5_10_3 = new Note(new Pitch(Pitch.PitchSymbol.E, 5), 10, 3);
-    Note aSharp6_10_2 = new Note(new Pitch(Pitch.PitchSymbol.A_SHARP, 6), 10, 2);
-    Note dSharp0_10_1 = new Note(new Pitch(Pitch.PitchSymbol.D_SHARP, 0), 10, 1);
+    Note e5_10_3 = new Note(Note.Pitch.E, 5, 10, 3, 0, 0);
+    Note aSharp6_10_2 = new Note(Note.Pitch.A_SHARP, 6, 10, 2, 0, 0);
+    Note dSharp0_10_1 = new Note(Note.Pitch.D_SHARP, 0, 10, 1, 0, 0);
     musicModel1.addNote(e5_10_3);
     musicModel1.addNote(cSharp3);
     musicModel1.addNote(f3);
     musicModel1.addNote(aSharp6_10_2);
     musicModel1.addNote(f5);
     musicModel1.addNote(dSharp0_10_1);
-    List<Note> notesBeat10 = musicModel1.notesToPlay(10);
+    Set<Note> notesBeat10 = musicModel1.notesToPlay(10);
     assertEquals(3, notesBeat10.size());
     assertTrue(notesBeat10.contains(e5_10_3));
     assertTrue(notesBeat10.contains(aSharp6_10_2));
@@ -166,7 +167,7 @@ public class GenericMusicModelTest {
   public void testAddNote_emptyModel() {
     initData();
     musicModel1.addNote(c0);
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteList = musicModel1.getNotes();
     assertTrue(noteList.contains(c0));
   }
 
@@ -178,7 +179,7 @@ public class GenericMusicModelTest {
   public void testAddNote_duplicateNotes() {
     initData();
     musicModel1.addNote(d3);
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteList = musicModel1.getNotes();
     assertEquals(1, noteList.size());
 
     musicModel1.addNote(d3); // duplicate should be ignored
@@ -193,16 +194,16 @@ public class GenericMusicModelTest {
   @Test
   public void testAddNote_addDuringNote() {
     initData();
-    Note c0_1_6 = new Note(new Pitch(Pitch.PitchSymbol.C, 0), 1, 6);
+    Note c0_1_6 = new Note(Note.Pitch.C, 0, 1, 6, 0, 0);
     musicModel1.addNote(c0_1_6);
     assertEquals(6, c0_1_6.getDuration());
     // the following note starts while c0_1_6 is playing
-    Note c0_3_4 = new Note(new Pitch(Pitch.PitchSymbol.C, 0), 3, 4);
+    Note c0_3_4 = new Note(Note.Pitch.C, 0, 3, 4, 0, 0);
     musicModel1.addNote(c0_3_4);
     // c0_1_6 is shortened to so it does not collide with c0_3_4
     assertEquals(2, c0_1_6.getDuration());
 
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteList = musicModel1.getNotes();
     // both notes are in the model
     assertTrue(noteList.contains(c0_1_6));
     assertTrue(noteList.contains(c0_3_4));
@@ -215,30 +216,30 @@ public class GenericMusicModelTest {
   @Test
   public void testAddNote_givenNotePlaysDuringOtherNote() {
     initData();
-    Note d3_5_2 = new Note(new Pitch(Pitch.PitchSymbol.D, 3), 5, 2);
+    Note d3_5_2 = new Note(Note.Pitch.D, 3, 5, 2, 0, 0);
     musicModel1.addNote(d3_5_2);
     // the following note is playing through the start of d3_5_2
-    Note d3_3_5 = new Note(new Pitch(Pitch.PitchSymbol.D, 3), 3, 5);
+    Note d3_3_5 = new Note(Note.Pitch.D, 3, 3, 5, 0, 0);
     assertEquals(5, d3_3_5.getDuration());
     musicModel1.addNote(d3_3_5);
     // d3_3_5 is shortened so it does not collide with d3_5_2
     assertEquals(2, d3_3_5.getDuration());
 
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteList = musicModel1.getNotes();
     // both notes are in the model
     assertTrue(noteList.contains(d3_5_2));
     assertTrue(noteList.contains(d3_3_5));
   }
 
   /**
-   * Tests the method addNote in the event that the given note has the same pitch and start time
-   * as another note in the model, but the given note has a shorter duration.
+   * Tests the method addNote in the event that the given note has the same pitch and start time as
+   * another note in the model, but the given note has a shorter duration.
    */
   @Test
   public void testAddNote_notesHaveSameStart_longerNoteInModel() {
     initData();
-    Note aSharp4_0_7 = new Note(new Pitch(Pitch.PitchSymbol.A_SHARP, 4), 0, 7);
-    Note aSharp4_0_3 = new Note(new Pitch(Pitch.PitchSymbol.A_SHARP, 4), 0, 3);
+    Note aSharp4_0_7 = new Note(Note.Pitch.A_SHARP, 4, 0, 7, 0, 0);
+    Note aSharp4_0_3 = new Note(Note.Pitch.A_SHARP, 4, 0, 3, 0, 0);
     musicModel1.addNote(aSharp4_0_7);
     assertTrue(musicModel1.getNotes().contains(aSharp4_0_7));
     musicModel1.addNote(aSharp4_0_3);
@@ -247,14 +248,14 @@ public class GenericMusicModelTest {
   }
 
   /**
-   * Tests the method addNote in the event that the given note has the same pitch and start time
-   * as another note in the model, but the given note has a longer duration.
+   * Tests the method addNote in the event that the given note has the same pitch and start time as
+   * another note in the model, but the given note has a longer duration.
    */
   @Test
   public void testAddNote_notesHaveSameStart_shorterNoteInModel() {
     initData();
-    Note d10_4_2 = new Note(new Pitch(Pitch.PitchSymbol.D, 10), 4, 2);
-    Note d10_4_3 = new Note(new Pitch(Pitch.PitchSymbol.D, 10), 4, 3);
+    Note d10_4_2 = new Note(Note.Pitch.D, 10, 4, 2, 0, 0);
+    Note d10_4_3 = new Note(Note.Pitch.D, 10, 4, 3, 0, 0);
     musicModel1.addNote(d10_4_2);
     assertTrue(musicModel1.getNotes().contains(d10_4_2));
     musicModel1.addNote(d10_4_3);
@@ -266,8 +267,8 @@ public class GenericMusicModelTest {
   }
 
   /**
-   * Test for the method removeNote. Ensures that you cannot remove a note if there are no notes
-   * in the model.
+   * Test for the method removeNote. Ensures that you cannot remove a note if there are no notes in
+   * the model.
    */
   @Test(expected = IllegalArgumentException.class)
   public void invalidNoteRemoval_noNotes() {
@@ -276,7 +277,8 @@ public class GenericMusicModelTest {
   }
 
   /**
-   * Test for the method removeNote. Ensures that you cannot remove a note that is not in the model.
+   * Test for the method removeNote. Ensures that you cannot remove a note that is not in the
+   * model.
    */
   @Test(expected = IllegalArgumentException.class)
   public void invalidNoteRemoval_noteNotInModel() {
@@ -295,7 +297,7 @@ public class GenericMusicModelTest {
     musicModel1.addNote(aSharp4);
     musicModel1.addNote(d3);
     musicModel1.addNote(b10);
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteList = musicModel1.getNotes();
 
     // all the inserted notes are in fact in the model
     assertTrue(noteList.contains(aSharp4));
@@ -322,7 +324,7 @@ public class GenericMusicModelTest {
   public void testEditNote_negativeStart() {
     initData();
     musicModel1.addNote(b10);
-    musicModel1.editNote(b10, b10.getPitch(), -1);
+    musicModel1.editNote(b10, b10.getPitch(), -1, 0, 7, 0, 0);
   }
 
   /**
@@ -332,11 +334,11 @@ public class GenericMusicModelTest {
   public void testEditNote() {
     initData();
     musicModel1.addNote(cSharp7);
-    assertEquals(new Pitch(Pitch.PitchSymbol.C_SHARP, 7), cSharp7.getPitch());
+    assertEquals(Note.Pitch.C_SHARP, cSharp7.getPitch());
     assertEquals(10, cSharp7.getStart());
     assertEquals(3, cSharp7.getDuration());
-    musicModel1.editNote(cSharp7, new Pitch(Pitch.PitchSymbol.A_SHARP, 3), 5);
-    assertEquals(new Pitch(Pitch.PitchSymbol.A_SHARP, 3), cSharp7.getPitch());
+    musicModel1.editNote(cSharp7, Note.Pitch.A_SHARP, 3, 5, 3, 0, 0);
+    assertEquals(Note.Pitch.A_SHARP, cSharp7.getPitch());
     assertEquals(5, cSharp7.getStart());
     assertEquals(3, cSharp7.getDuration());
   }
@@ -366,7 +368,7 @@ public class GenericMusicModelTest {
   public void testCombinePieces_duplicateNotes() {
     initData();
     musicModel1.addNote(c0);
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteList = musicModel1.getNotes();
     assertEquals(1, noteList.size());
 
     musicModel2.addNote(c0);
@@ -480,13 +482,13 @@ public class GenericMusicModelTest {
   @Test
   public void testPrintMusic_twoOctaves() {
     initData();
-    musicModel1.addNote(new Note(new Pitch(Pitch.PitchSymbol.C, 0), 0, 1));
-    musicModel1.addNote(new Note(new Pitch(Pitch.PitchSymbol.C_SHARP, 1), 1, 3));
+    musicModel1.addNote(new Note(Note.Pitch.C, 0, 0, 1, 0, 0));
+    musicModel1.addNote(new Note(Note.Pitch.C_SHARP, 1, 1, 3, 0, 0));
     String output = "   C0  C#0   D0  D#0   E0   F0  F#0   G0  G#0   A0  A#0   B0   C1  C#1 \n"
-                  + "0  X                                                                   \n"
-                  + "1                                                                   X  \n"
-                  + "2                                                                   |  \n"
-                  + "3                                                                   |  ";
+            + "0  X                                                                   \n"
+            + "1                                                                   X  \n"
+            + "2                                                                   |  \n"
+            + "3                                                                   |  ";
     assertEquals(output, musicModel1.printMusic());
   }
 
@@ -500,42 +502,42 @@ public class GenericMusicModelTest {
     musicModel1.addNote(cSharp3);
     musicModel1.addNote(e2);
     String output = "    E2   F2  F#2   G2  G#2   A2  A#2   B2   C3  C#3   D3 \n"
-                  + " 0                                                       \n"
-                  + " 1                                                       \n"
-                  + " 2  X                                            X       \n"
-                  + " 3                                               |       \n"
-                  + " 4                                                       \n"
-                  + " 5                                                       \n"
-                  + " 6                                                       \n"
-                  + " 7                                                       \n"
-                  + " 8                                                       \n"
-                  + " 9                                                       \n"
-                  + "10                                                       \n"
-                  + "11                                                       \n"
-                  + "12                                                       \n"
-                  + "13                                                    X  \n"
-                  + "14                                                    |  \n"
-                  + "15                                                    |  \n"
-                  + "16                                                    |  ";
+            + " 0                                                       \n"
+            + " 1                                                       \n"
+            + " 2  X                                            X       \n"
+            + " 3                                               |       \n"
+            + " 4                                                       \n"
+            + " 5                                                       \n"
+            + " 6                                                       \n"
+            + " 7                                                       \n"
+            + " 8                                                       \n"
+            + " 9                                                       \n"
+            + "10                                                       \n"
+            + "11                                                       \n"
+            + "12                                                       \n"
+            + "13                                                    X  \n"
+            + "14                                                    |  \n"
+            + "15                                                    |  \n"
+            + "16                                                    |  ";
     assertEquals(output, musicModel1.printMusic());
   }
 
   /**
-   * Test for the method printMusic to check that the output scales the pitches so that the
-   * lower bound is the lowest pitch in the model, and the upper bound is the highest pitch
-   * in the model.
+   * Test for the method printMusic to check that the output scales the pitches so that the lower
+   * bound is the lowest pitch in the model, and the upper bound is the highest pitch in the
+   * model.
    */
   @Test
   public void testPrintMusic_scaledPitches() {
     initData();
     musicModel1.addNote(cSharp3);
     musicModel1.addNote(f3);
-    musicModel1.addNote(new Note(new Pitch(Pitch.PitchSymbol.E, 3), 0, 6));
-    musicModel1.addNote(new Note(new Pitch(Pitch.PitchSymbol.E, 3), 2, 3));
+    musicModel1.addNote(new Note(Note.Pitch.E, 3, 0, 6, 0, 0));
+    musicModel1.addNote(new Note(Note.Pitch.E, 3, 2, 3, 0, 0));
     String output = "  C#3   D3  D#3   E3   F3 \n" + "0                 X    X  \n"
-                  + "1                 |    |  \n" + "2  X              X    |  \n"
-                  + "3  |              |    |  \n" + "4                 |    |  \n"
-                  + "5                      |  \n" + "6                      |  ";
+            + "1                 |    |  \n" + "2  X              X    |  \n"
+            + "3  |              |    |  \n" + "4                 |    |  \n"
+            + "5                      |  \n" + "6                      |  ";
     assertEquals(output, musicModel1.printMusic());
   }
 }
