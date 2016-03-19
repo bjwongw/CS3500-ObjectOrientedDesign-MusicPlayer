@@ -87,6 +87,7 @@ public class GenericMusicModelTest {
   public void testGetNotes() {
     initData();
     List<Note> noteList = new ArrayList<>();
+    List<Note> result;
     musicModel1.addNote(c0);
     noteList.add(c0);
     musicModel1.addNote(c4);
@@ -95,10 +96,12 @@ public class GenericMusicModelTest {
     noteList.add(e1);
     musicModel1.addNote(g6);
     noteList.add(g6);
-    assertNotEquals(noteList, musicModel1.getNotes());
+    result = new ArrayList<>(musicModel1.getNotes());
+    assertNotEquals(noteList, result);
     Collections.sort(noteList); // getNotes returns a sorted list because the notes are stored in
     // a treeMap. Therefore, noteList needs to be sorted to be equal
-    assertEquals(noteList, musicModel1.getNotes());
+    Collections.sort(result);
+    assertEquals(noteList, result);
   }
 
   /**
@@ -222,8 +225,8 @@ public class GenericMusicModelTest {
     Note d3_3_5 = new Note(Note.Pitch.D, 3, 3, 5, 0, 0);
     assertEquals(5, d3_3_5.getDuration());
     musicModel1.addNote(d3_3_5);
-    // d3_3_5 is shortened so it does not collide with d3_5_2
-    assertEquals(2, d3_3_5.getDuration());
+    // d3_3_5 is kept the same because it is not equivalent to the new note
+    assertEquals(5, d3_3_5.getDuration());
 
     Set<Note> noteList = musicModel1.getNotes();
     // both notes are in the model
@@ -243,8 +246,8 @@ public class GenericMusicModelTest {
     musicModel1.addNote(aSharp4_0_7);
     assertTrue(musicModel1.getNotes().contains(aSharp4_0_7));
     musicModel1.addNote(aSharp4_0_3);
-    // aSharp4_0_3 is shorter than aSharp4_0_7 so it should not be added to the model
-    assertFalse(musicModel1.getNotes().contains(aSharp4_0_3));
+    // aSharp4_0_3 is different from aSharp4_0_7 so it is maintained
+    assertTrue(musicModel1.getNotes().contains(aSharp4_0_3));
   }
 
   /**
@@ -338,8 +341,8 @@ public class GenericMusicModelTest {
     assertEquals(10, cSharp7.getStart());
     assertEquals(3, cSharp7.getDuration());
     musicModel1.editNote(cSharp7, Note.Pitch.A_SHARP, 3, 5, 3, 0, 0);
-    assertEquals(Note.Pitch.A_SHARP, cSharp7.getPitch());
-    assertEquals(5, cSharp7.getStart());
+    assertEquals(Note.Pitch.C_SHARP, cSharp7.getPitch());
+    assertEquals(10, cSharp7.getStart());
     assertEquals(3, cSharp7.getDuration());
   }
 

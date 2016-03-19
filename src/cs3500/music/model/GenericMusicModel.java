@@ -1,7 +1,6 @@
 package cs3500.music.model;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Specifies operations for any generic music model
@@ -9,8 +8,6 @@ import java.util.stream.Collectors;
 public class GenericMusicModel implements IMusicModel {
 
   private final Map<Integer, Set<Note>> notes;
-  private Note lowestNote = null;
-  private Note highestNote = null;
 
   /**
    * Constructs the default Generic Music Model.
@@ -58,13 +55,6 @@ public class GenericMusicModel implements IMusicModel {
         return;
       }
       set.add(note);
-    }
-
-    if (this.lowestNote == null || note.compareTo(this.lowestNote) < 0) {
-      this.lowestNote = note;
-    }
-    if (this.highestNote == null || note.compareTo(this.highestNote) > 0) {
-      this.highestNote = note;
     }
   }
 
@@ -197,10 +187,10 @@ public class GenericMusicModel implements IMusicModel {
       result.add(i, centerString("", width));
     }
 
-    result.add(centerString(pitchString, width));
+    result.add(0, centerString(pitchString, width));
 
     for (Note n : notes) {
-      if (n.toString() == pitchString) {
+      if (n.toString().equals(pitchString)) {
         result.add(n.getStart(), centerString("X", width));
         for (int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
           result.add(i, centerString("|", width));
@@ -232,13 +222,29 @@ public class GenericMusicModel implements IMusicModel {
     }
   }
 
+  /**
+   * Returns all notes in this composition as a map from the pitch string of a note ("pitchoctave") to the set of notes with that pitch string.
+   *
+   * @return the map from pitch string to set of notes
+   */
+  private Map<String, Set<Note>> getPitchMap() {
+    Map<String, Set<Note>> result = new HashMap<>();
+    for(Note n : this.getNotes()) {
+      if(!result.containsKey(n.toString())) {
+        result.put(n.toString(), new HashSet<>());
+      }
+      result.get(n.toString()).add(n);
+    }
+    return result;
+  }
+
   @Override
   public String printMusic() {
     StringBuilder sb = new StringBuilder();
     if (notes.isEmpty()) {
       sb.append("");
     } else {
-      List<String> pitchRange = createPitchRange(this.lowestNote, this.highestNote);
+      List<String> pitchRange = createPitchRange(this.getLowestNote(), this.getHighestNote());
       List<String> beatNumbers = createBeatRange(maxBeat());
       List<List<String>> pitchNotes = new ArrayList<>(pitchRange.size());
 
@@ -263,5 +269,50 @@ public class GenericMusicModel implements IMusicModel {
     }
     //System.out.println(sb.toString());
     return sb.toString();
+  }
+
+  /**
+   * Returns the lowest note in the entire piece (the first one, if there are multiple)
+   *
+   * @return the lowest note
+   */
+  private Note getLowestNote() {
+    Note lowest = null;
+    boolean first = true;
+    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
+      for (Note n : e.getValue()) {
+        if(first) {
+          first = false;
+          lowest = n;
+        }
+        if(n.compareTo(lowest) < 0) {
+          lowest = n;
+        }
+      }
+    }
+    if(first) throw new IllegalStateException("No notes in composition");
+    return lowest;
+  }
+
+  /**
+   * Returns the highest note in the entire piece (the first one, if there are multiple)
+   *
+   * @return the highest note
+   */
+  private Note getHighestNote() {
+    Note highest = null;
+    boolean first = true;
+    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
+      for (Note n : e.getValue()) {
+        if(first) {
+          first = false;
+          highest = n;
+        } else if(n.compareTo(highest) > 0) {
+          highest = n;
+        }
+      }
+    }
+    if(first) throw new IllegalStateException("No notes in composition");
+    return highest;
   }
 }
