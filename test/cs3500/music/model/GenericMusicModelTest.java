@@ -511,8 +511,7 @@ public class GenericMusicModelTest {
 
   /**
    * Test for the method printMusic to check that the output scales the pitches so that the lower
-   * bound is the lowest pitch in the model, and the upper bound is the highest pitch in the
-   * model.
+   * bound is the lowest pitch in the model, and the upper bound is the highest pitch in the model.
    */
   @Test
   public void testPrintMusic_scaledPitches() {
@@ -530,5 +529,28 @@ public class GenericMusicModelTest {
             "5                 |    |  \n" +
             "6                 |    |  ";
     assertEquals(output, musicModel1.printMusic());
+  }
+
+  @Test
+  public void testAddNote() {
+    initData();
+    Set<Note> set = new HashSet<>();
+
+    for (int i = 0; i < 10; i++) {
+      for (int j = 0; j < 10; j++) {
+        for (int k = 0; k < 10; k++) {
+          for (int t = 0; t < 10; t++) {
+            for (int d = 0; d < 10; d++) {
+              musicModel1.addNote(new Note(Note.Pitch.A, i, j, k, d, t));
+              set.add(new Note(Note.Pitch.A, i, j, k, d, t));
+            }
+          }
+        }
+      }
+    }
+
+    for(Note n : musicModel1.getNotes()) {
+      assertTrue(set.contains(n));
+    }
   }
 }
