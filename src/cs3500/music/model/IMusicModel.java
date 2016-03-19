@@ -83,4 +83,10 @@ public interface IMusicModel {
    * @return a String that represents all the Notes in this model
    */
   String printMusic();
+
+  /**
+   * Returns the tempo of this piece
+   * @return the tempo of this piece
+   */
+  int getTempo();
 }

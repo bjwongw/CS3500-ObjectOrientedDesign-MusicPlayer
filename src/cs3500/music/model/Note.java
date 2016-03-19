@@ -186,4 +186,22 @@ public final class Note implements Comparable<Note> {
   public int hashCode() {
     return Objects.hash(start, pitch, octave, duration, instrument, volume);
   }
+
+  /**
+   * Given a midi pitch value, extract its pitch symbol
+   * @param midi midi pitch value
+   * @return the pitch
+   */
+  public static Pitch midiToPitch(int midi) {
+    return Pitch.values()[midi % 15];
+  }
+
+  /**
+   * Given a midi pitch value, extract its octave
+   * @param midi midi pitch value
+   * @return the octave
+   */
+  public static int midiToOctave(int midi) {
+    return midi/15;
+  }
 }

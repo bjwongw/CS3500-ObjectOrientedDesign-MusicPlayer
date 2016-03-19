@@ -3,18 +3,32 @@ package cs3500.music.model;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import cs3500.music.util.CompositionBuilder;
+
 /**
  * Specifies operations for any generic music model
  */
 public class GenericMusicModel implements IMusicModel {
 
   private final Map<Integer, Set<Note>> notes;
+  private int tempo;
 
   /**
    * Constructs the default Generic Music Model.
    */
   public GenericMusicModel() {
     this.notes = new HashMap<>();
+    this.tempo = 1000;
+  }
+
+  public GenericMusicModel(int tmp) {
+    this.notes = new HashMap<>();
+    this.tempo = tmp;
+  }
+
+  @Override
+  public int getTempo() {
+    return this.tempo;
   }
 
   /**
@@ -314,5 +328,32 @@ public class GenericMusicModel implements IMusicModel {
     }
     if(first) throw new IllegalStateException("No notes in composition");
     return highest;
+  }
+
+  public static final class Builder implements CompositionBuilder<IMusicModel> {
+
+    private int tempo = 1000;
+    private Set<Note> notes = new HashSet<>();
+
+    @Override
+    public IMusicModel build() {
+      IMusicModel m = new GenericMusicModel(tempo);
+      for(Note n : notes) {
+        m.addNote(n);
+      }
+      return m;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicModel> setTempo(int tempo) {
+      this.tempo = tempo;
+      return this;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch, int volume) {
+      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start, instrument, volume));
+      return this;
+    }
   }
 }
