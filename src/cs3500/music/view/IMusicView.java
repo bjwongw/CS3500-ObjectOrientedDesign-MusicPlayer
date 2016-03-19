@@ -1,7 +1,12 @@
 package cs3500.music.view;
 
 /**
- * Created by Brendino on 3/19/16.
+ * Specifies operations for any music view.
  */
-public class IMusicView {
+public interface IMusicView {
+
+  /**
+   * Initializes this view object.
+   */
+  void initialize();
 }

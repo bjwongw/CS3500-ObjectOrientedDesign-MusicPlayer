@@ -351,8 +351,10 @@ public class GenericMusicModel implements IMusicModel {
     }
 
     @Override
-    public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch, int volume) {
-      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start, instrument, volume));
+    public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch,
+      int volume) {
+      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
+        instrument, volume));
       return this;
     }
   }
