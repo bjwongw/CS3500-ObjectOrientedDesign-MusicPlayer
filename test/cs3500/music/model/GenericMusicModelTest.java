@@ -523,11 +523,11 @@ public class GenericMusicModelTest {
     String output = "  C#3   D3  D#3   E3   F3 \n" +
             "0                 X    X  \n" +
             "1                 |    |  \n" +
-            "2  X              X    |  \n" +
+            "2  X              |    |  \n" +
             "3  |              |    |  \n" +
             "4                 |    |  \n" +
             "5                 |    |  \n" +
-            "6                 |    |  ";
+            "6                      |  ";
     assertEquals(output, musicModel1.printMusic());
   }
 
@@ -536,11 +536,11 @@ public class GenericMusicModelTest {
     initData();
     Set<Note> set = new HashSet<>();
 
-    for (int i = 0; i < 10; i++) {
-      for (int j = 0; j < 10; j++) {
-        for (int k = 0; k < 10; k++) {
-          for (int t = 0; t < 10; t++) {
-            for (int d = 0; d < 10; d++) {
+    for (int i = 1; i < 10; i++) {
+      for (int j = 1; j < 10; j++) {
+        for (int k = 1; k < 10; k++) {
+          for (int t = 1; t < 10; t++) {
+            for (int d = 1; d < 10; d++) {
               musicModel1.addNote(new Note(Note.Pitch.A, i, j, k, d, t));
               set.add(new Note(Note.Pitch.A, i, j, k, d, t));
             }
