@@ -164,6 +164,38 @@ public class GenericMusicModelTest {
   }
 
   /**
+   * Tests for the method getTempo
+   */
+  @Test
+  public void testGetTempo() {
+
+  }
+
+  /**
+   * Tests for the method getLowestNote
+   */
+  @Test
+  public void testGetLowestNote() {
+
+  }
+
+  /**
+   * Tests for the method getHighestNote
+   */
+  @Test
+  public void testGetHighestNote() {
+
+  }
+
+  /**
+   * Tests for the method finalBeat
+   */
+  @Test
+  public void testFinalBeat() {
+
+  }
+
+  /**
    * Tests the method addNote in the case that there is note set for the given note's associated
    * pitch.
    */

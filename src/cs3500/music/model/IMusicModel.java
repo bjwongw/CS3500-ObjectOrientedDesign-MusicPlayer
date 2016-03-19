@@ -8,6 +8,13 @@ import java.util.Set;
 public interface IMusicModel {
 
   /**
+   * Returns the tempo of this piece
+   *
+   * @return the tempo of this piece
+   */
+  int getTempo();
+
+  /**
    * Returns all the notes in this music model.
    *
    * @return all the notes in this music model
@@ -22,6 +29,24 @@ public interface IMusicModel {
    * @throws IllegalArgumentException if the given beat is negative
    */
   Set<Note> notesToPlay(int beat);
+
+  /**
+   * Returns the lowest note in the entire model. Lowest note is determined first by octave. If
+   * there are ties, they are broken by the lower pitch, then start, duration, instrument, and
+   * volume.
+   *
+   * @return the lowest note in the model
+   */
+  Note getLowestNote();
+
+  /**
+   * Returns the highest note in the entire model. Highest note is determined first by octave. If
+   * there are ties, they are broken by the higher pitch, then start, duration, instrument, and
+   * volume.
+   *
+   * @return the highest note in the model
+   */
+  Note getHighestNote();
 
   /**
    * Adds the given note to the IMusicModel. If the given note is the same as one already in the
@@ -67,6 +92,13 @@ public interface IMusicModel {
   void addMusicToTail(IMusicModel otherMusic);
 
   /**
+   * Determines the last beat to occur in this model.
+   *
+   * @return the last beat to occur in the this model
+   */
+  int finalBeat();
+
+  /**
    * Returns a String that represents all the notes in this model. The result is also printed into
    * the console.
    *
@@ -83,10 +115,4 @@ public interface IMusicModel {
    * @return a String that represents all the Notes in this model
    */
   String printMusic();
-
-  /**
-   * Returns the tempo of this piece
-   * @return the tempo of this piece
-   */
-  int getTempo();
 }

@@ -21,9 +21,41 @@ public class GenericMusicModel implements IMusicModel {
     this.tempo = 1000;
   }
 
+  /**
+   * Constructs a GenericMusicModel with the given tempo.
+   *
+   * @param tmp the desired tempo of this model
+   */
   public GenericMusicModel(int tmp) {
     this.notes = new HashMap<>();
     this.tempo = tmp;
+  }
+
+  public static final class Builder implements CompositionBuilder<IMusicModel> {
+
+    private int tempo = 1000;
+    private Set<Note> notes = new HashSet<>();
+
+    @Override
+    public IMusicModel build() {
+      IMusicModel m = new GenericMusicModel(tempo);
+      notes.forEach(m::addNote);
+      return m;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicModel> setTempo(int tempo) {
+      this.tempo = tempo;
+      return this;
+    }
+
+    @Override
+    public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch,
+      int volume) {
+      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
+        instrument, volume));
+      return this;
+    }
   }
 
   @Override
@@ -31,11 +63,6 @@ public class GenericMusicModel implements IMusicModel {
     return this.tempo;
   }
 
-  /**
-   * Returns the set of Notes
-   *
-   * @return the set of Notes
-   */
   @Override
   public Set<Note> getNotes() {
     Set<Note> result = new HashSet<>();
@@ -55,6 +82,53 @@ public class GenericMusicModel implements IMusicModel {
       return new HashSet<>();
     }
     return new HashSet<>(s);
+  }
+
+  /**
+   * Returns the lowest note in the entire piece (the first one, if there are multiple)
+   *
+   * @return the lowest note
+   */
+  @Override
+  public Note getLowestNote() {
+    Note lowest = null;
+    boolean first = true;
+    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
+      for (Note n : e.getValue()) {
+        if(first) {
+          first = false;
+          lowest = n;
+        }
+        if(n.compareTo(lowest) < 0) {
+          lowest = n;
+        }
+      }
+    }
+    if(first) { throw new IllegalStateException("No notes in composition"); }
+    return lowest;
+  }
+
+  /**
+   * Returns the highest note in the entire piece (the first one, if there are multiple)
+   *
+   * @return the highest note
+   */
+  @Override
+  public Note getHighestNote() {
+    Note highest = null;
+    boolean first = true;
+    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
+      for (Note n : e.getValue()) {
+        if(first) {
+          first = false;
+          highest = n;
+        } else if(n.compareTo(highest) > 0) {
+          highest = n;
+        }
+      }
+    }
+    if(first) { throw new IllegalStateException("No notes in composition"); }
+    return highest;
   }
 
   @Override
@@ -96,31 +170,27 @@ public class GenericMusicModel implements IMusicModel {
     otherNotes.forEach(this::addNote);
   }
 
-  /**
-   * Determines the last beat to occur in this model.
-   *
-   * @return the last beat to occur in the this model
-   */
-  private int maxBeat() {
-    int maxBeat = 0;
-    for (Note n : this.getNotes()) {
-      int endOfBeat = n.getStart() + (n.getDuration() - 1); // -1 because the start value counts
-      // as a beat
-      if (endOfBeat > maxBeat) {
-        maxBeat = endOfBeat;
-      }
-    }
-    return maxBeat;
-  }
-
   @Override
   public void addMusicToTail(IMusicModel otherMusic) {
-    int lastBeat = maxBeat();
+    int lastBeat = finalBeat();
     Set<Note> otherNotes = otherMusic.getNotes();
     for (Note n : otherNotes) {
       this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
               (), n.getVolume(), n.getInstrument()));
     }
+  }
+
+  @Override
+  public int finalBeat() {
+    int finalBeat = 0;
+    for (Note n : this.getNotes()) {
+      int endOfBeat = n.getStart() + (n.getDuration() - 1); // -1 because the start value counts
+      // as a beat
+      if (endOfBeat > finalBeat) {
+        finalBeat = endOfBeat;
+      }
+    }
+    return finalBeat;
   }
 
   /**
@@ -258,14 +328,14 @@ public class GenericMusicModel implements IMusicModel {
       sb.append("");
     } else {
       List<String> pitchRange = createPitchRange(this.getLowestNote(), this.getHighestNote());
-      List<String> beatNumbers = createBeatRange(maxBeat());
+      List<String> beatNumbers = createBeatRange(finalBeat());
       List<List<String>> pitchNotes = new ArrayList<>(pitchRange.size());
 
       Map<String, Set<Note>> noteMap = this.getPitchMap();
       int k = 0;
       for (String s : pitchRange) {
-        pitchNotes.add(createPitchStrings(pitchRange.get(k), noteMap.get(pitchRange.get(k)), this.maxBeat() +
-                1, 5));
+        pitchNotes.add(createPitchStrings(pitchRange.get(k), noteMap.get(pitchRange.get(k)),
+          this.finalBeat() + 1, 5));
         k++;
       }
 
@@ -283,79 +353,5 @@ public class GenericMusicModel implements IMusicModel {
     }
     //System.out.println(sb.toString());
     return sb.toString();
-  }
-
-  /**
-   * Returns the lowest note in the entire piece (the first one, if there are multiple)
-   *
-   * @return the lowest note
-   */
-  private Note getLowestNote() {
-    Note lowest = null;
-    boolean first = true;
-    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
-      for (Note n : e.getValue()) {
-        if(first) {
-          first = false;
-          lowest = n;
-        }
-        if(n.compareTo(lowest) < 0) {
-          lowest = n;
-        }
-      }
-    }
-    if(first) throw new IllegalStateException("No notes in composition");
-    return lowest;
-  }
-
-  /**
-   * Returns the highest note in the entire piece (the first one, if there are multiple)
-   *
-   * @return the highest note
-   */
-  private Note getHighestNote() {
-    Note highest = null;
-    boolean first = true;
-    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
-      for (Note n : e.getValue()) {
-        if(first) {
-          first = false;
-          highest = n;
-        } else if(n.compareTo(highest) > 0) {
-          highest = n;
-        }
-      }
-    }
-    if(first) throw new IllegalStateException("No notes in composition");
-    return highest;
-  }
-
-  public static final class Builder implements CompositionBuilder<IMusicModel> {
-
-    private int tempo = 1000;
-    private Set<Note> notes = new HashSet<>();
-
-    @Override
-    public IMusicModel build() {
-      IMusicModel m = new GenericMusicModel(tempo);
-      for(Note n : notes) {
-        m.addNote(n);
-      }
-      return m;
-    }
-
-    @Override
-    public CompositionBuilder<IMusicModel> setTempo(int tempo) {
-      this.tempo = tempo;
-      return this;
-    }
-
-    @Override
-    public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch,
-      int volume) {
-      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
-        instrument, volume));
-      return this;
-    }
   }
 }
