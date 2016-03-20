@@ -21,9 +21,9 @@ public class GuiViewPanel extends JPanel {
    *
    * @param model the music model to represent
    */
-  GuiViewPanel(IMusicModel model, int rows, int columns) {
-    super(new GridLayout(rows, columns));
+  GuiViewPanel(IMusicModel model) {
     this.model = model;
+    setLa
   }
 
   private List<Rectangle> createNoteSquares(Note n) {
@@ -43,42 +43,11 @@ public class GuiViewPanel extends JPanel {
     return result;
   }
 
-  /**
-   * Creates a list containing every pitch string between the lowest note in the model and the
-   * highest note in the model (inclusively).
-   *
-   * @return a list of all the Pitches from the lowest note to the highest note
-   */
-  private List<String> createPitchRange() {
-    java.util.List<String> result = new ArrayList<>();
-    List<Note.Pitch> pitches = Arrays.asList(Note.Pitch.values());
-
-    Note lowestNote = model.getLowestNote();
-    Note highestNote = model.getHighestNote();
-    int lowestOctave = lowestNote.getOctave();
-    int highestOctave = highestNote.getOctave();
-
-    int lowestPitchSymbolIdx = lowestNote.getPitch().ordinal();
-    int highestPitchSymbolIdx = highestNote.getPitch().ordinal();
-
-    int pitchSpread = ((highestPitchSymbolIdx - lowestPitchSymbolIdx) % pitches.size());
-    int totalPitches = ((highestOctave - lowestOctave) * pitches.size()) + pitchSpread;
-
-    for (int i = lowestPitchSymbolIdx; i <= lowestPitchSymbolIdx + totalPitches; i++) {
-      if (i % pitches.size() == 0 && i != lowestPitchSymbolIdx) {
-        lowestOctave += 1;
-      }
-      Note.Pitch pitchSymbol = pitches.get(i % pitches.size());
-      result.add(pitchSymbol.toString() + lowestOctave);
-    }
-    return result;
-  }
-
   @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
 
-    List<String> pitchRange = createPitchRange();
+    List<String> pitchRange = model.getPitchRange();
     for (int i = 0; i < pitchRange.size(); i++) {
       g.drawString(pitchRange.get((pitchRange.size() - 1) - i), 10, i*20);
     }

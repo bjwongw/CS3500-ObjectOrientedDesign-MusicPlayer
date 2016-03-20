@@ -193,18 +193,13 @@ public class GenericMusicModel implements IMusicModel {
     return finalBeat;
   }
 
-  /**
-   * Creates a list containing every pitch string between the lowestNote and highestNote
-   * (inclusively).
-   *
-   * @param lowestNote  the lower bound
-   * @param highestNote the upper bound
-   * @return a list of all the Pitches from the lowestNote to the highestNote
-   */
-  private List<String> createPitchRange(Note lowestNote, Note highestNote) {
+  @Override
+  public List<String> getPitchRange() {
     List<String> result = new ArrayList<>();
     List<Note.Pitch> pitches = Arrays.asList(Note.Pitch.values());
 
+    Note lowestNote = this.getLowestNote();
+    Note highestNote = this.getHighestNote();
     int lowestOctave = lowestNote.getOctave();
     int highestOctave = highestNote.getOctave();
 
@@ -327,7 +322,7 @@ public class GenericMusicModel implements IMusicModel {
     if (notes.isEmpty()) {
       sb.append("");
     } else {
-      List<String> pitchRange = createPitchRange(this.getLowestNote(), this.getHighestNote());
+      List<String> pitchRange = getPitchRange();
       List<String> beatNumbers = createBeatRange(finalBeat());
       List<List<String>> pitchNotes = new ArrayList<>(pitchRange.size());
 

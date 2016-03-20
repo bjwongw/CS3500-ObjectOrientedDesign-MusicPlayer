@@ -1,5 +1,6 @@
 package cs3500.music.model;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -97,6 +98,14 @@ public interface IMusicModel {
    * @return the last beat to occur in the this model
    */
   int finalBeat();
+
+  /**
+   * Creates a list containing every pitch string between the lowestNote and highestNote
+   * (inclusively).
+   *
+   * @return a list of all the Pitches from the lowest note to the highest note.
+   */
+  List<String> getPitchRange();
 
   /**
    * Returns a String that represents all the notes in this model. The result is also printed into
