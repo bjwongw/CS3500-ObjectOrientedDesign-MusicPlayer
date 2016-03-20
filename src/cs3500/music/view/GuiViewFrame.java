@@ -36,7 +36,7 @@ public class GuiViewFrame extends JFrame implements IMusicView {
   }
 
   @Override
-  public void update(int time) {
+  public void update(int beat) {
   }
 
   @Override

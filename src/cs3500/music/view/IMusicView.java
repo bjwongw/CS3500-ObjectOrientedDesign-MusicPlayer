@@ -13,10 +13,9 @@ public interface IMusicView {
   void initialize();
 
   /**
-   * Updates the view to the given time. In the case of a midi view, plays all notes that havent
-   * been played up to the beat at or right before the given time.
+   * Updates the view to the given beat.
    *
-   * @param time the time
+   * @param beat the beat to go to
    */
-  void update(int time);
+  void update(int beat);
 }
