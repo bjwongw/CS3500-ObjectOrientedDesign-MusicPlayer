@@ -1,6 +1,6 @@
 package cs3500.music.view;
 
-import cs3500.music.model.Note;
+import cs3500.music.model.IMusicModel;
 
 import java.awt.*;
 //import java.awt.event.MouseListener; Possibly of interest for handling mouse events
@@ -13,18 +13,17 @@ import javax.swing.*;
 public class GuiViewFrame extends JFrame implements IMusicView {
 
   // You may want to refine this to a subtype of JPanel (did that by making it Concrete...)
-  private final PitchGuiViewPanel displayPanel;
+  private final GuiViewPanel displayPanel;
+  private final IMusicModel model;
 
   /**
    * Creates new GuiView
    */
-  public GuiViewFrame() {
+  public GuiViewFrame(IMusicModel model) {
     super("Music Player"); // sets the title of the frame
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//    displayPanel = new ConcreteGuiViewPanel();
-    displayPanel = new PitchGuiViewPanel();
-    displayPanel.setLowestNote(new Note(Note.Pitch.F_SHARP, 0, 2, 3, 1, 3));
-    displayPanel.setHighestNote(new Note(Note.Pitch.A, 2, 2, 3, 1, 3));
+    this.model = model;
+    this.displayPanel = new GuiViewPanel(model);
     getContentPane().add(displayPanel);
 //    setLocationRelativeTo(null);
     pack();

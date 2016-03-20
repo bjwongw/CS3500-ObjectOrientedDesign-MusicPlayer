@@ -20,10 +20,6 @@ public class ConcreteGuiViewPanel extends JPanel {
     // Handle the default painting
     super.paintComponent(g);
 
-    Graphics2D g2 = (Graphics2D) g;
-    for (int i = 0; i < 5; i++) {
-      g2.draw(new Rectangle(i*25, 0, 25, 25));
-    }
     // Look for more documentation about the Graphics class,
     // and methods on it that may be useful
     g.drawString("Hello World", 25, 25);
