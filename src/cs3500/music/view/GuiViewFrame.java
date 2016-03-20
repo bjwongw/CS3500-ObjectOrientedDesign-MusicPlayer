@@ -30,6 +30,11 @@ public class GuiViewFrame extends javax.swing.JFrame implements IMusicView {
   }
 
   @Override
+  public void update(int beat) {
+
+  }
+
+  @Override
   public Dimension getPreferredSize(){
     return new Dimension(100, 100);
   }

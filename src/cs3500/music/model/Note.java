@@ -193,7 +193,7 @@ public final class Note implements Comparable<Note> {
    * @return the pitch
    */
   public static Pitch midiToPitch(int midi) {
-    return Pitch.values()[midi % 15];
+    return Pitch.values()[midi % 12];
   }
 
   /**
@@ -202,6 +202,15 @@ public final class Note implements Comparable<Note> {
    * @return the octave
    */
   public static int midiToOctave(int midi) {
-    return midi/15;
+    return midi/12;
+  }
+
+  /**
+   * Returns the midi pitch of this note.
+   *
+   * @return the midi pitch
+   */
+  public int getMidiPitch() {
+    return this.pitch.ordinal() + 12*this.octave;
   }
 }
