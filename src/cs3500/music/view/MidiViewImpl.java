@@ -62,4 +62,8 @@ public class MidiViewImpl implements IMusicView {
   public void initialize() {
 
   }
+
+  @Override
+  public void update(int time) {
+  }
 }
