@@ -26,9 +26,6 @@ public class MusicEditor {
 //    view.setPreferredSize(view.getPreferredSize());
 //    view.initialize();
 
-    System.out.println(m.getLowestNote());
-    System.out.println(m.getHighestNote());
-
 //    System.out.println(m.printMusic());
 
 //    midiView = new MidiViewImpl(m);

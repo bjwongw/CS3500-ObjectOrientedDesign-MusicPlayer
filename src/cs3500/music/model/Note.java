@@ -75,17 +75,7 @@ public final class Note implements Comparable<Note> {
   }
 
   /**
-   * Returns this Note's start time.
-   *
-   * @return this Note's start time
-   */
-  public int getStart() {
-    return this.start;
-  }
-
-  /**
    * Returns this Note's pitch.
-   *
    * @return this Note's pitch
    */
   public Pitch getPitch() {
@@ -94,7 +84,6 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's octave.
-   *
    * @return this Note's octave
    */
   public int getOctave() {
@@ -102,8 +91,15 @@ public final class Note implements Comparable<Note> {
   }
 
   /**
-   * Returns this Note's duration (in beats).
-   *
+   * Returns this Note's start time.
+   * @return this Note's start time
+   */
+  public int getStart() {
+    return this.start;
+  }
+
+  /**
+   * Returns this Note's duration in beats. Each beat represents the length of a quarter note.
    * @return this Note's duration
    */
   public int getDuration() {
@@ -112,7 +108,6 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's MIDI instrument.
-   *
    * @return this Note's instrument
    */
   public int getInstrument() {
@@ -121,11 +116,18 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's volume.
-   *
    * @return this Note's volume
    */
   public int getVolume() {
     return volume;
+  }
+
+  /**
+   * Returns the midi pitch of this note.
+   * @return the midi pitch
+   */
+  public int getMidiPitch() {
+    return this.pitch.ordinal() + 12*this.octave;
   }
 
   /**
@@ -139,30 +141,21 @@ public final class Note implements Comparable<Note> {
   }
 
   /**
-   * Given a midi pitch value, extract its pitch symbol
+   * Given a midi pitch value, return its pitch symbol
    * @param midi midi pitch value
-   * @return the pitch
+   * @return the pitch symbol
    */
   public static Pitch midiToPitch(int midi) {
     return Pitch.values()[midi % 12];
   }
 
   /**
-   * Given a midi pitch value, extract its octave
+   * Given a midi pitch value, return its octave
    * @param midi midi pitch value
    * @return the octave
    */
   public static int midiToOctave(int midi) {
-    return midi/12 - 1;
-  }
-
-  /**
-   * Returns the midi pitch of this note.
-   *
-   * @return the midi pitch
-   */
-  public int getMidiPitch() {
-    return this.pitch.ordinal() + 12*this.octave;
+    return midi/12 - 1; // the -1 is included because midi note 0 is C-1, whereas our note 0 is C0
   }
 
   @Override

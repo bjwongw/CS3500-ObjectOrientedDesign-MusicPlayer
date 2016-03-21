@@ -62,6 +62,14 @@ public class NoteTest {
   }
 
   /**
+   * Tests for the method getOctave
+   */
+  @Test
+  public void testGetOctave() {
+
+  }
+
+  /**
    * Tests for the method getStart
    */
   @Test
@@ -112,6 +120,14 @@ public class NoteTest {
   }
 
   /**
+   * Tests for the method getMidiPitch
+   */
+  @Test
+  public void testGetMidiPitch() {
+
+  }
+
+  /**
    * Tests for the method playsDuring
    */
   @Test
@@ -125,6 +141,22 @@ public class NoteTest {
     assertEquals(false, aSharp9.playsDuring(0));
     assertEquals(false, aSharp9.playsDuring(14));
     assertEquals(false, a8.playsDuring(30));
+  }
+
+  /**
+   * Tests for the method midiToPitch
+   */
+  @Test
+  public void testMidiToPitch() {
+
+  }
+
+  /**
+   * Tests for the method midiToOctave
+   */
+  @Test
+  public void testMidiToOctave() {
+
   }
 
   /**
