@@ -24,7 +24,6 @@ public class GuiViewPanel extends JPanel {
   private final JPanel pitchPanel;
   private final JPanel beatPanel;
   private final JPanel notesPanel;
-  private final List<List<NoteSquares>> noteSquares;
 
   /**
    * Constructs the GuiViewPanel
@@ -40,7 +39,6 @@ public class GuiViewPanel extends JPanel {
     this.pitchPanel = createPitchPanel();
     this.beatPanel = createBeatPanel();
     this.notesPanel = createNotesPanel();
-    this.noteSquares = createNoteSquares();
 
     c.gridx = 1;
     c.gridy = 0;
@@ -56,9 +54,6 @@ public class GuiViewPanel extends JPanel {
     c.gridy = 1;
     gridBag.setConstraints(notesPanel, c);
     this.add(notesPanel);
-  }
-
-  private List<List<NoteSquares>> createNoteSquares() {
   }
 
   private JPanel createPitchPanel() {
@@ -82,35 +77,36 @@ public class GuiViewPanel extends JPanel {
 
   private JPanel createNotesPanel() {
     int pitches = model.getHighestNote().getMidiPitch() - model.getLowestNote().getMidiPitch() + 1;
-    int beats = model.finalBeat() / 4;
+    int beats = (model.finalBeat() / 4) + 1;
     JPanel notesP = new JPanel(new GridLayout(pitches, beats));
     notesP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    JPanel[][] panelHolder = new JPanel[pitches][beats];
+    List<List<NoteSquares>> panelHolder = new ArrayList<>();
     for (int i = 0; i < pitches; i++) {
+      panelHolder.add(new ArrayList<>());
       for (int j = 0; j < beats; j++) {
-        JPanel tempP = new JPanel();
-        tempP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        tempP.add(new JLabel(String.format("%s, %s", i, j)));
-        panelHolder[i][j] = tempP;
-        notesP.add(panelHolder[i][j]);
+        NoteSquares squares = new NoteSquares();
+        squares.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panelHolder.get(i).add(squares);
+        notesP.add(panelHolder.get(i).get(j));
       }
     }
-    return initializeNotesPanel(notesP);
-  }
-
-  private JPanel initializeNotesPanel(JPanel notesP) {
-
+    initializeNotesPanel(panelHolder);
     return notesP;
   }
 
-  private List<Rectangle> createNoteSquares(Note n) {
-    List<Rectangle> noteSquares = new ArrayList<>();
-    if (n != null) {
-      for (int i = n.getStart(); i < n.getStart() + n.getDuration(); i++) {
-        noteSquares.add(new Rectangle(0, 0, SQUARE_DIM, SQUARE_DIM));
+  private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
+    List<Note> noteList = model.getNotes();
+    Collections.sort(model.getNotes());
+    int highestPitch = model.getHighestNote().getMidiPitch();
+    for (Note n : noteList) {
+      int pitchIndex = highestPitch - n.getMidiPitch();
+      List<NoteSquares> pitchList = notesP.get(pitchIndex);
+      int start = n.getStart();
+      pitchList.get(start / 4).setNoteColor(start % 4, Color.BLACK);
+      for (int i = start + 1; i < start + n.getDuration(); i++) {
+        pitchList.get(i / 4).setNoteColor(i % 4, new Color(42, 255, 55));
       }
     }
-    return noteSquares;
   }
 
   @Override

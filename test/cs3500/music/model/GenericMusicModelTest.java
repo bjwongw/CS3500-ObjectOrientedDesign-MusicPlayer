@@ -203,7 +203,7 @@ public class GenericMusicModelTest {
   public void testAddNote_emptyModel() {
     initData();
     musicModel1.addNote(c0);
-    Set<Note> noteList = musicModel1.getNotes();
+    List<Note> noteList = musicModel1.getNotes();
     assertTrue(noteList.contains(c0));
   }
 
@@ -215,7 +215,7 @@ public class GenericMusicModelTest {
   public void testAddNote_duplicateNotes() {
     initData();
     musicModel1.addNote(d3);
-    Set<Note> noteList = musicModel1.getNotes();
+    List<Note> noteList = musicModel1.getNotes();
     assertEquals(1, noteList.size());
 
     musicModel1.addNote(d3); // duplicate should be ignored
@@ -238,7 +238,7 @@ public class GenericMusicModelTest {
     musicModel1.addNote(c0_3_4);
     assertEquals(6, c0_1_6.getDuration());
 
-    Set<Note> noteList = musicModel1.getNotes();
+    List<Note> noteList = musicModel1.getNotes();
     // both notes are in the model
     assertTrue(noteList.contains(c0_1_6));
     assertTrue(noteList.contains(c0_3_4));
@@ -260,7 +260,7 @@ public class GenericMusicModelTest {
     // d3_3_5 is kept the same because it is not equivalent to the new note
     assertEquals(5, d3_3_5.getDuration());
 
-    Set<Note> noteList = musicModel1.getNotes();
+    List<Note> noteList = musicModel1.getNotes();
     // both notes are in the model
     assertTrue(noteList.contains(d3_5_2));
     assertTrue(noteList.contains(d3_3_5));
@@ -331,7 +331,7 @@ public class GenericMusicModelTest {
     musicModel1.addNote(aSharp4);
     musicModel1.addNote(d3);
     musicModel1.addNote(b10);
-    Set<Note> noteList = musicModel1.getNotes();
+    List<Note> noteList = musicModel1.getNotes();
 
     // all the inserted notes are in fact in the model
     assertTrue(noteList.contains(aSharp4));
@@ -391,7 +391,7 @@ public class GenericMusicModelTest {
   public void testCombinePieces_duplicateNotes() {
     initData();
     musicModel1.addNote(c0);
-    Set<Note> noteList = musicModel1.getNotes();
+    List<Note> noteList = musicModel1.getNotes();
     assertEquals(1, noteList.size());
 
     musicModel2.addNote(c0);

@@ -20,7 +20,7 @@ public interface IMusicModel {
    *
    * @return all the notes in this music model
    */
-  Set<Note> getNotes();
+  List<Note> getNotes();
 
   /**
    * Returns all the notes that start on the given beat.
