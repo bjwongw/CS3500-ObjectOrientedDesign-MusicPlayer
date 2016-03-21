@@ -9,9 +9,9 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * A skeleton Frame (i.e., a window) in Swing
+ * The visual view
  */
-public class MusicView extends JFrame implements IMusicView {
+public class GuiMusicView extends JFrame implements IMusicView {
 
 
 
@@ -20,14 +20,15 @@ public class MusicView extends JFrame implements IMusicView {
   private final IMusicModel model;
 
   /**
-   * Creates new GuiView
+   * Creates new GuiMusicView
    */
-  public MusicView(IMusicModel model) {
+  public GuiMusicView(IMusicModel model) {
     super("Music Player"); // sets the title of the frame
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.model = model;
     this.displayPanel = new GuiViewPanel(model);
-    getContentPane().add(displayPanel);
+    JScrollPane scroll = new JScrollPane(displayPanel);
+    getContentPane().add(scroll);
 //    setLocationRelativeTo(null);
     pack();
   }

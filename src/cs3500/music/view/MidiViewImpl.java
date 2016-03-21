@@ -10,7 +10,7 @@ import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
 
 /**
- * A skeleton for MIDI playback
+ * The audio view (in MIDI) for an IMusicModel.
  */
 public class MidiViewImpl implements IMusicView {
   private final Synthesizer synth;

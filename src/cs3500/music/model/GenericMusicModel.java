@@ -31,6 +31,10 @@ public class GenericMusicModel implements IMusicModel {
     this.tempo = tmp;
   }
 
+  /**
+   * Builder class for the GenericMusicModel. Implements CompositionBuilder so that it can build
+   * the model from files.
+   */
   public static final class Builder implements CompositionBuilder<IMusicModel> {
 
     private int tempo = 1000;
