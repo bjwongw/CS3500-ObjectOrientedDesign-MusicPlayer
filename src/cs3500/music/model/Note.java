@@ -138,6 +138,33 @@ public final class Note implements Comparable<Note> {
     return (this.start <= beat) && (this.start + this.duration > beat);
   }
 
+  /**
+   * Given a midi pitch value, extract its pitch symbol
+   * @param midi midi pitch value
+   * @return the pitch
+   */
+  public static Pitch midiToPitch(int midi) {
+    return Pitch.values()[midi % 12];
+  }
+
+  /**
+   * Given a midi pitch value, extract its octave
+   * @param midi midi pitch value
+   * @return the octave
+   */
+  public static int midiToOctave(int midi) {
+    return midi/12 - 1;
+  }
+
+  /**
+   * Returns the midi pitch of this note.
+   *
+   * @return the midi pitch
+   */
+  public int getMidiPitch() {
+    return this.pitch.ordinal() + 12*this.octave;
+  }
+
   @Override
   public String toString() {
     return pitch.toString() + Integer.toString(octave);
@@ -185,32 +212,5 @@ public final class Note implements Comparable<Note> {
   @Override
   public int hashCode() {
     return Objects.hash(start, pitch, octave, duration, instrument, volume);
-  }
-
-  /**
-   * Given a midi pitch value, extract its pitch symbol
-   * @param midi midi pitch value
-   * @return the pitch
-   */
-  public static Pitch midiToPitch(int midi) {
-    return Pitch.values()[midi % 12];
-  }
-
-  /**
-   * Given a midi pitch value, extract its octave
-   * @param midi midi pitch value
-   * @return the octave
-   */
-  public static int midiToOctave(int midi) {
-    return midi/12;
-  }
-
-  /**
-   * Returns the midi pitch of this note.
-   *
-   * @return the midi pitch
-   */
-  public int getMidiPitch() {
-    return this.pitch.ordinal() + 12*this.octave;
   }
 }

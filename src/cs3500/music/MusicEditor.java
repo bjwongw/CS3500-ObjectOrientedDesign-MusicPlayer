@@ -20,11 +20,16 @@ public class MusicEditor {
     // You probably need to connect these views to your model, too...
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-3.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+//
+//    view = new GuiMusicView(m);
+//    view.setPreferredSize(view.getPreferredSize());
+//    view.initialize();
 
-    view = new GuiMusicView(m);
-    view.setPreferredSize(view.getPreferredSize());
-    view.initialize();
+    System.out.println(m.getLowestNote());
+    System.out.println(m.getHighestNote());
+
+//    System.out.println(m.printMusic());
 
 //    midiView = new MidiViewImpl(m);
 //    int beat = 0;
