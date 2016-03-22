@@ -1,7 +1,9 @@
 package cs3500.music.view;
 
+import sun.rmi.runtime.Log;
+
+import java.io.Console;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import javax.sound.midi.*;
@@ -12,13 +14,13 @@ import cs3500.music.model.Note;
 /**
  * The audio view (in MIDI) for an IMusicModel.
  */
-public class MidiViewImpl implements IMusicView {
+public class MidiView implements IMusicView {
   private final Synthesizer synth;
   private final Receiver receiver;
   private final IMusicModel model;
   private Queue<Integer> channels;
 
-  public MidiViewImpl(IMusicModel model) {
+  public MidiView(IMusicModel model) {
     try {
       this.synth = MidiSystem.getSynthesizer();
       this.receiver = synth.getReceiver();
@@ -32,51 +34,20 @@ public class MidiViewImpl implements IMusicView {
   }
 
   /**
-   * Relevant classes and methods from the javax.sound.midi library:
-   * <ul>
-   *  <li>{@link MidiSystem#getSynthesizer()}</li>
-   *  <li>{@link Synthesizer}
-   *    <ul>
-   *      <li>{@link Synthesizer#open()}</li>
-   *      <li>{@link Synthesizer#getReceiver()}</li>
-   *      <li>{@link Synthesizer#getChannels()}</li>
-   *    </ul>
-   *  </li>
-   *  <li>{@link Receiver}
-   *    <ul>
-   *      <li>{@link Receiver#send(MidiMessage, long)}</li>
-   *      <li>{@link Receiver#close()}</li>
-   *    </ul>
-   *  </li>
-   *  <li>{@link MidiMessage}</li>
-   *  <li>{@link ShortMessage}</li>
-   *  <li>{@link MidiChannel}
-   *    <ul>
-   *      <li>{@link MidiChannel#getProgram()}</li>
-   *      <li>{@link MidiChannel#programChange(int)}</li>
-   *    </ul>
-   *  </li>
-   * </ul>
-   * @see <a href="https://en.wikipedia.org/wiki/General_MIDI">
-   *   https://en.wikipedia.org/wiki/General_MIDI
-   *   </a>
+   * Given a note, plays on the MIDI synthesizer associated with this object. Plays the note
+   * immediately regardless of its internal start. Sustains the note for its duration, relative to
+   * the tempo of the song. If the midi objects are broken, throws a runtime exception.
+   *
+   * @param n the note to play
    */
-  public void playNote() throws InvalidMidiDataException {
-    MidiMessage start = new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 64);
-    MidiMessage stop = new ShortMessage(ShortMessage.NOTE_OFF, 0, 60, 64);
-    this.receiver.send(start, -1);
-    this.receiver.send(stop, this.synth.getMicrosecondPosition() + 200000);
-    this.receiver.close(); // Only call this once you're done playing *all* notes
-  }
-
   private void playNote(Note n) {
     MidiMessage start;
     MidiMessage stop;
     try {
       start = new ShortMessage(ShortMessage.NOTE_ON, getChannel(n.getInstrument()),
-        n.getMidiPitch(), n.getVolume());
+              n.getMidiPitch(), n.getVolume());
       stop = new ShortMessage(ShortMessage.NOTE_OFF, getChannel(n.getInstrument()),
-        n.getMidiPitch(), n.getVolume());
+              n.getMidiPitch(), n.getVolume());
     } catch (InvalidMidiDataException e) {
       throw new RuntimeException(e);
     }
@@ -98,13 +69,13 @@ public class MidiViewImpl implements IMusicView {
    */
   private int getChannel(int instrument) {
     MidiChannel[] channelArray = this.synth.getChannels();
-    for(int i : this.channels) {
-      if(channelArray[i].getProgram() == instrument) {
+    for (int i : this.channels) {
+      if (channelArray[i].getProgram() == instrument) {
         return i;
       }
     }
-    for(int i = 0; i < 16; i ++) {
-      if(channelArray[i] != null && !this.channels.contains(i)) {
+    for (int i = 0; i < 16; i++) {
+      if (channelArray[i] != null && !this.channels.contains(i)) {
         channelArray[i].programChange(instrument);
         this.channels.add(i);
         return i;
@@ -118,7 +89,7 @@ public class MidiViewImpl implements IMusicView {
 
   @Override
   public void initialize() {
-
+    System.console().printf("MIDI view does not need initialization.");
   }
 
   @Override

@@ -11,7 +11,7 @@ import javax.swing.*;
 /**
  * The visual view
  */
-public class GuiMusicView extends JFrame implements IMusicView {
+public class GuiView extends JFrame implements IMusicView {
 
 
 
@@ -20,9 +20,9 @@ public class GuiMusicView extends JFrame implements IMusicView {
   private final IMusicModel model;
 
   /**
-   * Creates new GuiMusicView
+   * Creates new GuiView
    */
-  public GuiMusicView(IMusicModel model) {
+  public GuiView(IMusicModel model) {
     super("Music Player"); // sets the title of the frame
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.model = model;

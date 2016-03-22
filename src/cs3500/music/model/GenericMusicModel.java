@@ -18,7 +18,7 @@ public class GenericMusicModel implements IMusicModel {
    */
   public GenericMusicModel() {
     this.notes = new HashMap<>();
-    this.tempo = 1000;
+    this.tempo = 100000;
   }
 
   /**
