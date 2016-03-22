@@ -8,20 +8,14 @@ import cs3500.music.model.IMusicModel;
 public interface IMusicView {
 
   /**
-   * Initializes this view object.
+   * Initializes this view object with the given music model. Must be run for proper function.
    *
-   * It's suggested that this be run regardless of what implementation is being used for
-   * future-proofing.
-   *
-   * <ul>
-   *   <li>ConsoleView: Does nothing</li>
-   *   <li>GuiView: *Required for proper function*</li>
-   *   <li>MidiView: Does nothing</li>
-   * </ul>
+   * Starts the view (for example in the case of MidiView. TODO look at this next assignment
    */
-  void initialize();
+  void initialize(IMusicModel m);
 
   /**
+   * TODO This method may be unnecessary. We'll have to see how the next hw plays out
    * Updates the view to the given beat.
    *
    * <ul>

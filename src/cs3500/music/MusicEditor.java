@@ -4,8 +4,8 @@ import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
-import cs3500.music.view.GuiView;
-import cs3500.music.view.MidiView;
+import cs3500.music.view.IMusicView;
+import cs3500.music.view.ViewFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,30 +14,26 @@ import javax.sound.midi.InvalidMidiDataException;
 
 public class MusicEditor {
   public static void main(String[] args) throws IOException, InvalidMidiDataException {
-    GuiView view; // = new GuiViewFrame(...);
-    MidiView midiView; // = new MidiView();
-    // You probably need to connect these views to your model, too...
+    IMusicView consoleView = ViewFactory.construct("console");
+    IMusicView guiView = ViewFactory.construct("gui");
+    IMusicView midiView = ViewFactory.construct("midi");
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
+    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-1.txt"), b);
+    consoleView.initialize(m);
+    guiView.initialize(m);
+    midiView.initialize(m);
+  }
 
-    view = new GuiView(m);
-    view.setPreferredSize(view.getPreferredSize());
-    view.initialize();
+  //This is what we'll use when we output the java application, just rename it to main
+  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
+    FileReader file = new FileReader(args[1]);
+    IMusicView view = ViewFactory.construct(args[2]);
 
-//    System.out.println(m.printMusic());
+    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
+    IMusicModel m = MusicReader.parseFile(file, b);
 
-//    midiView = new MidiView(m);
-//    int beat = 0;
-//    while (true) {
-//      midiView.update(beat);
-//      try {
-//        Thread.sleep(m.getTempo() / 1000);
-//      } catch (InterruptedException e) {
-//        throw new RuntimeException(e);
-//      }
-//      beat += 1;
-//    }
+    view.initialize(m);
   }
 }

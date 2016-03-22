@@ -13,24 +13,25 @@ import javax.swing.*;
  */
 public class GuiView extends JFrame implements IMusicView {
 
-  private final GuiViewPanel displayPanel;
-  private final IMusicModel model;
+  private GuiViewPanel displayPanel;
+  private IMusicModel model;
 
   /**
    * Creates new GuiView
    */
-  public GuiView(IMusicModel model) {
+  public GuiView() {
     super("Music Player"); // sets the title of the frame
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.model = model;
+  }
+
+  @Override
+  public void initialize(IMusicModel m){
+    this.model = m;
     this.displayPanel = new GuiViewPanel(model);
     JScrollPane scroll = new JScrollPane(displayPanel);
     getContentPane().add(scroll);
     pack();
-  }
-
-  @Override
-  public void initialize(){
+    this.setPreferredSize(this.getPreferredSize());
     this.setVisible(true);
   }
 
