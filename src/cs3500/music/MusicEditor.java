@@ -12,7 +12,6 @@ import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
 
-
 public class MusicEditor {
   public static void main(String[] args) throws IOException, InvalidMidiDataException {
     GuiMusicView view; // = new GuiViewFrame(...);
@@ -20,7 +19,7 @@ public class MusicEditor {
     // You probably need to connect these views to your model, too...
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-1.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 
     view = new GuiMusicView(m);
     view.setPreferredSize(view.getPreferredSize());
