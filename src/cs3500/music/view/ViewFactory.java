@@ -5,6 +5,17 @@ package cs3500.music.view;
  */
 public class ViewFactory {
 
+  /**
+   * Constructs an IMusicView using the implementation specified by type.
+   *
+   * <ul>
+   *   <li>console: a ConsoleView object</li>
+   *   <li>midi: a MidiView object</li>
+   *   <li>gui: a GuiView object</li>
+   * </ul>
+   * @param type the implementation to use
+   * @return an instance of the chosen implementation
+   */
   public static IMusicView construct(String type) {
 
     IMusicView view;
