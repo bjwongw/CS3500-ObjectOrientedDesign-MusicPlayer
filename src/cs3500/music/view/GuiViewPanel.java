@@ -33,30 +33,29 @@ public class GuiViewPanel extends JPanel {
   GuiViewPanel(IMusicModel model) {
     super();
     GridBagLayout gridBag = new GridBagLayout();
-    GridBagConstraints c = new GridBagConstraints();
+    GridBagConstraints constraints = new GridBagConstraints();
     setLayout(gridBag);
     this.model = model;
     this.pitchPanel = createPitchPanel();
     this.beatPanel = createBeatPanel();
     this.notesPanel = createNotesPanel();
 
-    c.gridx = 0;
-    c.gridy = 1;
-    c.anchor = GridBagConstraints.NORTH;
-    gridBag.setConstraints(pitchPanel, c);
+    constraints.gridx = 0;
+    constraints.gridy = 1;
+    constraints.anchor = GridBagConstraints.NORTH;
+    gridBag.setConstraints(pitchPanel, constraints);
     this.add(pitchPanel);
 
-    c.gridx = 1;
-    c.gridy = 0;
-    c.anchor = GridBagConstraints.SOUTHWEST;
-    gridBag.setConstraints(beatPanel, c);
+    constraints.gridx = 1;
+    constraints.gridy = 0;
+    constraints.anchor = GridBagConstraints.SOUTHWEST;
+    gridBag.setConstraints(beatPanel, constraints);
     this.add(beatPanel);
 
-    c.gridx = 1;
-    c.gridy = 1;
-//    c.weighty = 1;
-    c.anchor = GridBagConstraints.NORTHWEST;
-    gridBag.setConstraints(notesPanel, c);
+    constraints.gridx = 1;
+    constraints.gridy = 1;
+    constraints.anchor = GridBagConstraints.NORTHWEST;
+    gridBag.setConstraints(notesPanel, constraints);
     this.add(notesPanel);
   }
 
@@ -75,12 +74,16 @@ public class GuiViewPanel extends JPanel {
 
   private JPanel createBeatPanel() {
     int dim = NoteSquares.PREF_W;
-    JPanel beatP = new JPanel();
-//    JPanel beatP = new JPanel(new FlowLayout(FlowLayout.LEFT, dim*16, 0));
+    GridBagLayout gridBag = new GridBagLayout();
+    GridBagConstraints constraints = new GridBagConstraints();
+    JPanel beatP = new JPanel(gridBag);
     int lastBeat = model.finalBeat() / 16;
     for (int i = 0; i <= lastBeat; i++) {
       JLabel beatLabel = new JLabel(Integer.toString(i*16));
-      beatLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, dim*15));
+      beatLabel.setPreferredSize(new Dimension(dim*16, dim));
+      constraints.gridx = i;
+      constraints.gridy = 0;
+      gridBag.setConstraints(beatLabel, constraints);
       beatP.add(beatLabel);
     }
     return beatP;
