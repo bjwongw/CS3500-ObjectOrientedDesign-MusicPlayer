@@ -32,6 +32,18 @@ public class MidiView implements IMusicView {
     }
   }
 
+  public MidiView(Synthesizer synth) {
+    try {
+      this.synth = synth;
+      this.receiver = synth.getReceiver();
+      this.channels = new LinkedList<>();
+      this.synth.open();
+    } catch (MidiUnavailableException e) {
+      e.printStackTrace();
+      throw new RuntimeException();
+    }
+  }
+
   /**
    * Given a note, plays on the MIDI synthesizer associated with this object. Plays the note
    * immediately regardless of its internal start. Sustains the note for its duration, relative to
@@ -96,7 +108,7 @@ public class MidiView implements IMusicView {
     }
     int currentBeat = 0;
 
-    while(currentBeat <= this.model.finalBeat()) {
+    while (currentBeat <= this.model.finalBeat()) {
       this.update(currentBeat);
       try {
         Thread.sleep(Integer.toUnsignedLong(model.getTempo() / 1000));
