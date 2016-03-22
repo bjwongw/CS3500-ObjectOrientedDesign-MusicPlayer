@@ -19,7 +19,7 @@ public interface IMusicView {
    *   <li>MidiView: Does nothing</li>
    * </ul>
    */
-  void initialize();
+  void initialize(IMusicModel m);
 
   /**
    * Updates the view to the given beat.

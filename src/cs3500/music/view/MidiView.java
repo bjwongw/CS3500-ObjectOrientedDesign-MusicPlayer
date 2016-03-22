@@ -17,14 +17,13 @@ import cs3500.music.model.Note;
 public class MidiView implements IMusicView {
   private final Synthesizer synth;
   private final Receiver receiver;
-  private final IMusicModel model;
+  private IMusicModel model;
   private Queue<Integer> channels;
 
-  public MidiView(IMusicModel model) {
+  public MidiView() {
     try {
       this.synth = MidiSystem.getSynthesizer();
       this.receiver = synth.getReceiver();
-      this.model = model;
       this.channels = new LinkedList<>();
       this.synth.open();
     } catch (MidiUnavailableException e) {
@@ -88,8 +87,9 @@ public class MidiView implements IMusicView {
   }
 
   @Override
-  public void initialize() {
-    System.console().printf("MIDI view does not need initialization.");
+  public void initialize(IMusicModel m) {
+    this.model = m;
+    channels.clear();
   }
 
   @Override
