@@ -72,130 +72,6 @@ public class GenericMusicModelTest {
   }
 
   /**
-   * Tests the method getNotes when the model is empty
-   */
-  @Test
-  public void testGetNotes_emptyModel() {
-    IMusicModel model = new GenericMusicModel();
-    Set<Note> noteList = new HashSet<>();
-    assertEquals(noteList, model.getNotes());
-  }
-
-  /**
-   * Test for the method getNotes
-   */
-  @Test
-  public void testGetNotes() {
-    initData();
-    List<Note> noteList = new ArrayList<>();
-    List<Note> result;
-    musicModel1.addNote(c0);
-    noteList.add(c0);
-    musicModel1.addNote(c4);
-    noteList.add(c4);
-    musicModel1.addNote(e1);
-    noteList.add(e1);
-    musicModel1.addNote(g6);
-    noteList.add(g6);
-    result = new ArrayList<>(musicModel1.getNotes());
-    assertNotEquals(noteList, result);
-    Collections.sort(noteList); // getNotes returns a sorted list because the notes are stored in
-    // a treeMap. Therefore, noteList needs to be sorted to be equal
-    Collections.sort(result);
-    assertEquals(noteList, result);
-  }
-
-  /**
-   * Test for the method notesToPlay. Ensures that you cannot give a negative integer as the input
-   * beat.
-   */
-  @Test(expected = IllegalArgumentException.class)
-  public void testNotesToPlay_negativeBeat() {
-    initData();
-    musicModel1.addNote(dSharp9);
-    musicModel1.notesToPlay(-1);
-  }
-
-  /**
-   * Test for the method notesToPlay when there are not matching notes/no notes in the model.
-   */
-  @Test
-  public void testNotesToPlay_noNotes() {
-    initData();
-    Set<Note> noteList = musicModel1.notesToPlay(3);
-    assertEquals(0, noteList.size());
-  }
-
-  /**
-   * Tests for the method notesToPlay, fetching the notes at beat 0.
-   */
-  @Test
-  public void testNotesToPlay_beat0() {
-    initData();
-    musicModel1.addNote(c0);
-    musicModel1.addNote(aSharp4);
-    musicModel1.addNote(e1);
-    Set<Note> notesBeat0 = musicModel1.notesToPlay(0);
-    assertEquals(2, notesBeat0.size());
-    assertTrue(notesBeat0.contains(c0));
-    assertTrue(notesBeat0.contains(e1));
-  }
-
-  /**
-   * Tests for the method notesToPlay, fetching the notes at beat 10.
-   */
-  @Test
-  public void testNotesToPlay_beat10() {
-    initData();
-    Note e5_10_3 = new Note(Note.Pitch.E, 5, 10, 3, 0, 0);
-    Note aSharp6_10_2 = new Note(Note.Pitch.A_SHARP, 6, 10, 2, 0, 0);
-    Note dSharp0_10_1 = new Note(Note.Pitch.D_SHARP, 0, 10, 1, 0, 0);
-    musicModel1.addNote(e5_10_3);
-    musicModel1.addNote(cSharp3);
-    musicModel1.addNote(f3);
-    musicModel1.addNote(aSharp6_10_2);
-    musicModel1.addNote(f5);
-    musicModel1.addNote(dSharp0_10_1);
-    Set<Note> notesBeat10 = musicModel1.notesToPlay(10);
-    assertEquals(3, notesBeat10.size());
-    assertTrue(notesBeat10.contains(e5_10_3));
-    assertTrue(notesBeat10.contains(aSharp6_10_2));
-    assertTrue(notesBeat10.contains(dSharp0_10_1));
-  }
-
-  /**
-   * Tests for the method getTempo
-   */
-  @Test
-  public void testGetTempo() {
-
-  }
-
-  /**
-   * Tests for the method getLowestNote
-   */
-  @Test
-  public void testGetLowestNote() {
-
-  }
-
-  /**
-   * Tests for the method getHighestNote
-   */
-  @Test
-  public void testGetHighestNote() {
-
-  }
-
-  /**
-   * Tests for the method finalBeat
-   */
-  @Test
-  public void testFinalBeat() {
-
-  }
-
-  /**
    * Tests the method addNote in the case that there is note set for the given note's associated
    * pitch.
    */
@@ -301,6 +177,33 @@ public class GenericMusicModelTest {
   }
 
   /**
+   * Test for addNote, ensuring that all notes that have been added to the model have in fact
+   * been added.
+   */
+  @Test
+  public void testAddNote() {
+    initData();
+    Set<Note> set = new HashSet<>();
+
+    for (int i = 1; i < 10; i++) {
+      for (int j = 1; j < 10; j++) {
+        for (int k = 1; k < 10; k++) {
+          for (int t = 1; t < 10; t++) {
+            for (int d = 1; d < 10; d++) {
+              musicModel1.addNote(new Note(Note.Pitch.A, i, j, k, d, t));
+              set.add(new Note(Note.Pitch.A, i, j, k, d, t));
+            }
+          }
+        }
+      }
+    }
+
+    for(Note n : musicModel1.getNotes()) {
+      assertTrue(set.contains(n));
+    }
+  }
+
+  /**
    * Test for the method removeNote. Ensures that you cannot remove a note if there are no notes in
    * the model.
    */
@@ -364,6 +267,138 @@ public class GenericMusicModelTest {
     assertEquals(Note.Pitch.C_SHARP, cSharp7.getPitch());
     assertEquals(10, cSharp7.getStart());
     assertEquals(3, cSharp7.getDuration());
+  }
+
+  /**
+   * Tests for the method getTempo
+   */
+  @Test
+  public void testGetTempo() {
+
+  }
+
+  /**
+   * Tests the method getNotes when the model is empty
+   */
+  @Test
+  public void testGetNotes_emptyModel() {
+    IMusicModel model = new GenericMusicModel();
+    List<Note> noteList = new ArrayList<>();
+    assertEquals(noteList, model.getNotes());
+  }
+
+  /**
+   * Test for the method getNotes
+   */
+  @Test
+  public void testGetNotes() {
+    initData();
+    List<Note> noteList = new ArrayList<>();
+    List<Note> result;
+    musicModel1.addNote(c0);
+    noteList.add(c0);
+    musicModel1.addNote(c4);
+    noteList.add(c4);
+    musicModel1.addNote(e1);
+    noteList.add(e1);
+    musicModel1.addNote(g6);
+    noteList.add(g6);
+    result = new ArrayList<>(musicModel1.getNotes());
+    assertNotEquals(noteList, result);
+    Collections.sort(noteList); // getNotes returns a sorted list because the notes are stored in
+    // a treeMap. Therefore, noteList needs to be sorted to be equal
+    Collections.sort(result);
+    assertEquals(noteList, result);
+  }
+
+  /**
+   * Tests for the method getLowestNote
+   */
+  @Test
+  public void testGetLowestNote() {
+
+  }
+
+  /**
+   * Tests for the method getHighestNote
+   */
+  @Test
+  public void testGetHighestNote() {
+
+  }
+
+  /**
+   * Tests for the method finalBeat
+   */
+  @Test
+  public void testFinalBeat() {
+
+  }
+
+  /**
+   * Tests for the method getPitchRange.
+   */
+  @Test
+  public void testGetPitchRange() {
+
+  }
+
+  /**
+   * Test for the method notesToPlay. Ensures that you cannot give a negative integer as the input
+   * beat.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testNotesToPlay_negativeBeat() {
+    initData();
+    musicModel1.addNote(dSharp9);
+    musicModel1.notesToPlay(-1);
+  }
+
+  /**
+   * Test for the method notesToPlay when there are not matching notes/no notes in the model.
+   */
+  @Test
+  public void testNotesToPlay_noNotes() {
+    initData();
+    Set<Note> noteList = musicModel1.notesToPlay(3);
+    assertEquals(0, noteList.size());
+  }
+
+  /**
+   * Tests for the method notesToPlay, fetching the notes at beat 0.
+   */
+  @Test
+  public void testNotesToPlay_beat0() {
+    initData();
+    musicModel1.addNote(c0);
+    musicModel1.addNote(aSharp4);
+    musicModel1.addNote(e1);
+    Set<Note> notesBeat0 = musicModel1.notesToPlay(0);
+    assertEquals(2, notesBeat0.size());
+    assertTrue(notesBeat0.contains(c0));
+    assertTrue(notesBeat0.contains(e1));
+  }
+
+  /**
+   * Tests for the method notesToPlay, fetching the notes at beat 10.
+   */
+  @Test
+  public void testNotesToPlay_beat10() {
+    initData();
+    Note e5_10_3 = new Note(Note.Pitch.E, 5, 10, 3, 0, 0);
+    Note aSharp6_10_2 = new Note(Note.Pitch.A_SHARP, 6, 10, 2, 0, 0);
+    Note dSharp0_10_1 = new Note(Note.Pitch.D_SHARP, 0, 10, 1, 0, 0);
+    musicModel1.addNote(e5_10_3);
+    musicModel1.addNote(cSharp3);
+    musicModel1.addNote(f3);
+    musicModel1.addNote(aSharp6_10_2);
+    musicModel1.addNote(f5);
+    musicModel1.addNote(dSharp0_10_1);
+    Set<Note> notesBeat10 = musicModel1.notesToPlay(10);
+    assertEquals(3, notesBeat10.size());
+    assertTrue(notesBeat10.contains(e5_10_3));
+    assertTrue(notesBeat10.contains(aSharp6_10_2));
+    assertTrue(notesBeat10.contains(dSharp0_10_1));
   }
 
   /**
@@ -561,28 +596,5 @@ public class GenericMusicModelTest {
             "5                 |    |  \n" +
             "6                      |  ";
     assertEquals(output, musicModel1.printMusic());
-  }
-
-  @Test
-  public void testAddNote() {
-    initData();
-    Set<Note> set = new HashSet<>();
-
-    for (int i = 1; i < 10; i++) {
-      for (int j = 1; j < 10; j++) {
-        for (int k = 1; k < 10; k++) {
-          for (int t = 1; t < 10; t++) {
-            for (int d = 1; d < 10; d++) {
-              musicModel1.addNote(new Note(Note.Pitch.A, i, j, k, d, t));
-              set.add(new Note(Note.Pitch.A, i, j, k, d, t));
-            }
-          }
-        }
-      }
-    }
-
-    for(Note n : musicModel1.getNotes()) {
-      assertTrue(set.contains(n));
-    }
   }
 }

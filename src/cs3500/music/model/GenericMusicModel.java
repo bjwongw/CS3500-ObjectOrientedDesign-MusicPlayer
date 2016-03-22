@@ -63,79 +63,6 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   @Override
-  public int getTempo() {
-    return this.tempo;
-  }
-
-  @Override
-  public List<Note> getNotes() {
-    List<Note> result = new ArrayList<>();
-    for (Set<Note> n : this.notes.values()) {
-      result.addAll(n.stream().collect(Collectors.toList()));
-    }
-    return result;
-  }
-
-  @Override
-  public Set<Note> notesToPlay(int beat) {
-    if (beat < 0) {
-      throw new IllegalArgumentException("Cannot have a negative start time");
-    }
-    Set<Note> s = this.notes.get(beat);
-    if (s == null) {
-      return new HashSet<>();
-    }
-    return new HashSet<>(s);
-  }
-
-  /**
-   * Returns the lowest note in the entire piece (the first one, if there are multiple)
-   *
-   * @return the lowest note
-   */
-  @Override
-  public Note getLowestNote() {
-    Note lowest = null;
-    boolean first = true;
-    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
-      for (Note n : e.getValue()) {
-        if(first) {
-          first = false;
-          lowest = n;
-        }
-        if(n.compareTo(lowest) < 0) {
-          lowest = n;
-        }
-      }
-    }
-    if(first) { throw new IllegalStateException("No notes in composition"); }
-    return lowest;
-  }
-
-  /**
-   * Returns the highest note in the entire piece (the first one, if there are multiple)
-   *
-   * @return the highest note
-   */
-  @Override
-  public Note getHighestNote() {
-    Note highest = null;
-    boolean first = true;
-    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
-      for (Note n : e.getValue()) {
-        if(first) {
-          first = false;
-          highest = n;
-        } else if(n.compareTo(highest) > 0) {
-          highest = n;
-        }
-      }
-    }
-    if(first) { throw new IllegalStateException("No notes in composition"); }
-    return highest;
-  }
-
-  @Override
   public void addNote(Note note) {
     if (!this.notes.containsKey(note.getStart())) {
       Set<Note> set = new HashSet<>();
@@ -169,19 +96,54 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   @Override
-  public void combinePieces(IMusicModel otherMusic) {
-    List<Note> otherNotes = otherMusic.getNotes();
-    otherNotes.forEach(this::addNote);
+  public int getTempo() {
+    return this.tempo;
   }
 
   @Override
-  public void addMusicToTail(IMusicModel otherMusic) {
-    int lastBeat = finalBeat();
-    List<Note> otherNotes = otherMusic.getNotes();
-    for (Note n : otherNotes) {
-      this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
-              (), n.getVolume(), n.getInstrument()));
+  public List<Note> getNotes() {
+    List<Note> result = new ArrayList<>();
+    for (Set<Note> n : this.notes.values()) {
+      result.addAll(n.stream().collect(Collectors.toList()));
     }
+    return result;
+  }
+
+  @Override
+  public Note getLowestNote() {
+    Note lowest = null;
+    boolean first = true;
+    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
+      for (Note n : e.getValue()) {
+        if(first) {
+          first = false;
+          lowest = n;
+        }
+        if(n.compareTo(lowest) < 0) {
+          lowest = n;
+        }
+      }
+    }
+    if(first) { throw new IllegalStateException("No notes in composition"); }
+    return lowest;
+  }
+
+  @Override
+  public Note getHighestNote() {
+    Note highest = null;
+    boolean first = true;
+    for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
+      for (Note n : e.getValue()) {
+        if(first) {
+          first = false;
+          highest = n;
+        } else if(n.compareTo(highest) > 0) {
+          highest = n;
+        }
+      }
+    }
+    if(first) { throw new IllegalStateException("No notes in composition"); }
+    return highest;
   }
 
   @Override
@@ -221,6 +183,34 @@ public class GenericMusicModel implements IMusicModel {
       result.add(pitchSymbol.toString() + lowestOctave);
     }
     return result;
+  }
+
+  @Override
+  public Set<Note> notesToPlay(int beat) {
+    if (beat < 0) {
+      throw new IllegalArgumentException("Cannot have a negative start time");
+    }
+    Set<Note> s = this.notes.get(beat);
+    if (s == null) {
+      return new HashSet<>();
+    }
+    return new HashSet<>(s);
+  }
+
+  @Override
+  public void combinePieces(IMusicModel otherMusic) {
+    List<Note> otherNotes = otherMusic.getNotes();
+    otherNotes.forEach(this::addNote);
+  }
+
+  @Override
+  public void addMusicToTail(IMusicModel otherMusic) {
+    int lastBeat = finalBeat();
+    List<Note> otherNotes = otherMusic.getNotes();
+    for (Note n : otherNotes) {
+      this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
+              (), n.getVolume(), n.getInstrument()));
+    }
   }
 
   /**
@@ -350,7 +340,6 @@ public class GenericMusicModel implements IMusicModel {
         first = false;
       }
     }
-    //System.out.println(sb.toString());
     return sb.toString();
   }
 }

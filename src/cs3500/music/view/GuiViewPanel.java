@@ -40,37 +40,48 @@ public class GuiViewPanel extends JPanel {
     this.beatPanel = createBeatPanel();
     this.notesPanel = createNotesPanel();
 
-    c.gridx = 1;
-    c.gridy = 0;
-    gridBag.setConstraints(beatPanel, c);
-    this.add(beatPanel);
-
     c.gridx = 0;
     c.gridy = 1;
+    c.anchor = GridBagConstraints.NORTH;
     gridBag.setConstraints(pitchPanel, c);
     this.add(pitchPanel);
 
     c.gridx = 1;
+    c.gridy = 0;
+    c.anchor = GridBagConstraints.SOUTHWEST;
+    gridBag.setConstraints(beatPanel, c);
+    this.add(beatPanel);
+
+    c.gridx = 1;
     c.gridy = 1;
+//    c.weighty = 1;
+    c.anchor = GridBagConstraints.NORTHWEST;
     gridBag.setConstraints(notesPanel, c);
     this.add(notesPanel);
   }
 
   private JPanel createPitchPanel() {
+    int dim = NoteSquares.PREF_H;
     JPanel pitchP = new JPanel();
     pitchP.setLayout(new BoxLayout(pitchP, BoxLayout.PAGE_AXIS));
     List<String> pitchRange = model.getPitchRange();
     for (int i = 0; i < pitchRange.size(); i++) {
-      pitchP.add(new JLabel(pitchRange.get((pitchRange.size() - 1) - i)));
+      JLabel pitchLabel = new JLabel(pitchRange.get((pitchRange.size() - 1) - i));
+      pitchLabel.setBorder(BorderFactory.createEmptyBorder(dim / 5, 0, 0, dim / 5));
+      pitchP.add(pitchLabel);
     }
     return pitchP;
   }
 
   private JPanel createBeatPanel() {
+    int dim = NoteSquares.PREF_W;
     JPanel beatP = new JPanel();
+//    JPanel beatP = new JPanel(new FlowLayout(FlowLayout.LEFT, dim*16, 0));
     int lastBeat = model.finalBeat() / 16;
     for (int i = 0; i <= lastBeat; i++) {
-      beatP.add(new JLabel(Integer.toString(i*16)));
+      JLabel beatLabel = new JLabel(Integer.toString(i*16));
+      beatLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, dim*15));
+      beatP.add(beatLabel);
     }
     return beatP;
   }
@@ -108,9 +119,9 @@ public class GuiViewPanel extends JPanel {
       }
     }
   }
-
-  @Override
-  public void paintComponent(Graphics g){
-    super.paintComponent(g);
-  }
+//
+//  @Override
+//  public void paintComponent(Graphics g){
+//    super.paintComponent(g);
+//  }
 }

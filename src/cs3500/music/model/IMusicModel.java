@@ -9,47 +9,6 @@ import java.util.Set;
 public interface IMusicModel {
 
   /**
-   * Returns the tempo of this piece
-   *
-   * @return the tempo of this piece
-   */
-  int getTempo();
-
-  /**
-   * Returns all the notes in this music model.
-   *
-   * @return all the notes in this music model
-   */
-  List<Note> getNotes();
-
-  /**
-   * Returns all the notes that start on the given beat.
-   *
-   * @param beat the desired point in time in the model to play associated notes
-   * @return all the notes that start on the given beat.
-   * @throws IllegalArgumentException if the given beat is negative
-   */
-  Set<Note> notesToPlay(int beat);
-
-  /**
-   * Returns the lowest note in the entire model. Lowest note is determined first by octave. If
-   * there are ties, they are broken by the lower pitch, then start, duration, instrument, and
-   * volume.
-   *
-   * @return the lowest note in the model
-   */
-  Note getLowestNote();
-
-  /**
-   * Returns the highest note in the entire model. Highest note is determined first by octave. If
-   * there are ties, they are broken by the higher pitch, then start, duration, instrument, and
-   * volume.
-   *
-   * @return the highest note in the model
-   */
-  Note getHighestNote();
-
-  /**
    * Adds the given note to the IMusicModel. If the given note is the same as one already in the
    * model (by Note.equals(...)), it will not be added.
    *
@@ -76,6 +35,59 @@ public interface IMusicModel {
   void editNote(Note note, Note newNote);
 
   /**
+   * Returns the tempo of this piece.
+   * @return the tempo of this piece
+   */
+  int getTempo();
+
+  /**
+   * Returns all the notes in this music model.
+   * @return all the notes in this music model
+   */
+  List<Note> getNotes();
+
+  /**
+   * Returns the lowest note in the entire model. Lowest note is determined first by octave. If
+   * there are ties, they are broken by the lower pitch, then start, duration, instrument, and
+   * volume.
+   *
+   * @return the lowest note in the model
+   */
+  Note getLowestNote();
+
+  /**
+   * Returns the highest note in the entire model. Highest note is determined first by octave. If
+   * there are ties, they are broken by the higher pitch, then start, duration, instrument, and
+   * volume.
+   *
+   * @return the highest note in the model
+   */
+  Note getHighestNote();
+
+  /**
+   * Determines the last beat to occur in this model.
+   * @return the last beat to occur in the this model
+   */
+  int finalBeat();
+
+  /**
+   * Creates a list containing every pitch string between the lowest note and highest note
+   * (inclusively). Each string will be a concatenation of the Pitch name an the octave.
+   *
+   * @return a list of all the Pitches from the lowest note to the highest note in this model.
+   */
+  List<String> getPitchRange();
+
+  /**
+   * Returns all the notes that start on the given beat.
+   *
+   * @param beat the desired point in time in the model to play associated notes
+   * @return all the notes that start on the given beat.
+   * @throws IllegalArgumentException if the given beat is negative
+   */
+  Set<Note> notesToPlay(int beat);
+
+  /**
    * Overlays the given IMusicModel on top of this music model. Note collisions are dealt with in
    * the same way as addNote. Allows these models to be played simultaneously.
    *
@@ -91,21 +103,6 @@ public interface IMusicModel {
    * @param otherMusic the music model to combine with this model
    */
   void addMusicToTail(IMusicModel otherMusic);
-
-  /**
-   * Determines the last beat to occur in this model.
-   *
-   * @return the last beat to occur in the this model
-   */
-  int finalBeat();
-
-  /**
-   * Creates a list containing every pitch string between the lowestNote and highestNote
-   * (inclusively).
-   *
-   * @return a list of all the Pitches from the lowest note to the highest note.
-   */
-  List<String> getPitchRange();
 
   /**
    * Returns a String that represents all the notes in this model. The result is also printed into

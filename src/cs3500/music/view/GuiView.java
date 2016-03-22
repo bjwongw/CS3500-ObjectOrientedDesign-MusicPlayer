@@ -13,9 +13,6 @@ import javax.swing.*;
  */
 public class GuiView extends JFrame implements IMusicView {
 
-
-
-  // You may want to refine this to a subtype of JPanel (did that by making it Concrete...)
   private final GuiViewPanel displayPanel;
   private final IMusicModel model;
 
@@ -29,7 +26,6 @@ public class GuiView extends JFrame implements IMusicView {
     this.displayPanel = new GuiViewPanel(model);
     JScrollPane scroll = new JScrollPane(displayPanel);
     getContentPane().add(scroll);
-//    setLocationRelativeTo(null);
     pack();
   }
 
