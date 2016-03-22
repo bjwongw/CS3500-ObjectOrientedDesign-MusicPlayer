@@ -15,6 +15,7 @@ public interface IMusicView {
   void initialize(IMusicModel m);
 
   /**
+   * TODO This method may be unnecessary. We'll have to see how the next hw plays out
    * Updates the view to the given beat.
    *
    * <ul>

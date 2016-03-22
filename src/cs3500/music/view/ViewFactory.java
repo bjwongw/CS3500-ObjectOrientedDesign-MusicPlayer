@@ -22,7 +22,8 @@ public class ViewFactory {
 
     switch(type) {
       case "console":
-        //TODO fill this out
+        view = new ConsoleView();
+        break;
       case "midi":
         view = new MidiView();
         break;
