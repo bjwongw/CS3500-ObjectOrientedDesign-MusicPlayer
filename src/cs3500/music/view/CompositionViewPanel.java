@@ -9,9 +9,9 @@ import java.util.*;
 import java.util.List;
 
 /**
- * A view for a range of Note.Pitches
+ * A type of JPanel that is used to display Notes in an IMusicModel.
  */
-public class GuiViewPanel extends JPanel {
+public class CompositionViewPanel extends JPanel {
 
   //height and width in pixels of each square cell
   private static final int CELL_HEIGHT = 20;
@@ -26,11 +26,11 @@ public class GuiViewPanel extends JPanel {
   private final JPanel notesPanel;
 
   /**
-   * Constructs the GuiViewPanel
+   * Constructs the CompositionViewPanel.
    *
    * @param model the music model to represent
    */
-  GuiViewPanel(IMusicModel model) {
+  CompositionViewPanel(IMusicModel model) {
     super();
     GridBagLayout gridBag = new GridBagLayout();
     GridBagConstraints constraints = new GridBagConstraints();
@@ -59,6 +59,12 @@ public class GuiViewPanel extends JPanel {
     this.add(notesPanel);
   }
 
+  /**
+   * Creates a JPanel to represent the range of Pitches in this CompositionViewPanel's model. They
+   * are stacked vertically.
+   *
+   * @return a JPanel representing the range of Pitches vertically
+   */
   private JPanel createPitchPanel() {
     int dim = NoteSquares.PREF_H;
     JPanel pitchP = new JPanel();
@@ -72,6 +78,14 @@ public class GuiViewPanel extends JPanel {
     return pitchP;
   }
 
+  /**
+   * Creates a JPanel to represent the range of beats in this CompositionViewPanel's model. The
+   * beat labels are measured in increments of 16, starting from 0. Each beat label spans the width
+   * of four NoteSquares panels.
+   *
+   * @return a JPanel representing the beats in this CompositionViewPanel's model, starting from 0
+   * and increasing in increments of 16 horizontally
+   */
   private JPanel createBeatPanel() {
     int dim = NoteSquares.PREF_W;
     GridBagLayout gridBag = new GridBagLayout();
@@ -89,6 +103,12 @@ public class GuiViewPanel extends JPanel {
     return beatP;
   }
 
+  /**
+   * Creates a JPanel to represent all the notes contained in this CompositionViewPanel's model.
+   * The layout of this panel is a GridLayout, each cell containing four beats (four quarter notes).
+   *
+   * @return a JPanel representing all the notes in this CompositionViewPanel's model.
+   */
   private JPanel createNotesPanel() {
     int pitches = model.getHighestNote().getMidiPitch() - model.getLowestNote().getMidiPitch() + 1;
     int beats = (model.finalBeat() / 4) + 1;
@@ -108,9 +128,19 @@ public class GuiViewPanel extends JPanel {
     return notesP;
   }
 
+  /**
+   * Given a {@code List<List<NoteSquares>>}, this method adjusts all the NoteSquares to represent
+   * notes from this CompositionViewPanel's model. Each start beat of a Note is associated with a
+   * black square in the NoteSquare, and each sustained beat for that same Note is represented as a
+   * green square (with color value of RGB(42, 255, 55)).
+   *
+   * NOTE: may need to control for invariants, such as the notesP parameter being the wrong size
+   * in comparison to the model field in this CompositionViewPanel.
+   * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
+   */
   private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
-    List<Note> noteList = model.getNotes();
-    Collections.sort(model.getNotes());
+    List<Note> noteList = new ArrayList<>(model.getNotes());
+    Collections.sort(noteList);
     int highestPitch = model.getHighestNote().getMidiPitch();
     for (Note n : noteList) {
       int pitchIndex = highestPitch - n.getMidiPitch();
@@ -122,9 +152,4 @@ public class GuiViewPanel extends JPanel {
       }
     }
   }
-//
-//  @Override
-//  public void paintComponent(Graphics g){
-//    super.paintComponent(g);
-//  }
 }

@@ -35,7 +35,7 @@ public class ViewFactory {
         view = new GuiView();
         break;
       default:
-        throw new IllegalArgumentException(String.format("ViewFactory string not recognized %s",
+        throw new IllegalArgumentException(String.format("ViewFactory string not recognized: %s",
                 type));
     }
 

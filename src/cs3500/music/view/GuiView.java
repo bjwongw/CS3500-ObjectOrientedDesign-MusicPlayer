@@ -1,7 +1,6 @@
 package cs3500.music.view;
 
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
 
 import java.awt.*;
 //import java.awt.event.MouseListener; Possibly of interest for handling mouse events
@@ -9,15 +8,15 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * The visual view
+ * The visual view for a composition
  */
 public class GuiView extends JFrame implements IMusicView {
 
-  private GuiViewPanel displayPanel;
+  private CompositionViewPanel displayPanel;
   private IMusicModel model;
 
   /**
-   * Creates new GuiView
+   * Creates a new GuiView
    */
   public GuiView() {
     super("Music Player"); // sets the title of the frame
@@ -27,7 +26,7 @@ public class GuiView extends JFrame implements IMusicView {
   @Override
   public void initialize(IMusicModel m){
     this.model = m;
-    this.displayPanel = new GuiViewPanel(model);
+    this.displayPanel = new CompositionViewPanel(model);
     JScrollPane scroll = new JScrollPane(displayPanel);
     getContentPane().add(scroll);
     pack();
@@ -35,9 +34,9 @@ public class GuiView extends JFrame implements IMusicView {
     this.setVisible(true);
   }
 
+  // NOTE: currently does nothing for this implementation
   @Override
-  public void update(int beat) {
-  }
+  public void update(int beat) { }
 
   @Override
   public Dimension getPreferredSize(){

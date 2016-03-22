@@ -79,8 +79,8 @@ public class GenericMusicModelTest {
   public void testAddNote_emptyModel() {
     initData();
     musicModel1.addNote(c0);
-    List<Note> noteList = musicModel1.getNotes();
-    assertTrue(noteList.contains(c0));
+    Set<Note> noteSet = musicModel1.getNotes();
+    assertTrue(noteSet.contains(c0));
   }
 
   /**
@@ -91,12 +91,12 @@ public class GenericMusicModelTest {
   public void testAddNote_duplicateNotes() {
     initData();
     musicModel1.addNote(d3);
-    List<Note> noteList = musicModel1.getNotes();
-    assertEquals(1, noteList.size());
+    Set<Note> noteSet = musicModel1.getNotes();
+    assertEquals(1, noteSet.size());
 
     musicModel1.addNote(d3); // duplicate should be ignored
-    noteList = musicModel1.getNotes();
-    assertEquals(1, noteList.size());
+    noteSet = musicModel1.getNotes();
+    assertEquals(1, noteSet.size());
   }
 
   /**
@@ -114,10 +114,10 @@ public class GenericMusicModelTest {
     musicModel1.addNote(c0_3_4);
     assertEquals(6, c0_1_6.getDuration());
 
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteSet = musicModel1.getNotes();
     // both notes are in the model
-    assertTrue(noteList.contains(c0_1_6));
-    assertTrue(noteList.contains(c0_3_4));
+    assertTrue(noteSet.contains(c0_1_6));
+    assertTrue(noteSet.contains(c0_3_4));
   }
 
   /**
@@ -136,10 +136,10 @@ public class GenericMusicModelTest {
     // d3_3_5 is kept the same because it is not equivalent to the new note
     assertEquals(5, d3_3_5.getDuration());
 
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteSet = musicModel1.getNotes();
     // both notes are in the model
-    assertTrue(noteList.contains(d3_5_2));
-    assertTrue(noteList.contains(d3_3_5));
+    assertTrue(noteSet.contains(d3_5_2));
+    assertTrue(noteSet.contains(d3_3_5));
   }
 
   /**
@@ -234,23 +234,23 @@ public class GenericMusicModelTest {
     musicModel1.addNote(aSharp4);
     musicModel1.addNote(d3);
     musicModel1.addNote(b10);
-    List<Note> noteList = musicModel1.getNotes();
+    Set<Note> noteSet = musicModel1.getNotes();
 
     // all the inserted notes are in fact in the model
-    assertTrue(noteList.contains(aSharp4));
-    assertTrue(noteList.contains(d3));
-    assertTrue(noteList.contains(b10));
+    assertTrue(noteSet.contains(aSharp4));
+    assertTrue(noteSet.contains(d3));
+    assertTrue(noteSet.contains(b10));
 
     musicModel1.removeNote(d3);
-    noteList = musicModel1.getNotes();
-    assertFalse(noteList.contains(d3)); // d3 has been removed
-    assertTrue(noteList.contains(aSharp4)); // this is still in the model
-    assertTrue(noteList.contains(b10)); // this is still in the model
+    noteSet = musicModel1.getNotes();
+    assertFalse(noteSet.contains(d3)); // d3 has been removed
+    assertTrue(noteSet.contains(aSharp4)); // this is still in the model
+    assertTrue(noteSet.contains(b10)); // this is still in the model
 
     musicModel1.removeNote(aSharp4);
-    noteList = musicModel1.getNotes();
-    assertFalse(noteList.contains(aSharp4)); // aSharp4 has been removed
-    assertTrue(noteList.contains(b10)); // this is still in the model
+    noteSet = musicModel1.getNotes();
+    assertFalse(noteSet.contains(aSharp4)); // aSharp4 has been removed
+    assertTrue(noteSet.contains(b10)); // this is still in the model
   }
 
   /**
@@ -283,8 +283,8 @@ public class GenericMusicModelTest {
   @Test
   public void testGetNotes_emptyModel() {
     IMusicModel model = new GenericMusicModel();
-    List<Note> noteList = new ArrayList<>();
-    assertEquals(noteList, model.getNotes());
+    Set<Note> noteSet = new HashSet<>();
+    assertEquals(noteSet, model.getNotes());
   }
 
   /**
@@ -426,13 +426,13 @@ public class GenericMusicModelTest {
   public void testCombinePieces_duplicateNotes() {
     initData();
     musicModel1.addNote(c0);
-    List<Note> noteList = musicModel1.getNotes();
-    assertEquals(1, noteList.size());
+    Set<Note> noteSet = musicModel1.getNotes();
+    assertEquals(1, noteSet.size());
 
     musicModel2.addNote(c0);
     musicModel1.combinePieces(musicModel2);
-    noteList = musicModel1.getNotes();
-    assertEquals(1, noteList.size()); // no change because the only notes in each model were c0
+    noteSet = musicModel1.getNotes();
+    assertEquals(1, noteSet.size()); // no change because the only notes in each model were c0
   }
 
   /**
