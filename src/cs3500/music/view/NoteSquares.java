@@ -9,8 +9,8 @@ import java.util.List;
  * Square that represents a note at a single beat.
  */
 public class NoteSquares extends JPanel {
-  private static final int PREF_W = 20;
-  private static final int PREF_H = 20;
+  static final int PREF_W = 20;
+  static final int PREF_H = PREF_W;
 
   //guaranteed to be only four Rectangles
   private final List<Color> notes = new ArrayList<>(4);
