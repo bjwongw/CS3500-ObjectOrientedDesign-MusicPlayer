@@ -590,11 +590,11 @@ public class GenericMusicModelTest {
     String output = "  C#3   D3  D#3   E3   F3 \n" +
             "0                 X    X  \n" +
             "1                 |    |  \n" +
-            "2  X              |    |  \n" +
+            "2  X              X    |  \n" +
             "3  |              |    |  \n" +
             "4                 |    |  \n" +
             "5                 |    |  \n" +
-            "6                      |  ";
+            "6                 |    |  ";
     assertEquals(output, musicModel1.printMusic());
   }
 }
