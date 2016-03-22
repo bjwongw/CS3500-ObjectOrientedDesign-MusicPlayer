@@ -23,7 +23,7 @@ public class MusicEditor {
 
     IMusicModel m = MusicReader.parseFile(new FileReader("mystery-1.txt"), b);
 
-    view = new GuiMusicView(m);
+    view = new GuiView(m);
     view.setPreferredSize(view.getPreferredSize());
     view.initialize();
 
