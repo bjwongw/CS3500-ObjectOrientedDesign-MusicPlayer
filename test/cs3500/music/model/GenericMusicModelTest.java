@@ -283,8 +283,8 @@ public class GenericMusicModelTest {
   @Test
   public void testGetNotes_emptyModel() {
     IMusicModel model = new GenericMusicModel();
-    List<Note> noteList = new ArrayList<>();
-    assertEquals(noteList, model.getNotes());
+    Set<Note> noteSet = new HashSet<>();
+    assertEquals(noteSet, model.getNotes());
   }
 
   /**

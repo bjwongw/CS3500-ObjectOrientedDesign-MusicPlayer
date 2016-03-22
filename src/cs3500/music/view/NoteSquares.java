@@ -13,6 +13,7 @@ public class NoteSquares extends JPanel {
   static final int PREF_H = PREF_W;
 
   //guaranteed to be only four Rectangles
+  //NOTE: may want to change this invariant in the future so it can be of any size
   private final List<Color> notes = new ArrayList<>(4);
 
   /**

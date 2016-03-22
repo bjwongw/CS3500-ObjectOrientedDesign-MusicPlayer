@@ -261,9 +261,9 @@ public class GenericMusicModel implements IMusicModel {
     if(!(notes == null)) {
       for (Note n : notes) {
         if (n.toString().equals(pitchString)) {
-          result.add(n.getStart() + 1, centerString("X", width));
+          result.set(n.getStart() + 1, centerString("X", width));
           for (int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
-            result.add(i+1, centerString("|", width));
+            result.set(i+1, centerString("|", width));
           }
         }
       }
