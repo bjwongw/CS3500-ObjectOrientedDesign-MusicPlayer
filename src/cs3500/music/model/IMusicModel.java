@@ -44,7 +44,7 @@ public interface IMusicModel {
    * Returns all the notes in this music model.
    * @return all the notes in this music model
    */
-  List<Note> getNotes();
+  Set<Note> getNotes();
 
   /**
    * Returns the lowest note in the entire model. Lowest note is determined first by octave. If

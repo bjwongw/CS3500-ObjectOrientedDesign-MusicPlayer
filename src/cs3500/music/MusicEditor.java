@@ -19,11 +19,11 @@ public class MusicEditor {
     IMusicView midiView = ViewFactory.construct("midi");
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
 
     consoleView.initialize(m);
-    guiView.initialize(m);
-    midiView.initialize(m);
+//    guiView.initialize(m);
+//    midiView.initialize(m);
   }
 
   //This is what we'll use when we output the java application, just rename it to main

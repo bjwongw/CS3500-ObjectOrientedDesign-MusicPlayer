@@ -101,8 +101,8 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   @Override
-  public List<Note> getNotes() {
-    List<Note> result = new ArrayList<>();
+  public Set<Note> getNotes() {
+    Set<Note> result = new HashSet<>();
     for (Set<Note> n : this.notes.values()) {
       result.addAll(n.stream().collect(Collectors.toList()));
     }
@@ -199,14 +199,14 @@ public class GenericMusicModel implements IMusicModel {
 
   @Override
   public void combinePieces(IMusicModel otherMusic) {
-    List<Note> otherNotes = otherMusic.getNotes();
+    Set<Note> otherNotes = otherMusic.getNotes();
     otherNotes.forEach(this::addNote);
   }
 
   @Override
   public void addMusicToTail(IMusicModel otherMusic) {
     int lastBeat = finalBeat();
-    List<Note> otherNotes = otherMusic.getNotes();
+    Set<Note> otherNotes = otherMusic.getNotes();
     for (Note n : otherNotes) {
       this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
               (), n.getVolume(), n.getInstrument()));
