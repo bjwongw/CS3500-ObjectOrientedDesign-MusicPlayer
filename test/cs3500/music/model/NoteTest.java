@@ -66,7 +66,14 @@ public class NoteTest {
    */
   @Test
   public void testGetOctave() {
-
+    assertEquals(0, c0.getOctave());
+    assertEquals(4, c4.getOctave());
+    assertEquals(3, cSharp3.getOctave());
+    assertEquals(6, d6.getOctave());
+    assertEquals(9, fSharp9.getOctave());
+    assertEquals(7, gSharp7.getOctave());
+    assertEquals(10, a10.getOctave());
+    assertEquals(9, aSharp9.getOctave());
   }
 
   /**
@@ -124,7 +131,11 @@ public class NoteTest {
    */
   @Test
   public void testGetMidiPitch() {
-
+    assertEquals(0, c0.getMidiPitch());
+    assertEquals(48, c4.getMidiPitch());
+    assertEquals(85, cSharp7.getMidiPitch());
+    assertEquals(111, dSharp9.getMidiPitch());
+    assertEquals(28, e2.getMidiPitch());
   }
 
   /**
@@ -148,7 +159,12 @@ public class NoteTest {
    */
   @Test
   public void testMidiToPitch() {
-
+    assertEquals(Note.Pitch.B, Note.midiToPitch(11));
+    assertEquals(Note.Pitch.D, Note.midiToPitch(14));
+    assertEquals(Note.Pitch.D, Note.midiToPitch(26));
+    assertEquals(Note.Pitch.D_SHARP, Note.midiToPitch(15));
+    assertEquals(Note.Pitch.E, Note.midiToPitch(64));
+    assertEquals(Note.Pitch.G_SHARP, Note.midiToPitch(80));
   }
 
   /**
@@ -156,7 +172,15 @@ public class NoteTest {
    */
   @Test
   public void testMidiToOctave() {
-
+    assertEquals(-1, Note.midiToOctave(0));
+    assertEquals(-1, Note.midiToOctave(6));
+    assertEquals(-1, Note.midiToOctave(10));
+    assertEquals(0, Note.midiToOctave(12));
+    assertEquals(0, Note.midiToOctave(15));
+    assertEquals(2, Note.midiToOctave(40));
+    assertEquals(4, Note.midiToOctave(60));
+    assertEquals(4, Note.midiToOctave(71));
+    assertEquals(8, Note.midiToOctave(114));
   }
 
   /**

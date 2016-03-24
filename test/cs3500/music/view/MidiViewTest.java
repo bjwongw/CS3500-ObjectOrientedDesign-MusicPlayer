@@ -41,8 +41,8 @@ public class MidiViewTest {
    * @param model model to add the note to
    * @param log   log to add the send calls to
    */
-  void addNote(Note.Pitch p, int o, int s, int d, int i, int v, IMusicModel model, StringBuilder
-          log) {
+  void addNote(Note.Pitch p, int o, int s, int d, int i, int v, IMusicModel model,
+    StringBuilder log) {
     Note n = new Note(p, o, s, d, i, v);
     model.addNote(n);
     log.append(String.format("send call: Command %d, MIDIPitch %d; Volume %d; " +
@@ -60,8 +60,8 @@ public class MidiViewTest {
    * @return true if log1 has all of the lines in log2
    */
   boolean compareLogs(StringBuilder log1, StringBuilder log2) {
-    ArrayList<String> list1 = new ArrayList<String>(Arrays.asList(log1.toString().split("\n")));
-    ArrayList<String> list2 = new ArrayList<String>(Arrays.asList(log2.toString().split("\n")));
+    ArrayList<String> list1 = new ArrayList<>(Arrays.asList(log1.toString().split("\n")));
+    ArrayList<String> list2 = new ArrayList<>(Arrays.asList(log2.toString().split("\n")));
 
     for (String s : list2) {
       if (!list1.contains(s)) {

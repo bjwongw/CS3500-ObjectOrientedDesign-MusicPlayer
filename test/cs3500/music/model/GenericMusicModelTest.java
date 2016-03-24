@@ -2,11 +2,7 @@ package cs3500.music.model;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -69,6 +65,15 @@ public class GenericMusicModelTest {
     aSharp4 = new Note(Note.Pitch.A_SHARP, 4, 14, 10, 0, 0);
     aSharp9 = new Note(Note.Pitch.A_SHARP, 9, 22, 9, 0, 0);
     b10 = new Note(Note.Pitch.B, 10, 33, 7, 0, 0);
+  }
+
+  /**
+   * Tests that an exception will be thrown if the GenericMusicModel constructor is given a
+   * negative tempo.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testConstructorNegativeTempo() {
+    IMusicModel model = new GenericMusicModel(-1);
   }
 
   /**
@@ -274,7 +279,10 @@ public class GenericMusicModelTest {
    */
   @Test
   public void testGetTempo() {
-
+    assertEquals(1, new GenericMusicModel(1).getTempo());
+    assertEquals(1200, new GenericMusicModel(1200).getTempo());
+    assertEquals(1356, new GenericMusicModel(1356).getTempo());
+    assertEquals(100000, new GenericMusicModel().getTempo());
   }
 
   /**
@@ -312,11 +320,37 @@ public class GenericMusicModelTest {
   }
 
   /**
+   * Test for the method getLowestNote. Ensures that an exception is thrown if this method is
+   * called and there are no notes in the model.
+   */
+  @Test(expected = IllegalStateException.class)
+  public void testGetLowestNote_noNotes() {
+    Note lowest = new GenericMusicModel().getLowestNote();
+  }
+
+  /**
    * Tests for the method getLowestNote
    */
   @Test
   public void testGetLowestNote() {
+    initData();
+    musicModel1.addNote(cSharp7);
+    musicModel1.addNote(d6);
+    musicModel1.addNote(b10);
+    musicModel1.addNote(e2);
+    assertEquals(e2, musicModel1.getLowestNote());
 
+    musicModel2.addNote(gSharp5);
+    assertEquals(gSharp5, musicModel2.getLowestNote());
+  }
+
+  /**
+   * Test for the method getHighestNote. Ensures that an exception is thrown if this method is
+   * called and there are no notes in the model.
+   */
+  @Test(expected = IllegalStateException.class)
+  public void testGetHighestNote_noNotes() {
+    Note lowest = new GenericMusicModel().getHighestNote();
   }
 
   /**
@@ -324,7 +358,15 @@ public class GenericMusicModelTest {
    */
   @Test
   public void testGetHighestNote() {
+    initData();
+    musicModel1.addNote(new Note(Note.Pitch.C, 7, 0, 1, 0, 2));
+    musicModel1.addNote(new Note(Note.Pitch.C, 7, 0, 1, 0, 1));
+    musicModel1.addNote(aSharp4);
+    musicModel1.addNote(gSharp5);
+    assertEquals(new Note(Note.Pitch.C, 7, 0, 1, 0, 2), musicModel1.getHighestNote());
 
+    musicModel2.addNote(c4);
+    assertEquals(c4, musicModel2.getHighestNote());
   }
 
   /**
@@ -332,7 +374,18 @@ public class GenericMusicModelTest {
    */
   @Test
   public void testFinalBeat() {
+    initData();
+    assertEquals(0, new GenericMusicModel().finalBeat());
 
+    musicModel1.addNote(dSharp9);
+    musicModel1.addNote(c4);
+    musicModel1.addNote(new Note(Note.Pitch.D, 3, 100, 2, 3, 4));
+    assertEquals(101, musicModel1.finalBeat());
+
+    musicModel2.addNote(new Note(Note.Pitch.C, 3, 37, 1, 4, 2));
+    musicModel2.addNote(new Note(Note.Pitch.C, 3, 10, 3, 4, 2));
+    musicModel2.addNote(new Note(Note.Pitch.C, 3, 34, 9, 4, 2));
+    assertEquals(42, musicModel2.finalBeat());
   }
 
   /**
@@ -340,7 +393,20 @@ public class GenericMusicModelTest {
    */
   @Test
   public void testGetPitchRange() {
+    initData();
+    assertEquals(new ArrayList<String>(), musicModel1.getPitchRange());
 
+    musicModel1.addNote(c0);
+    List<String> expectedList = new ArrayList<>();
+    expectedList.add("C0");
+    assertEquals(expectedList, musicModel1.getPitchRange());
+
+    musicModel2.addNote(fSharp4);
+    musicModel2.addNote(c4);
+    musicModel2.addNote(f5);
+    expectedList = Arrays.asList("C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4",
+      "A#4", "B4", "C5", "C#5", "D5", "D#5", "E5", "F5");
+    assertEquals(expectedList, musicModel2.getPitchRange());
   }
 
   /**
@@ -594,6 +660,7 @@ public class GenericMusicModelTest {
             "4                      |  \n" +
             "5                      |  \n" +
             "6                      |  ";
+
     assertEquals(output, musicModel1.printMusic());
   }
 }

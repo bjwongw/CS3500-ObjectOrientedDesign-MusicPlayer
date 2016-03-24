@@ -18,6 +18,7 @@ public interface CompositionBuilder<T> {
    * Sets the tempo of the piece
    * @param tempo The speed, in microseconds per beat
    * @return This builder
+   * @throws IllegalArgumentException if the given beat is less than 0
    */
   CompositionBuilder<T> setTempo(int tempo);
 
@@ -28,7 +29,7 @@ public interface CompositionBuilder<T> {
    * @param instrument The instrument number (to be interpreted by MIDI)
    * @param pitch The pitch (in the range [0, 127], where 60 represents C4, the middle-C on a piano)
    * @param volume The volume (in the range [0, 127])
-   * @return
+   * @return the modified CompositionBuilder
    */
   CompositionBuilder<T> addNote(int start, int end, int instrument, int pitch, int volume);
 }
