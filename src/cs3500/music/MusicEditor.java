@@ -7,29 +7,61 @@ import cs3500.music.util.MusicReader;
 import cs3500.music.view.IMusicView;
 import cs3500.music.view.ViewFactory;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
 
 public class MusicEditor {
-  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+
+  /**
+   * A method to test all three views at once on the given file.
+   *
+   * @param file the file to run all views on
+   */
+  public static void main2(String file) throws IOException, InvalidMidiDataException {
     IMusicView consoleView = ViewFactory.construct("console");
     IMusicView guiView = ViewFactory.construct("gui");
     IMusicView midiView = ViewFactory.construct("midi");
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader(file), b);
 
     consoleView.initialize(m);
-//    guiView.initialize(m);
-//    midiView.initialize(m);
+    guiView.initialize(m);
+    midiView.initialize(m);
   }
 
-  //This is what we'll use when we output the java application, just rename it to main
-  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
-    FileReader file = new FileReader(args[1]);
-    IMusicView view = ViewFactory.construct(args[2]);
+  /**
+   * The main method. Runs a given view on a given file.
+   *
+   * Arguments: file viewtype file is a path to a music file viewtype is one of console, midi, or
+   * gui
+   *
+   * @param args command line arguments described above
+   * @throws IOException              on bad file
+   * @throws InvalidMidiDataException when midi cannot be accessed
+   */
+  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+
+    if (args.length < 2) {
+      System.out.println("Arguments: file viewtype");
+      System.out.println("file is a path to a music file");
+      System.out.println("viewtype is one of console, midi, or gui");
+      return;
+    }
+
+    FileReader file;
+    IMusicView view;
+
+    try {
+      file = new FileReader(args[0]);
+      view = ViewFactory.construct(args[1]);
+    } catch (FileNotFoundException | IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+      return;
+    }
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
     IMusicModel m = MusicReader.parseFile(file, b);

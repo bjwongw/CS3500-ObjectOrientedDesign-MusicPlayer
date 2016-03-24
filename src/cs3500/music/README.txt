@@ -57,3 +57,5 @@ CS 3500: Object-Oriented Design
     We represented notes as their own class, giving them fields for pitch, octave, start beat,
     duration (measured in beats), instrument (in terms of MIDI), and volume. The pitch field is
     actually an Enum nested within the Note class, because it is directly associated with notes.
+
+    We designed three views for a model, as well

@@ -2,6 +2,8 @@ package cs3500.music.view;
 
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,6 +13,7 @@ import javax.sound.midi.Synthesizer;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
+import cs3500.music.util.MusicReader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -68,48 +71,66 @@ public class MidiViewTest {
     return true;
   }
 
+  /**
+   * Tests that a melody of notes is played correctly, and in order.
+   */
   @Test
   public void melodyTest() {
     expected.append("Synthesizer opened\n");
+    int start = 0;
     for (int p = 0; p < 12; p++) {
       for (int o = 0; o < 3; o++) {
         for (int d = 1; d < 3; d++) {
           for (int i = 0; i < 2; i++) {
             for (int v = 0; v < 2; v++) {
-              addNote(Note.Pitch.values()[p], o, p+o+d+i+v, d, i, v, this.model, this.expected);
+              addNote(Note.Pitch.values()[p], o, start, d, i, v, this.model, this
+                      .expected);
+              start += 1;
             }
           }
         }
       }
     }
+
     this.view.initialize(this.model);
+    expected.append("Synthesizer closed\n");
+    assertEquals(expected.toString(), log.toString());
     assertTrue(compareLogs(log, expected));
     assertTrue(compareLogs(expected, log));
+
   }
 
+  /**
+   * Verifies that adding just one note to the model removes equality from the actual and expected.
+   */
   @Test
   public void melodyPlus1Test() {
-    expected.append("Synthesizer opened\n");
     for (int p = 0; p < 12; p++) {
       for (int o = 0; o < 3; o++) {
         for (int d = 1; d < 3; d++) {
           for (int i = 0; i < 2; i++) {
             for (int v = 0; v < 1; v++) {
-              addNote(Note.Pitch.values()[p], o, p+o+d+i+v, d, i, v, this.model, this.expected);
+              addNote(Note.Pitch.values()[p], o, p + o + d + i + v, d, i, v, this.model, this
+                      .expected);
             }
           }
         }
       }
     }
+    expected.append("Synthesizer opened\n");
+    this.view.initialize(this.model);
+    expected.append("Synthesizer closed\n");
     model.addNote(new Note(Note.Pitch.A, 6, 3, 2, 1, 0));
     this.view.initialize(this.model);
     assertFalse(compareLogs(expected, log));
   }
 
+  /**
+   * Tests that a harmony of notes is played correctly, no notes getting skipped.
+   */
   @Test
   public void harmonyTest() {
-    expected.append("Synthesizer opened\n");
-    for(int s = 0; s < 4; s ++) {
+    for (int s = 0; s < 4; s++) {
       for (int p = 0; p < 12; p++) {
         for (int o = 0; o < 3; o++) {
           for (int d = 1; d < 3; d++) {
@@ -122,7 +143,30 @@ public class MidiViewTest {
         }
       }
     }
+    expected.append("Synthesizer opened\n");
     this.view.initialize(this.model);
+    expected.append("Synthesizer closed\n");
+    assertTrue(compareLogs(expected, log));
+    assertTrue(compareLogs(log, expected));
+  }
+
+  /**
+   * Verifies that little lamb is played correctly.
+   * @throws FileNotFoundException
+   */
+  @Test
+  public void littleLambTest() throws FileNotFoundException {
+    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), new
+            GenericMusicModel.Builder());
+
+    for (Note n : m.getNotes()) {
+      addNote(n.getPitch(), n.getOctave(), n.getStart(), n.getDuration(), n.getInstrument(), n
+              .getVolume(), this.model, this.expected);
+    }
+
+    expected.append("Synthesizer opened\n");
+    this.view.initialize(this.model);
+    expected.append("Synthesizer closed\n");
     assertTrue(compareLogs(expected, log));
     assertTrue(compareLogs(log, expected));
   }

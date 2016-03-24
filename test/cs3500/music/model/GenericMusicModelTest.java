@@ -651,16 +651,16 @@ public class GenericMusicModelTest {
     initData();
     musicModel1.addNote(cSharp3);
     musicModel1.addNote(f3);
-    musicModel1.addNote(new Note(Note.Pitch.E, 3, 2, 3, 0, 0));
-    musicModel1.addNote(new Note(Note.Pitch.E, 3, 0, 7, 0, 0));
-    String output = "  C#3   D3  D#3   E3   F3 \n" +
-            "0                 X    X  \n" +
-            "1                 |    |  \n" +
-            "2  X              X    |  \n" +
-            "3  |              |    |  \n" +
-            "4                 |    |  \n" +
-            "5                 |    |  \n" +
-            "6                 |    |  ";
+    String output =
+            "  C#3   D3  D#3   E3   F3 \n" +
+            "0                      X  \n" +
+            "1                      |  \n" +
+            "2  X                   |  \n" +
+            "3  |                   |  \n" +
+            "4                      |  \n" +
+            "5                      |  \n" +
+            "6                      |  ";
+
     assertEquals(output, musicModel1.printMusic());
   }
 }

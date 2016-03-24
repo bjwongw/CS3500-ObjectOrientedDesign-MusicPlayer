@@ -1,5 +1,9 @@
 package cs3500.music.view;
 
+import com.sun.corba.se.spi.ior.Writeable;
+
+import java.io.PrintStream;
+
 import cs3500.music.model.IMusicModel;
 
 import java.io.IOException;
@@ -19,14 +23,17 @@ public class ConsoleView implements IMusicView {
     this.output = output;
   }
 
+
   @Override
   public void initialize(IMusicModel m) {
     this.model = m;
+
     try {
       output.append(this.model.printMusic());
     } catch (IOException io) {
       io.printStackTrace();
     }
+
   }
 
   // NOTE: currently does nothing for this implementation

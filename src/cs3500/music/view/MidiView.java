@@ -107,6 +107,16 @@ public class MidiView implements IMusicView {
       }
       currentBeat += 1;
     }
+    int wait = 0;
+    for(Note n : model.notesToPlay(model.finalBeat())) {
+      wait = Math.max(n.getDuration(), wait);
+    }
+    try {
+      Thread.sleep(Integer.toUnsignedLong(wait * model.getTempo()/1000));
+    } catch (InterruptedException e) {
+      //TODO what to do here
+    }
+    synth.close();
   }
 
   @Override
