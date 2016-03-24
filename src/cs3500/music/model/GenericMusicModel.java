@@ -25,10 +25,10 @@ public class GenericMusicModel implements IMusicModel {
    * Constructs a GenericMusicModel with the given tempo.
    *
    * @param tmp the desired tempo of this model
-   * @throws IllegalArgumentException if the given tempo is less than 1
+   * @throws IllegalArgumentException if the given tempo is less than 0
    */
   public GenericMusicModel(int tmp) {
-    if (tmp < 1) { throw new IllegalArgumentException("Cannot have a tempo less than 1"); }
+    if (tmp < 0) { throw new IllegalArgumentException("Cannot have a tempo less than 0"); }
     this.notes = new HashMap<>();
     this.tempo = tmp;
   }
@@ -51,7 +51,7 @@ public class GenericMusicModel implements IMusicModel {
 
     @Override
     public CompositionBuilder<IMusicModel> setTempo(int tempo) {
-      if (tempo < 1) { throw new IllegalArgumentException("Cannot have a tempo less than 1"); }
+      if (tempo < 0) { throw new IllegalArgumentException("Cannot have a tempo less than 0"); }
       this.tempo = tempo;
       return this;
     }

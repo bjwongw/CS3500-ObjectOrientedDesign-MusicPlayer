@@ -69,15 +69,6 @@ public class GenericMusicModelTest {
 
   /**
    * Tests that an exception will be thrown if the GenericMusicModel constructor is given a
-   * tempo less than 1.
-   */
-  @Test(expected = IllegalArgumentException.class)
-  public void testConstructorTempoZero() {
-    IMusicModel model = new GenericMusicModel(0);
-  }
-
-  /**
-   * Tests that an exception will be thrown if the GenericMusicModel constructor is given a
    * negative tempo.
    */
   @Test(expected = IllegalArgumentException.class)

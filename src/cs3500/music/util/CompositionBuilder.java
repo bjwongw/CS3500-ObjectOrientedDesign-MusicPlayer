@@ -18,7 +18,7 @@ public interface CompositionBuilder<T> {
    * Sets the tempo of the piece
    * @param tempo The speed, in microseconds per beat
    * @return This builder
-   * @throws IllegalArgumentException if the given beat is less than 1
+   * @throws IllegalArgumentException if the given beat is less than 0
    */
   CompositionBuilder<T> setTempo(int tempo);
 

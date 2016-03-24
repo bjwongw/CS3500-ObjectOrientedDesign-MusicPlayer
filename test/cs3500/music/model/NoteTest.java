@@ -73,7 +73,7 @@ public class NoteTest {
     assertEquals(9, fSharp9.getOctave());
     assertEquals(7, gSharp7.getOctave());
     assertEquals(10, a10.getOctave());
-    assertEquals(8, aSharp9.getOctave());
+    assertEquals(9, aSharp9.getOctave());
   }
 
   /**

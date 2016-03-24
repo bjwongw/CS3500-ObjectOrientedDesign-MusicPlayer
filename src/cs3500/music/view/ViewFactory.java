@@ -22,7 +22,7 @@ public class ViewFactory {
 
     switch (type) {
       case "console":
-        view = new ConsoleView();
+        view = new ConsoleView(System.out);
         break;
       case "midi":
         try {
