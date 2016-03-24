@@ -52,6 +52,7 @@ public interface IMusicModel {
    * volume.
    *
    * @return the lowest note in the model
+   * @throws IllegalStateException if there are no notes in the model
    */
   Note getLowestNote();
 
@@ -61,6 +62,7 @@ public interface IMusicModel {
    * volume.
    *
    * @return the highest note in the model
+   * @throws IllegalStateException if there are no notes in the model
    */
   Note getHighestNote();
 

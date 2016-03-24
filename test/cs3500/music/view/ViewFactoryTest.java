@@ -9,11 +9,17 @@ import static org.junit.Assert.assertTrue;
  */
 public class ViewFactoryTest {
 
+  /**
+   * Test for the construct method. Ensures that you can't just give it any string.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void badStringTest() {
     ViewFactory.construct("Not what you want");
   }
 
+  /**
+   * Tests for the construct method.
+   */
   @Test
   public void correctClassTest() {
     assertTrue(ViewFactory.construct("console") instanceof ConsoleView);

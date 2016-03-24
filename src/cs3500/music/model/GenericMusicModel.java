@@ -25,8 +25,10 @@ public class GenericMusicModel implements IMusicModel {
    * Constructs a GenericMusicModel with the given tempo.
    *
    * @param tmp the desired tempo of this model
+   * @throws IllegalArgumentException if the given tempo is less than 1
    */
   public GenericMusicModel(int tmp) {
+    if (tmp < 1) { throw new IllegalArgumentException("Cannot have a tempo less than 1"); }
     this.notes = new HashMap<>();
     this.tempo = tmp;
   }
@@ -49,6 +51,7 @@ public class GenericMusicModel implements IMusicModel {
 
     @Override
     public CompositionBuilder<IMusicModel> setTempo(int tempo) {
+      if (tempo < 1) { throw new IllegalArgumentException("Cannot have a tempo less than 1"); }
       this.tempo = tempo;
       return this;
     }
@@ -163,9 +166,16 @@ public class GenericMusicModel implements IMusicModel {
   public List<String> getPitchRange() {
     List<String> result = new ArrayList<>();
     List<Note.Pitch> pitches = Arrays.asList(Note.Pitch.values());
+    Note lowestNote;
+    Note highestNote;
 
-    Note lowestNote = this.getLowestNote();
-    Note highestNote = this.getHighestNote();
+    try {
+      lowestNote = this.getLowestNote();
+      highestNote = this.getHighestNote();
+    } catch (IllegalStateException e) {
+      return new ArrayList<>();
+    }
+
     int lowestOctave = lowestNote.getOctave();
     int highestOctave = highestNote.getOctave();
 
@@ -263,7 +273,10 @@ public class GenericMusicModel implements IMusicModel {
         if (n.toString().equals(pitchString)) {
           result.set(n.getStart() + 1, centerString("X", width));
           for (int i = n.getStart() + 1; i < n.getStart() + n.getDuration(); i++) {
-            result.set(i+1, centerString("|", width));
+            if (!Objects.equals(result.get(i+1), centerString("X", width))) { // prevents
+                                                                // overriding a note start
+              result.set(i+1, centerString("|", width));
+            }
           }
         }
       }

@@ -38,7 +38,8 @@ public class MidiViewTest {
    * @param model model to add the note to
    * @param log   log to add the send calls to
    */
-  void addNote(Note.Pitch p, int o, int s, int d, int i, int v, IMusicModel model, StringBuilder log) {
+  void addNote(Note.Pitch p, int o, int s, int d, int i, int v, IMusicModel model,
+    StringBuilder log) {
     Note n = new Note(p, o, s, d, i, v);
     model.addNote(n);
     log.append(String.format("send call: Command %d, MIDIPitch %d; Volume %d; " +
@@ -125,6 +126,4 @@ public class MidiViewTest {
     assertTrue(compareLogs(expected, log));
     assertTrue(compareLogs(log, expected));
   }
-
-
 }
