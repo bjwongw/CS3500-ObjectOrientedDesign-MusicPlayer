@@ -16,18 +16,17 @@ import javax.sound.midi.InvalidMidiDataException;
 public class MusicEditor {
 
   /**
-   * A method to test all three views at once on a file filled out within the body of the
-   * function.
+   * A method to test all three views at once on the given file.
    *
-   * @param args not used
+   * @param file the file to run all views on
    */
-  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main2(String file) throws IOException, InvalidMidiDataException {
     IMusicView consoleView = ViewFactory.construct("console");
     IMusicView guiView = ViewFactory.construct("gui");
     IMusicView midiView = ViewFactory.construct("midi");
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader(file), b);
 
     consoleView.initialize(m);
     guiView.initialize(m);
