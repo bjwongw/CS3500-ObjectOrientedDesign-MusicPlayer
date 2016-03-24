@@ -1,12 +1,8 @@
 package cs3500.music.view;
 
-import com.sun.corba.se.spi.ior.Writeable;
-
-import java.io.PrintStream;
+import java.io.IOException;
 
 import cs3500.music.model.IMusicModel;
-
-import java.io.IOException;
 
 /**
  * A view to put the text version of the given composition to console.
@@ -17,6 +13,7 @@ public class ConsoleView implements IMusicView {
 
   /**
    * Constructor for the ConsoleView
+   *
    * @param output the output of this view
    */
   public ConsoleView(Appendable output) {
@@ -38,5 +35,6 @@ public class ConsoleView implements IMusicView {
 
   // NOTE: currently does nothing for this implementation
   @Override
-  public void update(int beat) { }
+  public void update(int beat) {
+  }
 }

@@ -58,4 +58,16 @@ CS 3500: Object-Oriented Design
     duration (measured in beats), instrument (in terms of MIDI), and volume. The pitch field is
     actually an Enum nested within the Note class, because it is directly associated with notes.
 
-    We designed three views for a model, as well
+    We designed three views for a model under the interface IMusicView: ConsoleView, GuiView, and
+    MidiView. ViewFactory lets you produce these based on an input string. CompositionViewPanel and
+    NoteSquares are helper classes to GuiView.
+
+    CompositionBuilder is an interface to Builder in GenericMusicModel such that MusicReader may
+    read in input from a file to produce a model. MusicEditor holds the main method, letting us
+    compile to OOD-MusicPlayer.jar.
+
+    Btw... the mystery songs were the Super Mario Bros theme (or something like that), the Tetris
+    theme (or something like that), and Still Alive from Portal 1.
+
+    (Suddenly having your midi view start working and hearing Still Alive was pretty lit, thank
+    you.)

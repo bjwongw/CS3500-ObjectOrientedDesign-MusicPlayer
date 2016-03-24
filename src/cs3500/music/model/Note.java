@@ -53,11 +53,11 @@ public final class Note implements Comparable<Note> {
   /**
    * Constructs a note with given arguments
    *
-   * @param start    the beat where the note starts from [0,..)
-   * @param pitch    the pitch of the note on the chromatic scale
-   * @param octave   the octave of the note from [0,100)
-   * @param duration the duration of the note beyond its first beat from [0,..)
-   * @param volume   the volume to play the Note
+   * @param start      the beat where the note starts from [0,..)
+   * @param pitch      the pitch of the note on the chromatic scale
+   * @param octave     the octave of the note from [0,100)
+   * @param duration   the duration of the note beyond its first beat from [0,..)
+   * @param volume     the volume to play the Note
    * @param instrument the MIDI instrument to play the note with
    * @throws IllegalArgumentException if any of the ranges are violated
    */
@@ -76,6 +76,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's pitch.
+   *
    * @return this Note's pitch
    */
   public Pitch getPitch() {
@@ -84,6 +85,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's octave.
+   *
    * @return this Note's octave
    */
   public int getOctave() {
@@ -92,6 +94,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's start time.
+   *
    * @return this Note's start time
    */
   public int getStart() {
@@ -100,6 +103,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's duration in beats. Each beat represents the length of a quarter note.
+   *
    * @return this Note's duration
    */
   public int getDuration() {
@@ -108,6 +112,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's MIDI instrument.
+   *
    * @return this Note's instrument
    */
   public int getInstrument() {
@@ -116,6 +121,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns this Note's volume.
+   *
    * @return this Note's volume
    */
   public int getVolume() {
@@ -124,10 +130,11 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Returns the midi pitch of this note.
+   *
    * @return the midi pitch
    */
   public int getMidiPitch() {
-    return this.pitch.ordinal() + 12*this.octave;
+    return this.pitch.ordinal() + 12 * this.octave;
   }
 
   /**
@@ -142,6 +149,7 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Given a midi pitch value, return its pitch symbol
+   *
    * @param midi midi pitch value
    * @return the pitch symbol
    */
@@ -151,11 +159,13 @@ public final class Note implements Comparable<Note> {
 
   /**
    * Given a midi pitch value, return its octave
+   *
    * @param midi midi pitch value
    * @return the octave
    */
   public static int midiToOctave(int midi) {
-    return midi/12 - 1; // the -1 is included because midi note 0 is C-1, whereas our note 0 is C0
+    return midi / 12 - 1; // the -1 is included because midi note 0 is C-1, whereas our note 0
+    // is C0
   }
 
   @Override
@@ -198,8 +208,9 @@ public final class Note implements Comparable<Note> {
     }
     Note that = (Note) obj;
     return this.pitch == that.pitch && this.start == that.start && this.octave == that.octave
-      && this.duration == that.duration && this.instrument == that.instrument && this.volume ==
-      that.volume;
+            && this.duration == that.duration && this.instrument == that.instrument && this
+            .volume ==
+            that.volume;
   }
 
   @Override

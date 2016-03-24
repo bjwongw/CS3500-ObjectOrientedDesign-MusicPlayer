@@ -3,7 +3,6 @@ package cs3500.music.model;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the Pitch class
@@ -11,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class PitchTest {
 
   Note.Pitch cPitch = Note.Pitch.C;
-  Note.Pitch cSharpPitch = Note.Pitch .C_SHARP;
+  Note.Pitch cSharpPitch = Note.Pitch.C_SHARP;
   Note.Pitch dPitch = Note.Pitch.D;
   Note.Pitch dSharpPitch = Note.Pitch.D_SHARP;
   Note.Pitch ePitch = Note.Pitch.E;
@@ -29,7 +28,7 @@ public class PitchTest {
   @Test
   public void testToString() {
     assertEquals("C", cPitch.toString());
-    assertEquals("C#",cSharpPitch.toString());
+    assertEquals("C#", cSharpPitch.toString());
     assertEquals("D", dPitch.toString());
     assertEquals("D#", dSharpPitch.toString());
     assertEquals("E", ePitch.toString());

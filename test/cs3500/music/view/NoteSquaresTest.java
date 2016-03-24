@@ -2,10 +2,11 @@ package cs3500.music.view;
 
 import org.junit.Test;
 
-import javax.swing.*;
 import java.awt.*;
 
-import static org.junit.Assert.*;
+import javax.swing.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the NoteSquares class
@@ -45,7 +46,7 @@ public class NoteSquaresTest {
   @Test
   public void testGetPreferredSize() throws Exception {
     JPanel noteSquare = new NoteSquares();
-    assertEquals(new Dimension(NoteSquares.PREF_W*4, NoteSquares.PREF_H),
-      noteSquare.getPreferredSize());
+    assertEquals(new Dimension(NoteSquares.PREF_W * 4, NoteSquares.PREF_H),
+            noteSquare.getPreferredSize());
   }
 }

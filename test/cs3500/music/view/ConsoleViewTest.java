@@ -1,13 +1,14 @@
 package cs3500.music.view;
 
-import cs3500.music.model.GenericMusicModel;
-import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import cs3500.music.model.GenericMusicModel;
+import cs3500.music.model.IMusicModel;
+import cs3500.music.model.Note;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the ConsoleView class
@@ -94,8 +95,8 @@ public class ConsoleViewTest {
         for (int d = 1; d < 3; d++) {
           for (int i = 0; i < 2; i++) {
             for (int v = 0; v < 2; v++) {
-              testModel.addNote(new Note(Note.Pitch.values()[p], o, p+o+d+i+v, d, i, v));
-              actualModel.addNote(new Note(Note.Pitch.values()[p], o, p+o+d+i+v, d, i, v));
+              testModel.addNote(new Note(Note.Pitch.values()[p], o, p + o + d + i + v, d, i, v));
+              actualModel.addNote(new Note(Note.Pitch.values()[p], o, p + o + d + i + v, d, i, v));
             }
           }
         }

@@ -278,13 +278,13 @@ public class NoteTest {
   @Test
   public void testCompareTo_sameUpToInstrument() {
     assertTrue(0 < new Note(Note.Pitch.A, 4, 3, 2, 5, 2).compareTo(
-      new Note(Note.Pitch.A, 4, 3, 2, 2, 1)));
+            new Note(Note.Pitch.A, 4, 3, 2, 2, 1)));
     assertTrue(0 < new Note(Note.Pitch.G, 7, 10, 20, 3, 19).compareTo(
-      new Note(Note.Pitch.G, 7, 10, 20, 0, 23)));
+            new Note(Note.Pitch.G, 7, 10, 20, 0, 23)));
     assertTrue(0 < new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 7).compareTo(
-      new Note(Note.Pitch.F_SHARP, 9, 11, 1, 12, 4)));
+            new Note(Note.Pitch.F_SHARP, 9, 11, 1, 12, 4)));
     assertTrue(0 < new Note(Note.Pitch.D, 3, 4, 5, 6, 7).compareTo(
-      new Note(Note.Pitch.D, 3, 4, 5, 3, 7)));
+            new Note(Note.Pitch.D, 3, 4, 5, 3, 7)));
 
     assertTrue(0 > b10.compareTo(new Note(Note.Pitch.B, 10, 33, 7, 3, 0)));
     assertTrue(0 > e1.compareTo(new Note(Note.Pitch.E, 1, 0, 1, 5, 0)));
@@ -299,13 +299,13 @@ public class NoteTest {
   @Test
   public void testCompareTo_sameUpToVolume() {
     assertTrue(0 < new Note(Note.Pitch.D, 3, 4, 5, 6, 7).compareTo(
-      new Note(Note.Pitch.D, 3, 4, 5, 6, 0)));
+            new Note(Note.Pitch.D, 3, 4, 5, 6, 0)));
     assertTrue(0 < new Note(Note.Pitch.G, 7, 10, 20, 3, 19).compareTo(
-      new Note(Note.Pitch.G, 7, 10, 20, 3, 3)));
+            new Note(Note.Pitch.G, 7, 10, 20, 3, 3)));
     assertTrue(0 < new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 7).compareTo(
-      new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 4)));
+            new Note(Note.Pitch.F_SHARP, 9, 11, 1, 13, 4)));
     assertTrue(0 < new Note(Note.Pitch.B, 4, 3, 2, 5, 2).compareTo(
-      new Note(Note.Pitch.B, 4, 3, 2, 5, 1)));
+            new Note(Note.Pitch.B, 4, 3, 2, 5, 1)));
 
     assertTrue(0 > b10.compareTo(new Note(Note.Pitch.B, 10, 33, 7, 0, 3)));
     assertTrue(0 > fSharp4.compareTo(new Note(Note.Pitch.F_SHARP, 4, 6, 2, 0, 132)));
@@ -327,7 +327,7 @@ public class NoteTest {
     assertEquals(false, a10.equals(c0));
     assertEquals(false, e1.equals(new Note(Note.Pitch.E, 1, 0, 2, 0, 0)));
     assertEquals(false, new Note(Note.Pitch.E, 1, 0, 2, 0, 0).equals(new Note(
-      Note.Pitch.E, 1, 1, 2, 0, 0)));
+            Note.Pitch.E, 1, 1, 2, 0, 0)));
   }
 
   /**
@@ -337,10 +337,10 @@ public class NoteTest {
   public void testHashCode() {
     assertEquals(c0.hashCode(), new Note(Note.Pitch.C, 0, 0, 4, 0, 0).hashCode());
     assertEquals(cSharp3.hashCode(),
-      new Note(Note.Pitch.C_SHARP, 3, 2, 2, 0, 0).hashCode());
+            new Note(Note.Pitch.C_SHARP, 3, 2, 2, 0, 0).hashCode());
     assertEquals(d6.hashCode(), new Note(Note.Pitch.D, 6, 0, 1, 0, 0).hashCode());
     assertEquals(f3.hashCode(), new Note(Note.Pitch.F, 3, 0, 7, 0, 0).hashCode());
     assertEquals(fSharp4.hashCode(),
-      new Note(Note.Pitch.F_SHARP, 4, 6, 2, 0, 0).hashCode());
+            new Note(Note.Pitch.F_SHARP, 4, 6, 2, 0, 0).hashCode());
   }
 }

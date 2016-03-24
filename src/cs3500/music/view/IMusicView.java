@@ -15,14 +15,12 @@ public interface IMusicView {
   void initialize(IMusicModel m);
 
   /**
-   * TODO This method may be unnecessary. We'll have to see how the next hw plays out
-   * Updates the view to the given beat.
+   * TODO This method may be unnecessary. We'll have to see how the next hw plays out Updates the
+   * view to the given beat.
    *
-   * <ul>
-   *   <li>ConsoleView: Does nothing, as of yet</li>
-   *   <li>GuiView: TODO move the current beat marker to the given beat</li>
-   *   <li>MidiView: Plays the notes at the given beat to the speakers</li>
-   * </ul>
+   * <ul> <li>ConsoleView: Does nothing, as of yet</li> <li>GuiView: TODO move the current beat
+   * marker to the given beat</li> <li>MidiView: Plays the notes at the given beat to the
+   * speakers</li> </ul>
    *
    * @param beat the beat to go to
    */

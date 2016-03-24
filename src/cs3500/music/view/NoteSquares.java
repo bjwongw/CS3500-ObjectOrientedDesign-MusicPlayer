@@ -1,9 +1,10 @@
 package cs3500.music.view;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.*;
 
 /**
  * Square that represents a note at a single beat.
@@ -39,13 +40,13 @@ public class NoteSquares extends JPanel {
     } else if (color == null) {
       throw new IllegalArgumentException("Cannot give a null Color");
     } else {
-        notes.set(index, color);
+      notes.set(index, color);
     }
   }
 
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension(PREF_W*4, PREF_H);
+    return new Dimension(PREF_W * 4, PREF_H);
   }
 
   @Override
@@ -54,7 +55,7 @@ public class NoteSquares extends JPanel {
     Graphics2D g2 = (Graphics2D) g;
     for (int i = 0; i < notes.size(); i++) {
       g2.setPaint(notes.get(i));
-      g2.fillRect(i*PREF_W, 0, PREF_W, PREF_H);
+      g2.fillRect(i * PREF_W, 0, PREF_W, PREF_H);
     }
   }
 }

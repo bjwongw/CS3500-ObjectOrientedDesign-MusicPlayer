@@ -42,7 +42,7 @@ public class MidiViewTest {
    * @param log   log to add the send calls to
    */
   void addNote(Note.Pitch p, int o, int s, int d, int i, int v, IMusicModel model,
-    StringBuilder log) {
+               StringBuilder log) {
     Note n = new Note(p, o, s, d, i, v);
     model.addNote(n);
     log.append(String.format("send call: Command %d, MIDIPitch %d; Volume %d; " +
@@ -101,7 +101,8 @@ public class MidiViewTest {
   }
 
   /**
-   * Verifies that adding just one note to the model removes equality from the actual and expected.
+   * Verifies that adding just one note to the model removes equality from the actual and
+   * expected.
    */
   @Test
   public void melodyPlus1Test() {
@@ -152,7 +153,6 @@ public class MidiViewTest {
 
   /**
    * Verifies that little lamb is played correctly.
-   * @throws FileNotFoundException
    */
   @Test
   public void littleLambTest() throws FileNotFoundException {

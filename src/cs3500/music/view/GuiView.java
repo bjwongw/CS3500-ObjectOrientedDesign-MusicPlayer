@@ -1,11 +1,12 @@
 package cs3500.music.view;
 
-import cs3500.music.model.IMusicModel;
-
 import java.awt.*;
-//import java.awt.event.MouseListener; Possibly of interest for handling mouse events
 
 import javax.swing.*;
+
+import cs3500.music.model.IMusicModel;
+
+//import java.awt.event.MouseListener; Possibly of interest for handling mouse events
 
 /**
  * The visual view for a composition
@@ -24,7 +25,7 @@ public class GuiView extends JFrame implements IMusicView {
   }
 
   @Override
-  public void initialize(IMusicModel m){
+  public void initialize(IMusicModel m) {
     this.model = m;
     this.displayPanel = new CompositionViewPanel(model);
     JScrollPane scroll = new JScrollPane(displayPanel);
@@ -36,10 +37,11 @@ public class GuiView extends JFrame implements IMusicView {
 
   // NOTE: currently does nothing for this implementation
   @Override
-  public void update(int beat) { }
+  public void update(int beat) {
+  }
 
   @Override
-  public Dimension getPreferredSize(){
+  public Dimension getPreferredSize() {
     return new Dimension(1000, 750);
   }
 }

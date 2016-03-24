@@ -4,7 +4,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import javax.sound.midi.*;
+import javax.sound.midi.Instrument;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Patch;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Soundbank;
+import javax.sound.midi.Synthesizer;
+import javax.sound.midi.Transmitter;
+import javax.sound.midi.VoiceStatus;
 
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
@@ -108,11 +120,11 @@ public class MidiView implements IMusicView {
       currentBeat += 1;
     }
     int wait = 0;
-    for(Note n : model.notesToPlay(model.finalBeat())) {
+    for (Note n : model.notesToPlay(model.finalBeat())) {
       wait = Math.max(n.getDuration(), wait);
     }
     try {
-      Thread.sleep(Integer.toUnsignedLong(wait * model.getTempo()/1000));
+      Thread.sleep(Integer.toUnsignedLong(wait * model.getTempo() / 1000));
     } catch (InterruptedException e) {
       //TODO what to do here
     }
