@@ -23,7 +23,7 @@ CS 3500: Object-Oriented Design
         it).
     - Recoded various methods in the model class due to the above changes (namely the new data
         representation and addNote behavior).
-    - Changed the Note class so that it is immmutable after instantiation. Once instantiated, the
+    - Changed the Note class so that it is immutable after instantiation. Once instantiated, the
         data cannot be corrupted by access to their fields (which we provide).
 
 +--------------------------------------------------------------------------------------------------+
@@ -35,7 +35,7 @@ CS 3500: Object-Oriented Design
     - NOTE: we're considering moving all the code (and associated methods) for printMusic from the
         GenericMusicModel to the ConsoleView class in the future.
     - Added a tempo field to the model, and a getTempo method to the interface.
-    - Added a new constructor to the model for passing a tempo in.
+    - Added a new constructor to the model for passing a tempo in (necessary for the views).
     - Added the required builder, which works with the MusicReader.
     - Added midi pitch methods to the Note class.
     - Added volume and instrument fields/getters to the Note class.
