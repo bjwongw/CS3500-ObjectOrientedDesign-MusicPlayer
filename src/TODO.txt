@@ -1,0 +1,46 @@
+                                THINGS WE NEED TO DO
+
+                                      GO TEAM!
+
+- Refactor console view methods away from the model into the ConsoleView class.
+- Go over the IMusicView's methods
+- Enable views to support real-time modifications
+- Is MIDI playing too low?
+- Controller
+- MouseEventListener
+- KeyListener
+- GuiView Interface (extends IMusicView)
+    - Combined GuiView and MidiView implements this (called CompositeView)
+
+
+View functionality
+- GuiView sub-interface that implements the IMusicView
+- Scroll the view using arrow keys
+- Left/right keys shift beat (1 beat per click)
+- Up/down keys shift pitch (1 pitch per click)
+- Pause/play the song. Stops the red bar
+- Gui view shifts itself as the song plays according to the red bar
+- Reset functionality
+- Add/remove/shift notes
+- Midi view is synchronized with the Gui v
+Handling input
+- Make a dedicated function object that is an ActionListener (created in the Controller)
+    - Pass this to the View
+- Dependency inversion: controller depends on the view
+
++---------+             +------------+             +------------------------------------+
+| IModel  | <---+       | Controller |       +---> |             IView                  |
++---------+     |       +------------+       |     +------------------------------------+
+|         |     +-------| Model m    |       |     | addListener(ActionListener e)      |
+|         |             | View v     |-------+     | addActionListener(ActionListener e)|
++---------+             +------------+             +------------------------------------+
+
+ActionListener
+- void actionPerformed(ActionEvent
+
+KeyListener
+- void keyPressed(KeyEvent e)
+- void keyReleased(KeyEvent
+
+Function objects
+- Implements Runnable
