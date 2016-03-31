@@ -1,6 +1,13 @@
 package cs3500.music.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import cs3500.music.util.CompositionBuilder;
@@ -28,7 +35,9 @@ public class GenericMusicModel implements IMusicModel {
    * @throws IllegalArgumentException if the given tempo is less than 0
    */
   public GenericMusicModel(int tmp) {
-    if (tmp < 0) { throw new IllegalArgumentException("Cannot have a tempo less than 0"); }
+    if (tmp < 0) {
+      throw new IllegalArgumentException("Cannot have a tempo less than 0");
+    }
     this.notes = new HashMap<>();
     this.tempo = tmp;
   }
@@ -51,16 +60,18 @@ public class GenericMusicModel implements IMusicModel {
 
     @Override
     public CompositionBuilder<IMusicModel> setTempo(int tempo) {
-      if (tempo < 0) { throw new IllegalArgumentException("Cannot have a tempo less than 0"); }
+      if (tempo < 0) {
+        throw new IllegalArgumentException("Cannot have a tempo less than 0");
+      }
       this.tempo = tempo;
       return this;
     }
 
     @Override
     public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch,
-      int volume) {
+                                                   int volume) {
       notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
-        instrument, volume));
+              instrument, volume));
       return this;
     }
   }
@@ -118,16 +129,18 @@ public class GenericMusicModel implements IMusicModel {
     boolean first = true;
     for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
       for (Note n : e.getValue()) {
-        if(first) {
+        if (first) {
           first = false;
           lowest = n;
         }
-        if(n.compareTo(lowest) < 0) {
+        if (n.compareTo(lowest) < 0) {
           lowest = n;
         }
       }
     }
-    if(first) { throw new IllegalStateException("No notes in composition"); }
+    if (first) {
+      throw new IllegalStateException("No notes in composition");
+    }
     return lowest;
   }
 
@@ -137,15 +150,17 @@ public class GenericMusicModel implements IMusicModel {
     boolean first = true;
     for (Map.Entry<Integer, Set<Note>> e : this.notes.entrySet()) {
       for (Note n : e.getValue()) {
-        if(first) {
+        if (first) {
           first = false;
           highest = n;
-        } else if(n.compareTo(highest) > 0) {
+        } else if (n.compareTo(highest) > 0) {
           highest = n;
         }
       }
     }
-    if(first) { throw new IllegalStateException("No notes in composition"); }
+    if (first) {
+      throw new IllegalStateException("No notes in composition");
+    }
     return highest;
   }
 

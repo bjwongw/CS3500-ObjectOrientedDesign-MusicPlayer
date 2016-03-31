@@ -1,16 +1,16 @@
 package cs3500.music;
 
-import cs3500.music.model.GenericMusicModel;
-import cs3500.music.model.IMusicModel;
-import cs3500.music.util.CompositionBuilder;
-import cs3500.music.util.MusicReader;
-import cs3500.music.view.*;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
+
+import cs3500.music.model.GenericMusicModel;
+import cs3500.music.model.IMusicModel;
+import cs3500.music.util.CompositionBuilder;
+import cs3500.music.util.MusicReader;
+import cs3500.music.view.*;
 import javax.sound.midi.MidiUnavailableException;
 
 public class MusicEditor {

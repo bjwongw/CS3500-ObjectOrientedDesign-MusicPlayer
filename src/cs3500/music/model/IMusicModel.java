@@ -28,7 +28,7 @@ public interface IMusicModel {
   /**
    * Exchanges the first given note with the second note.
    *
-   * @param note  the note to change
+   * @param note    the note to change
    * @param newNote the note to replace the original note with
    * @throws IllegalArgumentException if the first note argument is not in the model
    */
@@ -36,12 +36,14 @@ public interface IMusicModel {
 
   /**
    * Returns the tempo of this piece.
+   *
    * @return the tempo of this piece
    */
   int getTempo();
 
   /**
    * Returns all the notes in this music model.
+   *
    * @return all the notes in this music model
    */
   Set<Note> getNotes();
@@ -68,6 +70,7 @@ public interface IMusicModel {
 
   /**
    * Determines the last beat to occur in this model.
+   *
    * @return the last beat to occur in the this model
    */
   int finalBeat();

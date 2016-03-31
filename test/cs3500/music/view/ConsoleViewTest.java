@@ -1,13 +1,14 @@
 package cs3500.music.view;
 
-import cs3500.music.model.GenericMusicModel;
-import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import cs3500.music.model.GenericMusicModel;
+import cs3500.music.model.IMusicModel;
+import cs3500.music.model.Note;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for the ConsoleView class

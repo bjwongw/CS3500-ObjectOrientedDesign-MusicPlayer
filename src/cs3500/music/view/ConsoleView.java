@@ -2,7 +2,6 @@ package cs3500.music.view;
 
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -15,6 +14,7 @@ public class ConsoleView implements IMusicView {
 
   /**
    * Constructor for the ConsoleView
+   *
    * @param output the output of this view
    */
   public ConsoleView(Appendable output) {
@@ -183,5 +183,6 @@ public class ConsoleView implements IMusicView {
 
   // NOTE: currently does nothing for this implementation
   @Override
-  public void update(int beat) { }
+  public void update(int beat) {
+  }
 }

@@ -2,9 +2,17 @@ package cs3500.music.model;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the GenericMusicModel class
@@ -182,8 +190,8 @@ public class GenericMusicModelTest {
   }
 
   /**
-   * Test for addNote, ensuring that all notes that have been added to the model have in fact
-   * been added.
+   * Test for addNote, ensuring that all notes that have been added to the model have in fact been
+   * added.
    */
   @Test
   public void testAddNote() {
@@ -203,7 +211,7 @@ public class GenericMusicModelTest {
       }
     }
 
-    for(Note n : musicModel1.getNotes()) {
+    for (Note n : musicModel1.getNotes()) {
       assertTrue(set.contains(n));
     }
   }
@@ -405,7 +413,7 @@ public class GenericMusicModelTest {
     musicModel2.addNote(c4);
     musicModel2.addNote(f5);
     expectedList = Arrays.asList("C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4",
-      "A#4", "B4", "C5", "C#5", "D5", "D#5", "E5", "F5");
+            "A#4", "B4", "C5", "C#5", "D5", "D#5", "E5", "F5");
     assertEquals(expectedList, musicModel2.getPitchRange());
   }
 

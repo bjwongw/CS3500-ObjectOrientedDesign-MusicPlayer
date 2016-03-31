@@ -1,12 +1,14 @@
 package cs3500.music.view;
 
-import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
+
+import cs3500.music.model.IMusicModel;
+import cs3500.music.model.Note;
 
 /**
  * A type of JPanel that is used to display Notes in an IMusicModel.
@@ -93,8 +95,8 @@ public class CompositionViewPanel extends JPanel {
     JPanel beatP = new JPanel(gridBag);
     int lastBeat = model.finalBeat() / 16;
     for (int i = 0; i <= lastBeat; i++) {
-      JLabel beatLabel = new JLabel(Integer.toString(i*16));
-      beatLabel.setPreferredSize(new Dimension(dim*16, dim));
+      JLabel beatLabel = new JLabel(Integer.toString(i * 16));
+      beatLabel.setPreferredSize(new Dimension(dim * 16, dim));
       constraints.gridx = i;
       constraints.gridy = 0;
       gridBag.setConstraints(beatLabel, constraints);
@@ -105,7 +107,8 @@ public class CompositionViewPanel extends JPanel {
 
   /**
    * Creates a JPanel to represent all the notes contained in this CompositionViewPanel's model.
-   * The layout of this panel is a GridLayout, each cell containing four beats (four quarter notes).
+   * The layout of this panel is a GridLayout, each cell containing four beats (four quarter
+   * notes).
    *
    * @return a JPanel representing all the notes in this CompositionViewPanel's model.
    */
@@ -134,8 +137,9 @@ public class CompositionViewPanel extends JPanel {
    * black square in the NoteSquare, and each sustained beat for that same Note is represented as a
    * green square (with color value of RGB(42, 255, 55)).
    *
-   * NOTE: may need to control for invariants, such as the notesP parameter being the wrong size
-   * in comparison to the model field in this CompositionViewPanel.
+   * NOTE: may need to control for invariants, such as the notesP parameter being the wrong size in
+   * comparison to the model field in this CompositionViewPanel.
+   *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */
   private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
