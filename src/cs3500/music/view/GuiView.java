@@ -15,12 +15,14 @@ public class GuiView extends JFrame implements IMusicView {
 
   private CompositionViewPanel displayPanel;
   private IMusicModel model;
+  private int time;
 
   /**
    * Creates a new GuiView
    */
   public GuiView() {
     super("Music Player"); // sets the title of the frame
+    this.time = 0;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
   }
 

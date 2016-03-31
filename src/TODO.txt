@@ -2,7 +2,6 @@
 
                                       GO TEAM!
 
-- Refactor console view methods away from the model into the ConsoleView class.
 - Go over the IMusicView's methods
 - Enable views to support real-time modifications
 - Is MIDI playing too low?
