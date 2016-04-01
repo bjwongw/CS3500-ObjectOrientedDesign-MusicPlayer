@@ -8,21 +8,25 @@ import cs3500.music.model.IMusicModel;
 public interface IMusicView {
 
   /**
-   * Initializes this view object with the given music model. Must be run for proper function.
+   * Initializes the view and provides it, playing it immediately if its a static view. If it is a
+   * dynamic view, provides it paused awaitingg user input.
    *
-   * Starts the view (for example in the case of MidiView. TODO look at this next assignment
+   * @param m the model to base the view on
    */
   void initialize(IMusicModel m);
 
   /**
-   * TODO This method may be unnecessary. We'll have to see how the next hw plays out Updates the
-   * view to the given beat.
-   *
-   * <ul> <li>ConsoleView: Does nothing, as of yet</li> <li>GuiView: TODO move the current beat
-   * marker to the given beat</li> <li>MidiView: Plays the notes at the given beat to the
-   * speakers</li> </ul>
-   *
-   * @param beat the beat to go to
+   * Starts or resumes playback of the view.
    */
-  void update(int beat);
+  void play();
+
+  /**
+   * Pauses the view, awaiting more input.
+   */
+  void pause();
+
+  /**
+   * Resets the view to paused on beat 0, awaiting input.
+   */
+  void reset();
 }
