@@ -131,11 +131,11 @@ public class NoteTest {
    */
   @Test
   public void testGetMidiPitch() {
-    assertEquals(0, c0.getMidiPitch());
-    assertEquals(48, c4.getMidiPitch());
-    assertEquals(85, cSharp7.getMidiPitch());
-    assertEquals(111, dSharp9.getMidiPitch());
-    assertEquals(28, e2.getMidiPitch());
+    assertEquals(12, c0.getMidiPitch());
+    assertEquals(60, c4.getMidiPitch());
+    assertEquals(97, cSharp7.getMidiPitch());
+    assertEquals(123, dSharp9.getMidiPitch());
+    assertEquals(40, e2.getMidiPitch());
   }
 
   /**

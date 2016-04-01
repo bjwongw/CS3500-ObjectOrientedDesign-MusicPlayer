@@ -134,7 +134,7 @@ public final class Note implements Comparable<Note> {
    * @return the midi pitch
    */
   public int getMidiPitch() {
-    return this.pitch.ordinal() + 12 * this.octave;
+    return this.pitch.ordinal() + 12*(this.octave + 1);
   }
 
   /**

@@ -10,8 +10,8 @@ import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
-import cs3500.music.view.IMusicView;
-import cs3500.music.view.ViewFactory;
+import cs3500.music.view.*;
+import javax.sound.midi.MidiUnavailableException;
 
 public class MusicEditor {
 
@@ -43,7 +43,7 @@ public class MusicEditor {
    * @throws IOException              on bad file
    * @throws InvalidMidiDataException when midi cannot be accessed
    */
-  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main3(String[] args) throws IOException, InvalidMidiDataException {
 
     if (args.length < 2) {
       System.out.println("Arguments: file viewtype");
@@ -66,6 +66,15 @@ public class MusicEditor {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
     IMusicModel m = MusicReader.parseFile(file, b);
 
+    view.initialize(m);
+  }
+
+  public static void main(String[] args) throws IOException, MidiUnavailableException {
+
+    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
+    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+
+    IMusicView view = new ConsoleView(System.out);
     view.initialize(m);
   }
 }

@@ -108,22 +108,4 @@ public interface IMusicModel {
    * @param otherMusic the music model to combine with this model
    */
   void addMusicToTail(IMusicModel otherMusic);
-
-  /**
-   * Returns a String that represents all the notes in this model. The result is also printed into
-   * the console.
-   *
-   * <p>The return String is viewed as a table. The leftmost column shows all the beats in the
-   * composition, from 0 up to the last beat played by the last note in the model. The next column
-   * to the right is the lowest pitch in this model, with every ascending pitch in the columns to
-   * the right. The rightmost pitch represented is the highest pitch in this model.</p>
-   *
-   * <p>The start of each note is marked by an 'X', which is placed on its respective start beat
-   * and pitch. If the note is more than one beat long, each subsequent beat that the note is
-   * sustained will be represented by a '|'. Rests in the piece are represented as whitespace.
-   * </p>
-   *
-   * @return a String that represents all the Notes in this model
-   */
-  String printMusic();
 }
