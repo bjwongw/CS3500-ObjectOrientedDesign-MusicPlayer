@@ -103,7 +103,7 @@ public class MidiView implements IMusicView {
   /**
    * Plays this song in its entirety. Does not pass back control until the song has finished.
    */
-  private void play() {
+  public void play() {
     if (this.model == null) {
       throw new IllegalStateException("Cannot play the Midi model without providing a model (via" +
               " initialize) first!");
@@ -132,13 +132,22 @@ public class MidiView implements IMusicView {
   }
 
   @Override
+  public void pause() {
+
+  }
+
+  @Override
+  public void reset() {
+
+  }
+
+  @Override
   public void initialize(IMusicModel m) {
     this.model = m;
     channels.clear();
     play();
   }
 
-  @Override
   public void update(int beat) {
     this.model.notesToPlay(beat).forEach(this::playNote);
   }

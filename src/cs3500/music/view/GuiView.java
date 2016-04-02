@@ -35,9 +35,19 @@ public class GuiView extends JFrame implements IMusicView {
     this.setVisible(true);
   }
 
-  // NOTE: currently does nothing for this implementation
   @Override
-  public void update(int beat) {
+  public void play() {
+
+  }
+
+  @Override
+  public void pause() {
+
+  }
+
+  @Override
+  public void reset() {
+
   }
 
   @Override
