@@ -56,6 +56,16 @@ public interface IGuiView extends IMusicView{
   void scrollLeft();
 
   /**
+   * Scrolls the view up a certain amount.
+   */
+  void scrollUp();
+
+  /**
+   * Scrolls the view down a certain amount.
+   */
+  void scrollDown();
+
+  /**
    * Scrolls the view to the start of the piece.
    */
   void goToStart();
