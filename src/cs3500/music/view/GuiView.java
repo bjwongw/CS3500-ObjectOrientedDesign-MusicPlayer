@@ -5,13 +5,14 @@ import java.awt.*;
 import javax.swing.*;
 
 import cs3500.music.model.IMusicModel;
+import cs3500.music.model.Note;
 
 //import java.awt.event.MouseListener; Possibly of interest for handling mouse events
 
 /**
  * The visual view for a composition
  */
-public class GuiView extends JFrame implements IMusicView {
+public class GuiView extends JFrame implements IGuiView {
 
   private CompositionViewPanel displayPanel;
   private IMusicModel model;
@@ -37,9 +38,29 @@ public class GuiView extends JFrame implements IMusicView {
     this.setVisible(true);
   }
 
-  // NOTE: currently does nothing for this implementation
   @Override
-  public void update(int beat) {
+  public void play() {
+
+  }
+
+  @Override
+  public void pause() {
+
+  }
+
+  @Override
+  public void reset() {
+
+  }
+
+  @Override
+  public Note.Pitch getPitchAt(int x, int y) {
+    return null;
+  }
+
+  @Override
+  public int getBeatAt(int x, int y) {
+    return 0;
   }
 
   @Override
