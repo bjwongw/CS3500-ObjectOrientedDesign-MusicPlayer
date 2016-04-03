@@ -24,6 +24,6 @@ public class ViewFactoryTest {
   public void correctClassTest() {
     assertTrue(ViewFactory.construct("console") instanceof ConsoleView);
     assertTrue(ViewFactory.construct("midi") instanceof MidiView);
-    assertTrue(ViewFactory.construct("gui") instanceof GuiView);
+    assertTrue(ViewFactory.construct("gui") instanceof GuiViewImpl);
   }
 }

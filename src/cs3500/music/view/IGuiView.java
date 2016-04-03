@@ -8,7 +8,7 @@ import cs3500.music.model.Note;
 /**
  * Interface to an advanced Gui view allowing user input.
  */
-public interface IGuiView extends IMusicView{
+public interface IGuiView extends IMusicView {
 
   /**
    * Adds the given listener to the panel
