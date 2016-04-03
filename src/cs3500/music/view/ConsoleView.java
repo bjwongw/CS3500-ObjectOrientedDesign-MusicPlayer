@@ -181,15 +181,18 @@ public class ConsoleView implements IMusicView {
 
   }
 
-  @Override public void play() {
+  @Override
+  public void play() {
 
   }
 
-  @Override public void pause() {
+  @Override
+  public void pause() {
 
   }
 
-  @Override public void reset() {
+  @Override
+  public void reset() {
 
   }
 }

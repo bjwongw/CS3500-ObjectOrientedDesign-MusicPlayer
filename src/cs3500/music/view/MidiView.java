@@ -132,11 +132,13 @@ public class MidiView implements IMusicView {
     synth.close();
   }
 
-  @Override public void pause() {
+  @Override
+  public void pause() {
 
   }
 
-  @Override public void reset() {
+  @Override
+  public void reset() {
 
   }
 
@@ -146,7 +148,7 @@ public class MidiView implements IMusicView {
     channels.clear();
     play();
   }
-
+  
   private void update(int beat) {
     this.model.notesToPlay(beat).forEach(this::playNote);
   }
