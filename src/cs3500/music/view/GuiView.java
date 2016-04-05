@@ -64,6 +64,41 @@ public class GuiView extends JFrame implements IGuiView {
   }
 
   @Override
+  public void update() {
+
+  }
+
+  @Override
+  public void scrollRight() {
+
+  }
+
+  @Override
+  public void scrollLeft() {
+
+  }
+
+  @Override
+  public void scrollUp() {
+
+  }
+
+  @Override
+  public void scrollDown() {
+
+  }
+
+  @Override
+  public void goToStart() {
+
+  }
+
+  @Override
+  public void goToEnd() {
+
+  }
+
+  @Override
   public Dimension getPreferredSize() {
     return new Dimension(1000, 750);
   }
