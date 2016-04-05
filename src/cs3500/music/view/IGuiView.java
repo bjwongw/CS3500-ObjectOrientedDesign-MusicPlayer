@@ -24,21 +24,17 @@ public interface IGuiView extends IMusicView {
 
   /**
    * Gets the pitch of the row that the cursor is resting on.
-   * @param x the x position of the cursor in pixels
-   * @param y the y position of the cursor in pixels
    * @return the pitch of the row
    * @throws IllegalArgumentException if the position is outside of the panel
    */
-  Note.Pitch getPitchAt(int x, int y);
+  Note.Pitch getPitchAtCursor();
 
   /**
    * Gets the beat of the column that the cursor is resting on.
-   * @param x the x position of the cursor in pixels
-   * @param y the y position of the cursor in pixels
    * @return the pitch of the row
    * @throws IllegalArgumentException if the position is outside of the panel
    */
-  int getBeatAt(int x, int y);
+  int getBeatAtCursor();
 
   /**
    * Updates the view to the current state of the model.
