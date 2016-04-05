@@ -2,21 +2,17 @@ package cs3500.music.view;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
-
 import javax.swing.*;
-
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
-
-//import java.awt.event.MouseListener; Possibly of interest for handling mouse events
 
 /**
  * The visual view for a composition
  */
 public class GuiViewImpl extends JFrame implements IGuiView {
 
-  private CompositionViewPanel displayPanel;
   private IMusicModel model;
+  private CompositionViewPanel displayPanel;
   private int time;
 
   // the lowest beat displayed
@@ -41,10 +37,10 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   private final int height = width / 4;
 
   // the width of the space to the left of the note grid (pixels)
-  private final int horizontalBuffer = 40
+  private final int horizontalBuffer = 40;
 
   // the height of the space above the note (pixels)
-  private final int verticalBuffer = 20
+  private final int verticalBuffer = 20;
 
   /**
    * Creates a new GuiViewImpl
@@ -89,6 +85,41 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   @Override
   public int getBeatAt(int x, int y) {
     return 0;
+  }
+
+  @Override
+  public void update() {
+
+  }
+
+  @Override
+  public void scrollRight() {
+
+  }
+
+  @Override
+  public void scrollLeft() {
+
+  }
+
+  @Override
+  public void scrollUp() {
+
+  }
+
+  @Override
+  public void scrollDown() {
+
+  }
+
+  @Override
+  public void goToStart() {
+
+  }
+
+  @Override
+  public void goToEnd() {
+
   }
 
   @Override

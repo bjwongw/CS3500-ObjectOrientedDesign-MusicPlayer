@@ -148,7 +148,7 @@ public class MidiView implements IMusicView {
     channels.clear();
     play();
   }
-  
+
   private void update(int beat) {
     this.model.notesToPlay(beat).forEach(this::playNote);
   }
