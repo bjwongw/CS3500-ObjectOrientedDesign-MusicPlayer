@@ -2,9 +2,13 @@
 
                                       GO TEAM!
 
-- Go over the IMusicView's methods
+- CompositionViewPanel
+    - What happens when you render an empty model? (Currently throws exception)
+    - What happens when the pitch range is less than 32? (Currently doesn't deal well with this)
+    - What happens when the beats are less than 48? (Currently doesn't deal well with this)
+
+
 - Enable views to support real-time modifications
-- Is MIDI playing too low?
 - Controller
 - MouseEventListener
 - KeyListener

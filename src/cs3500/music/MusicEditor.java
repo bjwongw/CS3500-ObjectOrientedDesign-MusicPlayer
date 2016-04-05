@@ -8,6 +8,7 @@ import javax.sound.midi.InvalidMidiDataException;
 
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
+import cs3500.music.model.Note;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
 import cs3500.music.view.*;
@@ -72,9 +73,12 @@ public class MusicEditor {
   public static void main(String[] args) throws IOException, MidiUnavailableException {
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 
-    IMusicView view = new ConsoleView(System.out);
+    IMusicModel emptyModel = new GenericMusicModel(10000);
+    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
+    IMusicView view = new GuiViewImpl();
+//    view.initialize(emptyModel);
     view.initialize(m);
   }
 }

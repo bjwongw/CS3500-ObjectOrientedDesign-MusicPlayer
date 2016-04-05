@@ -195,5 +195,4 @@ public class ConsoleView implements IMusicView {
   public void reset() {
 
   }
-
 }

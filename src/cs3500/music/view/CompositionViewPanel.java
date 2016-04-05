@@ -15,12 +15,37 @@ import cs3500.music.model.Note;
  */
 public class CompositionViewPanel extends JPanel {
 
-  //height and width in pixels of each square cell
-  private static final int CELL_HEIGHT = 20;
-  private static final int CELL_WIDTH = 80;
-  private static final int SQUARE_DIM = CELL_HEIGHT;
-  private static final int PITCH_COL_WIDTH = 50;
-  private static final int BEAT_ROW_HEIGHT = 50;
+  // the lowest beat displayed
+  private int columnStart;
+
+  // the offset from the highest pitch in the model
+  // a value of 0 indicates that the highest pitch is the first pitch displayed
+  // a value of 1 indicates that the second highest pitch is the first pitch displayed, etc.
+  private int rowStart;
+
+  // the highest pitch to be displayed
+  private int rowStartMidi;
+
+  // the total range of beats to display
+  private final int displayedBeats = 48;
+
+  // the number of columns to show at a time
+  private final int numColumns = displayedBeats / 4;
+
+  // the number of rows to show at a time
+  private final int numRows = 32;
+
+  // the height of each cell containing notes (pixels)
+  private final int height = 20;
+
+  // the width of each cell containing notes (pixels)
+  private final int width = height * 4;
+
+  // the width of the space to the left of the note grid (pixels)
+  private final int horizontalBuffer = 40;
+
+  // the height of the space above the note (pixels)
+  private final int verticalBuffer = 20;
 
   private final IMusicModel model;
   private final JPanel pitchPanel;
@@ -34,31 +59,32 @@ public class CompositionViewPanel extends JPanel {
    */
   CompositionViewPanel(IMusicModel model) {
     super();
-    GridBagLayout gridBag = new GridBagLayout();
-    GridBagConstraints constraints = new GridBagConstraints();
-    setLayout(gridBag);
     this.model = model;
+    this.rowStart = 0;
+    this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
+    this.columnStart = 16;
     this.pitchPanel = createPitchPanel();
     this.beatPanel = createBeatPanel();
     this.notesPanel = createNotesPanel();
 
+    GridBagLayout gridBag = new GridBagLayout();
+    GridBagConstraints constraints = new GridBagConstraints();
+    setLayout(gridBag);
+
     constraints.gridx = 0;
     constraints.gridy = 1;
     constraints.anchor = GridBagConstraints.NORTH;
-    gridBag.setConstraints(pitchPanel, constraints);
-    this.add(pitchPanel);
+    this.add(pitchPanel, constraints);
 
     constraints.gridx = 1;
     constraints.gridy = 0;
     constraints.anchor = GridBagConstraints.SOUTHWEST;
-    gridBag.setConstraints(beatPanel, constraints);
-    this.add(beatPanel);
+    this.add(beatPanel, constraints);
 
     constraints.gridx = 1;
     constraints.gridy = 1;
     constraints.anchor = GridBagConstraints.NORTHWEST;
-    gridBag.setConstraints(notesPanel, constraints);
-    this.add(notesPanel);
+    this.add(notesPanel, constraints);
   }
 
   /**
@@ -67,13 +93,16 @@ public class CompositionViewPanel extends JPanel {
    *
    * @return a JPanel representing the range of Pitches vertically
    */
+  // TODO update JavaDoc to reflect the new functionality. Test that a max of 32 rows are printed
   private JPanel createPitchPanel() {
     int dim = NoteSquares.PREF_H;
     JPanel pitchP = new JPanel();
     pitchP.setLayout(new BoxLayout(pitchP, BoxLayout.PAGE_AXIS));
+    pitchP.setPreferredSize(new Dimension(horizontalBuffer, height * numRows));
     List<String> pitchRange = model.getPitchRange();
-    for (int i = 0; i < pitchRange.size(); i++) {
-      JLabel pitchLabel = new JLabel(pitchRange.get((pitchRange.size() - 1) - i));
+    int rangeSize = pitchRange.size();
+    for (int i = 0; i < rangeSize && i < numRows; i++) {
+      JLabel pitchLabel = new JLabel(pitchRange.get((rangeSize - (rowStart + 1)) - i));
       pitchLabel.setBorder(BorderFactory.createEmptyBorder(dim / 5, 0, 0, dim / 5));
       pitchP.add(pitchLabel);
     }
@@ -88,20 +117,46 @@ public class CompositionViewPanel extends JPanel {
    * @return a JPanel representing the beats in this CompositionViewPanel's model, starting from 0
    * and increasing in increments of 16 horizontally
    */
+  // TODO work with the offset of beats (say the start is 4, not 0).
   private JPanel createBeatPanel() {
     int dim = NoteSquares.PREF_W;
     GridBagLayout gridBag = new GridBagLayout();
     GridBagConstraints constraints = new GridBagConstraints();
     JPanel beatP = new JPanel(gridBag);
-    int lastBeat = model.finalBeat() / 16;
-    for (int i = 0; i <= lastBeat; i++) {
-      JLabel beatLabel = new JLabel(Integer.toString(i * 16));
-      beatLabel.setPreferredSize(new Dimension(dim * 16, dim));
-      constraints.gridx = i;
-      constraints.gridy = 0;
-      gridBag.setConstraints(beatLabel, constraints);
-      beatP.add(beatLabel);
+    beatP.setPreferredSize(new Dimension(displayedBeats * dim, verticalBuffer));
+    if (columnStart % 16 == 0) {
+      for (int i = 0; i < displayedBeats / 16; i++) {
+        JLabel beatLabel = new JLabel(Integer.toString(columnStart + (i * 16)));
+        beatLabel.setPreferredSize(new Dimension(dim * 16, dim));
+        constraints.gridx = i;
+        constraints.gridy = 0;
+        beatP.add(beatLabel, constraints);
+      }
+    } else {
+      for (int i = 0; i <= displayedBeats / 16; i++) {
+        System.out.println(i);
+        JLabel beatLabel;
+        if (i == 0) {
+          beatLabel = new JLabel();
+          int labelWidth = 16 - (columnStart % 16);
+          beatLabel.setPreferredSize(new Dimension(dim * labelWidth, dim));
+        } else if (i < displayedBeats / 16) {
+          int beat = ((columnStart / 16) + i) * 16;
+          beatLabel = new JLabel(Integer.toString(beat));
+          beatLabel.setPreferredSize(new Dimension(dim * 16, dim));
+        } else {
+          int beat = ((columnStart / 16) + i) * 16;
+          beatLabel = new JLabel(Integer.toString(beat));
+          int labelWidth = columnStart % 16;
+          beatLabel.setPreferredSize(new Dimension(dim * labelWidth, dim));
+        }
+        constraints.gridx = i;
+        constraints.gridy = 0;
+//        beatLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        beatP.add(beatLabel, constraints);
+      }
     }
+//    beatP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     return beatP;
   }
 
@@ -112,9 +167,10 @@ public class CompositionViewPanel extends JPanel {
    *
    * @return a JPanel representing all the notes in this CompositionViewPanel's model.
    */
+  // TODO ensure the proper size of the notesPanel
   private JPanel createNotesPanel() {
-    int pitches = model.getHighestNote().getMidiPitch() - model.getLowestNote().getMidiPitch() + 1;
-    int beats = (model.finalBeat() / 4) + 1;
+    int pitches = this.numRows;
+    int beats = this.numColumns;
     JPanel notesP = new JPanel(new GridLayout(pitches, beats));
     notesP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     List<List<NoteSquares>> panelHolder = new ArrayList<>();
@@ -142,17 +198,22 @@ public class CompositionViewPanel extends JPanel {
    *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */
+  // TODO make sure trailing notes still appear (sustained notes)
   private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
-    List<Note> noteList = new ArrayList<>(model.getNotes());
-    Collections.sort(noteList);
-    int highestPitch = model.getHighestNote().getMidiPitch();
-    for (Note n : noteList) {
-      int pitchIndex = highestPitch - n.getMidiPitch();
-      List<NoteSquares> pitchList = notesP.get(pitchIndex);
-      int start = n.getStart();
-      pitchList.get(start / 4).setNoteColor(start % 4, Color.BLACK);
-      for (int i = start + 1; i < start + n.getDuration(); i++) {
-        pitchList.get(i / 4).setNoteColor(i % 4, new Color(42, 255, 55));
+    for (int i = columnStart; i < columnStart + displayedBeats; i++) {
+      List<Note> noteList = new ArrayList<>(model.notesToPlay(i));
+      Collections.sort(noteList);
+      for (Note n : noteList) {
+        int pitchIndex = this.rowStartMidi - n.getMidiPitch();
+        if (pitchIndex >= 0 && pitchIndex < numRows) {
+          List<NoteSquares> pitchList = notesP.get(pitchIndex);
+          int start = n.getStart() - columnStart;
+          pitchList.get(start / 4).setNoteColor(start % 4, Color.BLACK);
+          int maxBoundary = this.displayedBeats;
+          for (int j = start + 1; j < start + n.getDuration() && j < maxBoundary; j++) {
+            pitchList.get(j / 4).setNoteColor(j % 4, new Color(42, 255, 55));
+          }
+        }
       }
     }
   }

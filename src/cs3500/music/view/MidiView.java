@@ -103,6 +103,7 @@ public class MidiView implements IMusicView {
   /**
    * Plays this song in its entirety. Does not pass back control until the song has finished.
    */
+  @Override
   public void play() {
     if (this.model == null) {
       throw new IllegalStateException("Cannot play the Midi model without providing a model (via" +
@@ -148,7 +149,7 @@ public class MidiView implements IMusicView {
     play();
   }
 
-  public void update(int beat) {
+  private void update(int beat) {
     this.model.notesToPlay(beat).forEach(this::playNote);
   }
 
