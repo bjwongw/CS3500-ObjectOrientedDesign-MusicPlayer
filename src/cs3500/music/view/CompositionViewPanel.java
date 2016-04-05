@@ -48,9 +48,9 @@ public class CompositionViewPanel extends JPanel {
   private final int verticalBuffer = 20;
 
   private final IMusicModel model;
-  private final JPanel pitchPanel;
-  private final JPanel beatPanel;
-  private final JPanel notesPanel;
+  private JPanel pitchPanel;
+  private JPanel beatPanel;
+  private JPanel notesPanel;
 
   /**
    * Constructs the CompositionViewPanel.
@@ -62,7 +62,11 @@ public class CompositionViewPanel extends JPanel {
     this.model = model;
     this.rowStart = 0;
     this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
-    this.columnStart = 16;
+    this.columnStart = 0;
+    this.updatePanel();
+  }
+
+  public void updatePanel() {
     this.pitchPanel = createPitchPanel();
     this.beatPanel = createBeatPanel();
     this.notesPanel = createNotesPanel();
@@ -89,11 +93,11 @@ public class CompositionViewPanel extends JPanel {
 
   /**
    * Creates a JPanel to represent the range of Pitches in this CompositionViewPanel's model. They
-   * are stacked vertically.
+   * are stacked vertically. The maximum number of pitches displayed are equal to this view's
+   * numRows field. The first pitch displayed is the pitch associated with the rowStart field.
    *
    * @return a JPanel representing the range of Pitches vertically
    */
-  // TODO update JavaDoc to reflect the new functionality. Test that a max of 32 rows are printed
   private JPanel createPitchPanel() {
     int dim = NoteSquares.PREF_H;
     JPanel pitchP = new JPanel();
@@ -117,7 +121,8 @@ public class CompositionViewPanel extends JPanel {
    * @return a JPanel representing the beats in this CompositionViewPanel's model, starting from 0
    * and increasing in increments of 16 horizontally
    */
-  // TODO work with the offset of beats (say the start is 4, not 0).
+  /* TODO deal with final beat (if there's only one note at beat 1 for duration 1, too many
+    columns are created. */
   private JPanel createBeatPanel() {
     int dim = NoteSquares.PREF_W;
     GridBagLayout gridBag = new GridBagLayout();
@@ -134,7 +139,6 @@ public class CompositionViewPanel extends JPanel {
       }
     } else {
       for (int i = 0; i <= displayedBeats / 16; i++) {
-        System.out.println(i);
         JLabel beatLabel;
         if (i == 0) {
           beatLabel = new JLabel();
@@ -152,11 +156,9 @@ public class CompositionViewPanel extends JPanel {
         }
         constraints.gridx = i;
         constraints.gridy = 0;
-//        beatLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         beatP.add(beatLabel, constraints);
       }
     }
-//    beatP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     return beatP;
   }
 
@@ -169,14 +171,14 @@ public class CompositionViewPanel extends JPanel {
    */
   // TODO ensure the proper size of the notesPanel
   private JPanel createNotesPanel() {
-    int pitches = this.numRows;
-    int beats = this.numColumns;
-    JPanel notesP = new JPanel(new GridLayout(pitches, beats));
+    int pitchRows = model.getPitchRange().size();
+    int rows = Integer.min(pitchRows, this.numRows);
+    JPanel notesP = new JPanel(new GridLayout(rows, this.numColumns));
     notesP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     List<List<NoteSquares>> panelHolder = new ArrayList<>();
-    for (int i = 0; i < pitches; i++) {
+    for (int i = 0; i < rows; i++) {
       panelHolder.add(new ArrayList<>());
-      for (int j = 0; j < beats; j++) {
+      for (int j = 0; j < this.numColumns; j++) {
         NoteSquares squares = new NoteSquares();
         squares.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelHolder.get(i).add(squares);
@@ -198,7 +200,6 @@ public class CompositionViewPanel extends JPanel {
    *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */
-  // TODO make sure trailing notes still appear (sustained notes)
   private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
     for (int i = columnStart; i < columnStart + displayedBeats; i++) {
       List<Note> noteList = new ArrayList<>(model.notesToPlay(i));
@@ -209,12 +210,76 @@ public class CompositionViewPanel extends JPanel {
           List<NoteSquares> pitchList = notesP.get(pitchIndex);
           int start = n.getStart() - columnStart;
           pitchList.get(start / 4).setNoteColor(start % 4, Color.BLACK);
-          int maxBoundary = this.displayedBeats;
-          for (int j = start + 1; j < start + n.getDuration() && j < maxBoundary; j++) {
-            pitchList.get(j / 4).setNoteColor(j % 4, new Color(42, 255, 55));
-          }
+//          int maxBoundary = this.displayedBeats;
+//          for (int j = start + 1; j < start + n.getDuration() && j < maxBoundary; j++) {
+//            pitchList.get(j / 4).setNoteColor(j % 4, new Color(42, 255, 55));
+//          }
+        }
+      }
+      List<Note> sustainedNotes = new ArrayList<>(model.sustainedNotes(i));
+      Collections.sort(noteList);
+      for (Note n : sustainedNotes) {
+        int pitchIndex = this.rowStartMidi - n.getMidiPitch();
+        if (pitchIndex >= 0 && pitchIndex < numRows) {
+          List<NoteSquares> pitchList = notesP.get(pitchIndex);
+          int start = i - columnStart;
+          pitchList.get(start / 4).setNoteColor(start % 4, new Color(42, 255, 55));
         }
       }
     }
   }
+
+  /**
+   *
+   * @param direction
+   * @throws IllegalArgumentException
+   */
+  public void shift(String direction) {
+    switch(direction) {
+      case "left" :
+        if (this.columnStart - 4 >= 0) {
+          this.columnStart -= 4;
+        }
+        break;
+      case "right" : // make it stop at the end of the piece
+        this.columnStart += 4;
+        break;
+      case "up" :
+        if (this.rowStart - 1 >= 0) {
+          this.rowStart -= 1;
+          this.rowStartMidi -= 1;
+        }
+        break;
+      case "down" :
+        this.rowStart += 1;
+        this.rowStartMidi += 1;
+        break;
+      default :
+        throw new IllegalArgumentException("Invalid direction");
+    }
+    this.updatePanel();
+  }
+
+  /**
+   *
+   */
+  public void reset() {
+    this.rowStart = 0;
+    this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
+    this.columnStart = 0;
+    this.updatePanel();
+  }
+
+//  @Override
+//  public Dimension getPreferredSize() {
+//    Dimension temp = new Dimension(this.pitchPanel.getWidth() + this.notesPanel.getWidth() + 40,
+//      this.beatPanel.getHeight() + this.notesPanel.getHeight() + 40);
+//    System.out.println("PitchPanel width: " + Integer.toString(pitchPanel.getWidth()));
+//    System.out.println("NotesPanel width: " + Integer.toString(notesPanel.getWidth()));
+//    System.out.println("BeatPanel height: " + Integer.toString(beatPanel.getHeight()));
+//    System.out.println("NotesPanel height: " + Integer.toString(notesPanel.getHeight()));
+//    System.out.println(temp);
+////    return temp;
+//    return new Dimension(1042, 702);
+//  }
 }

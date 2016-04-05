@@ -93,6 +93,15 @@ public interface IMusicModel {
   Set<Note> notesToPlay(int beat);
 
   /**
+   * Returns all the notes that are being held on the given beat.
+   *
+   * @param beat the desired point in time in the model to get the sustained notes
+   * @return all the notes that are held on the given beat.
+   * @throws IllegalArgumentException if the given beat is negative
+   */
+  Set<Note> sustainedNotes(int beat);
+
+  /**
    * Overlays the given IMusicModel on top of this music model. Note collisions are dealt with in
    * the same way as addNote. Allows these models to be played simultaneously.
    *
