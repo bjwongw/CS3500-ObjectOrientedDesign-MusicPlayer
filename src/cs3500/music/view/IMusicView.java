@@ -9,7 +9,7 @@ public interface IMusicView {
 
   /**
    * Initializes the view and provides it, playing it immediately if its a static view. If it is a
-   * dynamic view, provides it paused awaitingg user input.
+   * dynamic view, provides it paused awaiting user input.
    *
    * @param m the model to base the view on
    */

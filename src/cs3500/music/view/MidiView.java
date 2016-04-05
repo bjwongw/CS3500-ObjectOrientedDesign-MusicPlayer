@@ -3,6 +3,8 @@ package cs3500.music.view;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.InvalidMidiDataException;
@@ -29,6 +31,7 @@ public class MidiView implements IMusicView {
   private final Receiver receiver;
   private IMusicModel model;
   private Queue<Integer> channels;
+  private int currentBeat = 0;
 
   public MidiView() throws MidiUnavailableException {
     this(MidiSystem.getSynthesizer());
@@ -134,7 +137,6 @@ public class MidiView implements IMusicView {
 
   @Override
   public void pause() {
-
   }
 
   @Override
@@ -149,9 +151,14 @@ public class MidiView implements IMusicView {
     play();
   }
 
-  private void update(int beat) {
-    this.model.notesToPlay(beat).forEach(this::playNote);
+  private class PlayBeat extends TimerTask{
+    public void run() {
+      for (Note n : model.notesToPlay(currentBeat)) {
+        playNote(n);
+      }
+    }
   }
+
 
   /**
    * Mock synthesizer for testing MidiView. Passes info about each send() call to a given
