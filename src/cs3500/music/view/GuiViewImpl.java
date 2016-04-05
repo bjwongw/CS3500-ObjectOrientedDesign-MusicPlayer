@@ -51,12 +51,12 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   }
 
   @Override
-  public Note.Pitch getPitchAt(int x, int y) {
+  public Note.Pitch getPitchAtCursor() {
     return null;
   }
 
   @Override
-  public int getBeatAt(int x, int y) {
+  public int getBeatAtCursor() {
     return 0;
   }
 
