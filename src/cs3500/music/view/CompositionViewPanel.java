@@ -62,7 +62,7 @@ public class CompositionViewPanel extends JPanel {
     this.model = model;
     this.rowStart = 0;
     this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
-    this.columnStart = 16;
+    this.columnStart = 0;
     this.pitchPanel = createPitchPanel();
     this.beatPanel = createBeatPanel();
     this.notesPanel = createNotesPanel();
@@ -89,11 +89,11 @@ public class CompositionViewPanel extends JPanel {
 
   /**
    * Creates a JPanel to represent the range of Pitches in this CompositionViewPanel's model. They
-   * are stacked vertically.
+   * are stacked vertically. The maximum number of pitches displayed are equal to this view's
+   * numRows field. The first pitch displayed is the pitch associated with the rowStart field.
    *
    * @return a JPanel representing the range of Pitches vertically
    */
-  // TODO update JavaDoc to reflect the new functionality. Test that a max of 32 rows are printed
   private JPanel createPitchPanel() {
     int dim = NoteSquares.PREF_H;
     JPanel pitchP = new JPanel();
@@ -117,7 +117,8 @@ public class CompositionViewPanel extends JPanel {
    * @return a JPanel representing the beats in this CompositionViewPanel's model, starting from 0
    * and increasing in increments of 16 horizontally
    */
-  // TODO work with the offset of beats (say the start is 4, not 0).
+  /* TODO deal with final beat (if there's only one note at beat 1 for duration 1, too many
+    columns are created. */
   private JPanel createBeatPanel() {
     int dim = NoteSquares.PREF_W;
     GridBagLayout gridBag = new GridBagLayout();
@@ -152,11 +153,9 @@ public class CompositionViewPanel extends JPanel {
         }
         constraints.gridx = i;
         constraints.gridy = 0;
-//        beatLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         beatP.add(beatLabel, constraints);
       }
     }
-//    beatP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     return beatP;
   }
 
@@ -169,14 +168,14 @@ public class CompositionViewPanel extends JPanel {
    */
   // TODO ensure the proper size of the notesPanel
   private JPanel createNotesPanel() {
-    int pitches = this.numRows;
-    int beats = this.numColumns;
-    JPanel notesP = new JPanel(new GridLayout(pitches, beats));
+    int pitchRows = model.getPitchRange().size();
+    int rows = Integer.min(pitchRows, this.numColumns);
+    JPanel notesP = new JPanel(new GridLayout(rows, this.numColumns));
     notesP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     List<List<NoteSquares>> panelHolder = new ArrayList<>();
-    for (int i = 0; i < pitches; i++) {
+    for (int i = 0; i < rows; i++) {
       panelHolder.add(new ArrayList<>());
-      for (int j = 0; j < beats; j++) {
+      for (int j = 0; j < this.numColumns; j++) {
         NoteSquares squares = new NoteSquares();
         squares.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelHolder.get(i).add(squares);
