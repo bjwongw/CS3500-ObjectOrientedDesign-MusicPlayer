@@ -24,10 +24,10 @@ public interface IGuiView extends IMusicView {
 
   /**
    * Gets the pitch of the row that the cursor is resting on.
-   * @return the pitch of the row
+   * @return the MIDI pitch of the row
    * @throws IllegalArgumentException if the position is outside of the panel
    */
-  Note.Pitch getPitchAtCursor();
+  int getPitchAtCursor();
 
   /**
    * Gets the beat of the column that the cursor is resting on.
@@ -60,11 +60,6 @@ public interface IGuiView extends IMusicView {
    * Scrolls the view down a certain amount.
    */
   void scrollDown();
-
-  /**
-   * Scrolls the view to the start of the piece.
-   */
-  void goToStart();
 
   /**
    * Scrolls the view to the end of the piece.

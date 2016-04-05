@@ -115,7 +115,7 @@ public class MidiView implements IMusicView {
     int currentBeat = 0;
 
     while (currentBeat <= this.model.finalBeat()) {
-      this.update(currentBeat);
+//      this.update(currentBeat);
       try {
         Thread.sleep(Integer.toUnsignedLong(model.getTempo() / 1000));
       } catch (InterruptedException e) {

@@ -13,6 +13,7 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   private IMusicModel model;
   private CompositionViewPanel displayPanel;
   private int time;
+  private final int borderBuffer = 20;
 
   /**
    * Creates a new GuiViewImpl
@@ -28,11 +29,10 @@ public class GuiViewImpl extends JFrame implements IGuiView {
     this.model = m;
     this.displayPanel = new CompositionViewPanel(model);
     getContentPane().add(displayPanel);
-//    JScrollPane scroll = new JScrollPane(displayPanel);
-//    getContentPane().add(scroll);
-    pack();
-    this.setVisible(true);
     this.setResizable(false);
+    pack();
+    this.setSize(this.getWidth() + this.borderBuffer, this.getHeight() + this.borderBuffer);
+    this.setVisible(true);
   }
 
   @Override
@@ -51,18 +51,18 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   }
 
   @Override
-  public Note.Pitch getPitchAtCursor() {
-    return null;
+  public int getPitchAtCursor() {
+    return this.displayPanel.getPitchAtCursor(this.borderBuffer);
   }
 
   @Override
   public int getBeatAtCursor() {
-    return 0;
+    return this.displayPanel.getBeatAtCursor(this.borderBuffer);
   }
 
   @Override
   public void update() {
-
+    this.displayPanel.updatePanel();
   }
 
   @Override
@@ -86,17 +86,7 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   }
 
   @Override
-  public void goToStart() {
-
-  }
-
-  @Override
   public void goToEnd() {
 
   }
-
-//  @Override
-//  public Dimension getPreferredSize() {
-//    return new Dimension(displayPanel.getWidth() + 50, displayPanel.getHeight() + 50);
-//  }
 }

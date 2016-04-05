@@ -36,10 +36,10 @@ public class CompositionViewPanel extends JPanel {
   private final int numRows = 32;
 
   // the height of each cell containing notes (pixels)
-  private final int height = 20;
+  private final int cellHeight = 20;
 
   // the width of each cell containing notes (pixels)
-  private final int width = height * 4;
+  private final int cellWidth = cellHeight * 4;
 
   // the width of the space to the left of the note grid (pixels)
   private final int horizontalBuffer = 40;
@@ -102,7 +102,7 @@ public class CompositionViewPanel extends JPanel {
     int dim = NoteSquares.PREF_H;
     JPanel pitchP = new JPanel();
     pitchP.setLayout(new BoxLayout(pitchP, BoxLayout.PAGE_AXIS));
-    pitchP.setPreferredSize(new Dimension(horizontalBuffer, height * numRows));
+    pitchP.setPreferredSize(new Dimension(horizontalBuffer, cellHeight * numRows));
     List<String> pitchRange = model.getPitchRange();
     int rangeSize = pitchRange.size();
     for (int i = 0; i < rangeSize && i < numRows; i++) {
@@ -270,16 +270,39 @@ public class CompositionViewPanel extends JPanel {
     this.updatePanel();
   }
 
-//  @Override
-//  public Dimension getPreferredSize() {
-//    Dimension temp = new Dimension(this.pitchPanel.getWidth() + this.notesPanel.getWidth() + 40,
-//      this.beatPanel.getHeight() + this.notesPanel.getHeight() + 40);
-//    System.out.println("PitchPanel width: " + Integer.toString(pitchPanel.getWidth()));
-//    System.out.println("NotesPanel width: " + Integer.toString(notesPanel.getWidth()));
-//    System.out.println("BeatPanel height: " + Integer.toString(beatPanel.getHeight()));
-//    System.out.println("NotesPanel height: " + Integer.toString(notesPanel.getHeight()));
-//    System.out.println(temp);
-////    return temp;
-//    return new Dimension(1042, 702);
-//  }
+  /**
+   *
+   * @param externalVertBuffer
+   * @return
+   * @throws IllegalStateException
+   */
+  public int getPitchAtCursor(int externalVertBuffer) {
+    Point mousePos = this.getMousePosition();
+    int mouseY = (int) mousePos.getY();
+    mouseY = mouseY - externalVertBuffer - this.verticalBuffer;
+    if (mouseY >= 0) {
+      mouseY /= cellHeight;
+      return this.rowStartMidi - mouseY;
+    }
+    else {
+      throw new IllegalStateException("Mouse Y coordinate is outside the pitch display range");
+    }
+  }
+
+  /**
+   *
+   * @param externalHorizBuffer
+   * @return
+   * @throws IllegalStateException
+   */
+  //TODO finish this
+  public int getBeatAtCursor(int externalHorizBuffer) {
+    Point mousePos = this.getMousePosition();
+    int mouseX = (int) mousePos.getX();
+    mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer;
+    if (mouseX >= 0) {
+      mouseX /= cellWidth;
+    }
+    return 0;
+  }
 }
