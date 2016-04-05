@@ -1,7 +1,6 @@
 package cs3500.music.view;
 
 import java.awt.*;
-import java.awt.event.KeyListener;
 import javax.swing.*;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
@@ -14,33 +13,6 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   private IMusicModel model;
   private CompositionViewPanel displayPanel;
   private int time;
-
-  // the lowest beat displayed
-  private int columnStart;
-
-  // the highest pitch displayed, in MIDI format
-  private int rowStart;
-
-  // the total range of beats to display
-  private final int displayedBeats = 48;
-
-  // the number of columns to show at a time
-  private final int numColumns = displayedBeats / 4;
-
-  // the number of rows to show at a time
-  private final int numRows = 32;
-
-  // the width of each cell containing notes (pixels)
-  private final int width = 80;
-
-  // the height of each cell containing notes (pixels)
-  private final int height = width / 4;
-
-  // the width of the space to the left of the note grid (pixels)
-  private final int horizontalBuffer = 40;
-
-  // the height of the space above the note (pixels)
-  private final int verticalBuffer = 20;
 
   /**
    * Creates a new GuiViewImpl
@@ -55,11 +27,12 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   public void initialize(IMusicModel m) {
     this.model = m;
     this.displayPanel = new CompositionViewPanel(model);
-    JScrollPane scroll = new JScrollPane(displayPanel);
-    getContentPane().add(scroll);
+    getContentPane().add(displayPanel);
+//    JScrollPane scroll = new JScrollPane(displayPanel);
+//    getContentPane().add(scroll);
     pack();
-    this.setPreferredSize(this.getPreferredSize());
     this.setVisible(true);
+    this.setResizable(false);
   }
 
   @Override
@@ -74,7 +47,7 @@ public class GuiViewImpl extends JFrame implements IGuiView {
 
   @Override
   public void reset() {
-
+    this.displayPanel.reset();
   }
 
   @Override
@@ -94,22 +67,22 @@ public class GuiViewImpl extends JFrame implements IGuiView {
 
   @Override
   public void scrollRight() {
-
+    this.displayPanel.shift("right");
   }
 
   @Override
   public void scrollLeft() {
-
+    this.displayPanel.shift("left");
   }
 
   @Override
   public void scrollUp() {
-
+    this.displayPanel.shift("up");
   }
 
   @Override
   public void scrollDown() {
-
+    this.displayPanel.shift("down");
   }
 
   @Override
@@ -122,8 +95,8 @@ public class GuiViewImpl extends JFrame implements IGuiView {
 
   }
 
-  @Override
-  public Dimension getPreferredSize() {
-    return new Dimension(1000, 750);
-  }
+//  @Override
+//  public Dimension getPreferredSize() {
+//    return new Dimension(displayPanel.getWidth() + 50, displayPanel.getHeight() + 50);
+//  }
 }

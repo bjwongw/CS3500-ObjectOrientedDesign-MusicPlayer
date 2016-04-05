@@ -223,6 +223,24 @@ public class GenericMusicModel implements IMusicModel {
   }
 
   @Override
+  public Set<Note> sustainedNotes(int beat) {
+    if (beat < 0) {
+      throw new IllegalArgumentException("Cannot have a negative start time");
+    }
+    Set<Note> sustainedNotes = new HashSet<>();
+    for (int i : this.notes.keySet()) {
+      if (i <= beat) {
+        for (Note n : this.notes.get(i)) {
+          if (n.getStart() < beat && n.playsDuring(beat)) {
+            sustainedNotes.add(n);
+          }
+        }
+      }
+    }
+    return sustainedNotes;
+  }
+
+  @Override
   public void combinePieces(IMusicModel otherMusic) {
     Set<Note> otherNotes = otherMusic.getNotes();
     otherNotes.forEach(this::addNote);
