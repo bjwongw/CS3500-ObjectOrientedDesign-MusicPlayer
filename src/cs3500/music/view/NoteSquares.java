@@ -13,10 +13,7 @@ public class NoteSquares extends JPanel {
   static final int PREF_W = 20;
   static final int PREF_H = PREF_W;
   private final int numSquares;
-
-  //guaranteed to be only four Rectangles
-  //NOTE: may want to change this invariant in the future so it can be of any size
-  private final List<Color> notes = new ArrayList<>();
+  private final List<Color> notes;
 
   /**
    * Constructs a NoteSquares object
@@ -24,6 +21,7 @@ public class NoteSquares extends JPanel {
   public NoteSquares(int numSquares) {
     super();
     this.numSquares = numSquares;
+    this.notes = new ArrayList<>(numSquares);
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     for (int i = 0; i < numSquares; i++) {
       this.notes.add(getBackground());
