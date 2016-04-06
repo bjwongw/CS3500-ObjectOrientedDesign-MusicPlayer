@@ -29,7 +29,7 @@ public interface GuiView extends View {
 
   /**
    * Gets the beat of the column that the cursor is resting on.
-   * @return the pitch of the row
+   * @return the beat of the column
    * @throws IllegalArgumentException if the position is outside of the panel
    */
   int getBeatAtCursor();

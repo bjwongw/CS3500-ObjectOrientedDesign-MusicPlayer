@@ -30,7 +30,6 @@ public class ConcreteGuiView extends JPanel {
   private final int displayedBeats = 48;
 
   // the number of beats per cell
-  // TODO remove the major numbers and replace with beatsPerCell field
   private final int beatsPerCell = 4;
 
   // the number of columns to show at a time
@@ -215,7 +214,7 @@ public class ConcreteGuiView extends JPanel {
         if (pitchIndex >= 0 && pitchIndex < numRows) {
           List<NoteSquares> pitchList = notesP.get(pitchIndex);
           int start = n.getStart() - columnStart;
-          pitchList.get(start / 4).setNoteColor(start % 4, Color.BLACK);
+          pitchList.get(start / beatsPerCell).setNoteColor(start % beatsPerCell, Color.BLACK);
         }
       }
       List<Note> sustainedNotes = new ArrayList<>(model.sustainedNotes(i));
@@ -225,7 +224,8 @@ public class ConcreteGuiView extends JPanel {
         if (pitchIndex >= 0 && pitchIndex < numRows) {
           List<NoteSquares> pitchList = notesP.get(pitchIndex);
           int start = i - columnStart;
-          pitchList.get(start / 4).setNoteColor(start % 4, new Color(42, 255, 55));
+          pitchList.get(start / beatsPerCell).setNoteColor(start % beatsPerCell,
+            new Color(42, 255, 55));
         }
       }
     }
@@ -244,12 +244,12 @@ public class ConcreteGuiView extends JPanel {
   public void shift(String direction) {
     switch(direction) {
       case "left" :
-        if (this.columnStart - 4 >= 0) {
-          this.columnStart -= 4;
+        if (this.columnStart - beatsPerCell >= 0) {
+          this.columnStart -= beatsPerCell;
         }
         break;
       case "right" : // make it stop at the end of the piece
-        this.columnStart += 4;
+        this.columnStart += beatsPerCell;
         break;
       case "up" :
         if (this.rowStart - 1 >= 0) {

@@ -451,6 +451,5 @@ public class MidiView implements View {
     public void unloadInstruments(Soundbank soundbank, Patch[] patchList) {
 
     }
-
   }
 }

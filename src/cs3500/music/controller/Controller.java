@@ -45,6 +45,7 @@ public class Controller implements IController {
    * Binds functions to the handlers and inserts the handlers into the view.
    */
   private void initialize() {
+    // TODO jump to beginning or end using HOME and END keys
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE, new PausePlay());
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_R, new Reset());
 
@@ -68,13 +69,15 @@ public class Controller implements IController {
   /**
    * Controls pausing/playing of the view. Suggested bound to spacebar.
    */
-  private class PausePlay implements Runnable{
+  private class PausePlay implements Runnable {
     private boolean isPlaying = false;
     public void run() {
       if(isPlaying) {
         view.pause();
+        isPlaying = false;
       } else {
         view.play();
+        isPlaying = true;
       }
     }
   }

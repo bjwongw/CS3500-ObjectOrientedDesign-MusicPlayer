@@ -11,7 +11,8 @@ public class GuiViewImpl extends JFrame implements GuiView {
 
   private IMusicModel model;
   private ConcreteGuiView displayPanel;
-  private int time;
+  private int currentTime;
+  private final static int timerTimeInMilliseconds = 1000;
   private final int borderBuffer = 20;
 
   /**
@@ -19,7 +20,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
    */
   public GuiViewImpl() {
     super("Music Player"); // sets the title of the frame
-    this.time = 0;
+    this.currentTime = 0;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
   }
 

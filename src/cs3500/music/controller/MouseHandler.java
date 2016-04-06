@@ -29,7 +29,7 @@ public class MouseHandler implements MouseListener {
         this.released = r;
         break;
       default:
-        throw new RuntimeException("Now howd ya do this?");
+        throw new RuntimeException("Now how'd ya do this?");
     }
   }
 

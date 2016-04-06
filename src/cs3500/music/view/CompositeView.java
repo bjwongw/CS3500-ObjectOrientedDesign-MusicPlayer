@@ -24,6 +24,30 @@ public class CompositeView implements GuiView {
   }
 
   @Override
+  public void initialize(IMusicModel m) {
+    this.midiViewImpl.initialize(m);
+    this.guiViewImpl.initialize(m);
+  }
+
+  @Override
+  public void play() {
+    this.midiViewImpl.play();
+    this.guiViewImpl.play();
+  }
+
+  @Override
+  public void pause() {
+    this.midiViewImpl.pause();
+    this.guiViewImpl.pause();
+  }
+
+  @Override
+  public void reset() {
+    this.midiViewImpl.reset();
+    this.guiViewImpl.reset();
+  }
+
+  @Override
   public void addKeyListener(KeyListener k) {
 //    this.midiViewImpl.addKeyListener(k);
     this.guiViewImpl.addKeyListener(k);
@@ -73,29 +97,5 @@ public class CompositeView implements GuiView {
   public void goToEnd() {
 //    this.midiViewImpl.endSong();
     this.guiViewImpl.goToEnd();
-  }
-
-  @Override
-  public void initialize(IMusicModel m) {
-    this.midiViewImpl.initialize(m);
-    this.guiViewImpl.initialize(m);
-  }
-
-  @Override
-  public void play() {
-    this.midiViewImpl.play();
-    this.guiViewImpl.play();
-  }
-
-  @Override
-  public void pause() {
-    this.midiViewImpl.pause();
-    this.guiViewImpl.pause();
-  }
-
-  @Override
-  public void reset() {
-    this.midiViewImpl.reset();
-    this.guiViewImpl.reset();
   }
 }
