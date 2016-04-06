@@ -11,9 +11,9 @@ import cs3500.music.model.Note;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for the ConsoleView class
+ * Tests for the ConsoleViewImpl class
  */
-public class ConsoleViewTest {
+public class ConsoleViewImplTest {
 
   /**
    * Test for the method initialize for a model whose beats go into double digits.
@@ -21,7 +21,7 @@ public class ConsoleViewTest {
   @Test
   public void testPrintMusic_doubleDigitBeats() {
     Appendable actualOutput = new StringBuilder();
-    IMusicView console = new ConsoleView(actualOutput);
+    View console = new ConsoleViewImpl(actualOutput);
     IMusicModel model = new GenericMusicModel();
 
     model.addNote(new Note(Note.Pitch.D, 3, 13, 4, 0, 0));
@@ -58,7 +58,7 @@ public class ConsoleViewTest {
   @Test
   public void testInitialize_noNotes() {
     Appendable actualOutput = new StringBuilder();
-    IMusicView console = new ConsoleView(actualOutput);
+    View console = new ConsoleViewImpl(actualOutput);
     IMusicModel model = new GenericMusicModel();
     console.initialize(model);
     assertEquals("", actualOutput.toString());
@@ -70,7 +70,7 @@ public class ConsoleViewTest {
   @Test
   public void testPrintMusic_twoOctaves() {
     Appendable actualOutput = new StringBuilder();
-    IMusicView console = new ConsoleView(actualOutput);
+    View console = new ConsoleViewImpl(actualOutput);
     IMusicModel model = new GenericMusicModel();
     model.addNote(new Note(Note.Pitch.C, 0, 0, 1, 0, 0));
     model.addNote(new Note(Note.Pitch.C_SHARP, 1, 1, 3, 0, 0));
@@ -93,7 +93,7 @@ public class ConsoleViewTest {
   @Test
   public void testInitialize_scaledPitches() throws IOException {
     Appendable actualOutput = new StringBuilder();
-    IMusicView console = new ConsoleView(actualOutput);
+    View console = new ConsoleViewImpl(actualOutput);
     IMusicModel actualModel = new GenericMusicModel();
 
     actualModel.addNote(new Note(Note.Pitch.F, 3, 0, 7, 0, 0));
@@ -119,7 +119,7 @@ public class ConsoleViewTest {
   @Test
   public void testInitialize_severalNotes() throws IOException {
     Appendable actualOutput = new StringBuilder();
-    IMusicView console = new ConsoleView(actualOutput);
+    View console = new ConsoleViewImpl(actualOutput);
     IMusicModel actualModel = new GenericMusicModel();
 
     actualModel.addNote(new Note(Note.Pitch.C, 5, 3, 1, 6, 2));

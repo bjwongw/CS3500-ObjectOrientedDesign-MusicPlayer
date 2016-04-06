@@ -8,16 +8,16 @@ import java.util.*;
 /**
  * A view to put the text version of the given composition to console.
  */
-public class ConsoleView implements IMusicView {
+public class ConsoleViewImpl implements View {
   private IMusicModel model;
   private Appendable output;
 
   /**
-   * Constructor for the ConsoleView
+   * Constructor for the ConsoleViewImpl
    *
    * @param output the output of this view
    */
-  public ConsoleView(Appendable output) {
+  public ConsoleViewImpl(Appendable output) {
     this.output = output;
   }
 

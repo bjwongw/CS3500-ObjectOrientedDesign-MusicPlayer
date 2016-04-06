@@ -7,10 +7,10 @@ import cs3500.music.model.IMusicModel;
 /**
  * The visual view for a composition
  */
-public class GuiViewImpl extends JFrame implements IGuiView {
+public class GuiViewImpl extends JFrame implements GuiView {
 
   private IMusicModel model;
-  private CompositionViewPanel displayPanel;
+  private ConcreteGuiView displayPanel;
   private int time;
   private final int borderBuffer = 20;
 
@@ -26,7 +26,7 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   @Override
   public void initialize(IMusicModel m) {
     this.model = m;
-    this.displayPanel = new CompositionViewPanel(model);
+    this.displayPanel = new ConcreteGuiView(model);
     getContentPane().add(displayPanel);
     this.setResizable(false);
     pack();

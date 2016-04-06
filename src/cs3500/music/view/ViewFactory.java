@@ -8,21 +8,21 @@ import javax.sound.midi.MidiUnavailableException;
 public class ViewFactory {
 
   /**
-   * Constructs an IMusicView using the implementation specified by type.
+   * Constructs an View using the implementation specified by type.
    *
-   * <ul> <li>console: a ConsoleView object</li> <li>midi: a MidiView object</li> <li>gui: a
+   * <ul> <li>console: a ConsoleViewImpl object</li> <li>midi: a MidiView object</li> <li>gui: a
    * GuiViewImpl object</li> </ul>
    *
    * @param type the implementation to use
    * @return an instance of the chosen implementation
    */
-  public static IMusicView construct(String type) {
+  public static View construct(String type) {
 
-    IMusicView view;
+    View view;
 
     switch (type) {
       case "console":
-        view = new ConsoleView(System.out);
+        view = new ConsoleViewImpl(System.out);
         break;
       case "midi":
         try {

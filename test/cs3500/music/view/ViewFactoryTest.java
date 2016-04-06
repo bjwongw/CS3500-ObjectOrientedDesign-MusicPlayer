@@ -22,7 +22,7 @@ public class ViewFactoryTest {
    */
   @Test
   public void correctClassTest() {
-    assertTrue(ViewFactory.construct("console") instanceof ConsoleView);
+    assertTrue(ViewFactory.construct("console") instanceof ConsoleViewImpl);
     assertTrue(ViewFactory.construct("midi") instanceof MidiView);
     assertTrue(ViewFactory.construct("gui") instanceof GuiViewImpl);
   }

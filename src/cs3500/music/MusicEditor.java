@@ -1,6 +1,5 @@
 package cs3500.music;
 
-import java.io.Externalizable;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,9 +22,9 @@ public class MusicEditor {
    * @param file the file to run all views on
    */
   public static void main2(String file) throws IOException, InvalidMidiDataException {
-    IMusicView consoleView = ViewFactory.construct("console");
-    IMusicView guiView = ViewFactory.construct("gui");
-    IMusicView midiView = ViewFactory.construct("midi");
+    View consoleView = ViewFactory.construct("console");
+    View guiView = ViewFactory.construct("gui");
+    View midiView = ViewFactory.construct("midi");
 
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
     IMusicModel m = MusicReader.parseFile(new FileReader(file), b);
@@ -55,7 +54,7 @@ public class MusicEditor {
     }
 
     FileReader file;
-    IMusicView view;
+    View view;
 
     try {
       file = new FileReader(args[0]);
@@ -82,7 +81,7 @@ public class MusicEditor {
 
     IMusicModel emptyModel = new GenericMusicModel(10000);
     emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
-    IMusicView view = new GuiViewImpl();
+    View view = new GuiViewImpl();
 //    view.initialize(emptyModel);
     view.initialize(m);
   }

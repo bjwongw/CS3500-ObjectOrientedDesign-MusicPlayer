@@ -3,12 +3,10 @@ package cs3500.music.view;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
-import cs3500.music.model.Note;
-
 /**
  * Interface to an advanced Gui view allowing user input.
  */
-public interface IGuiView extends IMusicView {
+public interface GuiView extends View {
 
   /**
    * Adds the given listener to the panel

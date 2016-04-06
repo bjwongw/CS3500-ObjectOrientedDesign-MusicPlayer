@@ -13,7 +13,7 @@ import cs3500.music.model.Note;
 /**
  * A type of JPanel that is used to display Notes in an IMusicModel.
  */
-public class CompositionViewPanel extends JPanel {
+public class ConcreteGuiView extends JPanel {
 
   // the lowest beat displayed
   private int columnStart;
@@ -54,11 +54,11 @@ public class CompositionViewPanel extends JPanel {
   private final IMusicModel model;
 
   /**
-   * Constructs the CompositionViewPanel.
+   * Constructs the ConcreteGuiView.
    *
    * @param model the music model to represent
    */
-  CompositionViewPanel(IMusicModel model) {
+  ConcreteGuiView(IMusicModel model) {
     super();
     this.model = model;
     this.rowStart = 0;
@@ -98,7 +98,7 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent the range of Pitches in this CompositionViewPanel's model. They
+   * Creates a JPanel to represent the range of Pitches in this ConcreteGuiView's model. They
    * are stacked vertically. The maximum number of pitches displayed are equal to this view's
    * numRows field. The first pitch displayed is the pitch associated with the rowStart field.
    *
@@ -120,11 +120,11 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent the range of beats in this CompositionViewPanel's model. The
+   * Creates a JPanel to represent the range of beats in this ConcreteGuiView's model. The
    * beat labels are measured in increments of 16, starting from 0. Each beat label spans the width
    * of four NoteSquares panels.
    *
-   * @return a JPanel representing the beats in this CompositionViewPanel's model, starting from 0
+   * @return a JPanel representing the beats in this ConcreteGuiView's model, starting from 0
    * and increasing in increments of 16 horizontally
    */
   /* TODO deal with final beat (if there's only one note at beat 1 for duration 1, too many
@@ -169,11 +169,11 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent all the notes contained in this CompositionViewPanel's model.
+   * Creates a JPanel to represent all the notes contained in this ConcreteGuiView's model.
    * The layout of this panel is a GridLayout, each cell containing four beats (four quarter
    * notes).
    *
-   * @return a JPanel representing all the notes in this CompositionViewPanel's model.
+   * @return a JPanel representing all the notes in this ConcreteGuiView's model.
    */
   // TODO ensure the proper size of the notesPanel
   private JPanel createNotesPanel() {
@@ -197,12 +197,12 @@ public class CompositionViewPanel extends JPanel {
 
   /**
    * Given a {@code List<List<NoteSquares>>}, this method adjusts all the NoteSquares to represent
-   * notes from this CompositionViewPanel's model. Each start beat of a Note is associated with a
+   * notes from this ConcreteGuiView's model. Each start beat of a Note is associated with a
    * black square in the NoteSquare, and each sustained beat for that same Note is represented as a
    * green square (with color value of RGB(42, 255, 55)).
    *
    * NOTE: may need to control for invariants, such as the notesP parameter being the wrong size in
-   * comparison to the model field in this CompositionViewPanel.
+   * comparison to the model field in this ConcreteGuiView.
    *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */

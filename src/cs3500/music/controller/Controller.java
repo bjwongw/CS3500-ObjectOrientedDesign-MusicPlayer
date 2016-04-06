@@ -1,11 +1,10 @@
 package cs3500.music.controller;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.Note;
-import cs3500.music.view.IGuiView;
+import cs3500.music.view.GuiView;
 
 /**
  * {@link IController} implementation.
@@ -23,7 +22,7 @@ import cs3500.music.view.IGuiView;
 public class Controller implements IController {
 
   private final GenericMusicModel model;
-  private final IGuiView view;
+  private final GuiView view;
   private final KeyboardHandler keyboardHandler;
   private final MouseHandler mouseHandler;
 
@@ -33,7 +32,7 @@ public class Controller implements IController {
    * @param model the model to use
    * @param view the view to control
    */
-  public Controller(GenericMusicModel model, IGuiView view) {
+  public Controller(GenericMusicModel model, GuiView view) {
     this.model = model;
     this.view = view;
     this.keyboardHandler = new KeyboardHandler();

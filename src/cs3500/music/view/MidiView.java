@@ -26,7 +26,7 @@ import cs3500.music.model.Note;
 /**
  * The audio view (in MIDI) for an IMusicModel.
  */
-public class MidiView implements IMusicView {
+public class MidiView implements View {
   private final Synthesizer synth;
   private final Receiver receiver;
   private IMusicModel model;

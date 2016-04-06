@@ -5,7 +5,7 @@ import cs3500.music.model.IMusicModel;
 /**
  * Specifies operations for any music view.
  */
-public interface IMusicView {
+public interface View {
 
   /**
    * Initializes the view and provides it, playing it immediately if its a static view. If it is a
