@@ -72,19 +72,18 @@ public class MusicEditor {
   }
 
   public static void main(String[] args) throws IOException, MidiUnavailableException {
-
-    try {
-      main2("mystery-3.txt");
-    } catch (Exception e) {
-
-    }
-//    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-//    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 //
-//    IMusicModel emptyModel = new GenericMusicModel(10000);
-//    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
-//    IMusicView view = new GuiViewImpl();
-////    view.initialize(emptyModel);
-//    view.initialize(m);
+//    try {
+//      main2("mystery-3.txt");
+//    } catch (Exception e) {
+//
+    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
+    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
+
+    IMusicModel emptyModel = new GenericMusicModel(10000);
+    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
+    IMusicView view = new GuiViewImpl();
+//    view.initialize(emptyModel);
+    view.initialize(m);
   }
 }

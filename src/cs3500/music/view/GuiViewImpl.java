@@ -1,9 +1,8 @@
 package cs3500.music.view;
 
-import java.awt.*;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
 
 /**
  * The visual view for a composition
@@ -13,6 +12,7 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   private IMusicModel model;
   private CompositionViewPanel displayPanel;
   private int time;
+  private final int borderBuffer = 20;
 
   /**
    * Creates a new GuiViewImpl
@@ -28,12 +28,13 @@ public class GuiViewImpl extends JFrame implements IGuiView {
     this.model = m;
     this.displayPanel = new CompositionViewPanel(model);
     getContentPane().add(displayPanel);
-//    JScrollPane scroll = new JScrollPane(displayPanel);
-//    getContentPane().add(scroll);
-    pack();
-    this.setVisible(true);
     this.setResizable(false);
+    pack();
+    this.setSize(this.getWidth() + this.borderBuffer, this.getHeight() + this.borderBuffer);
+    this.setVisible(true);
   }
+
+  // TODO: ADD RED LINE!
 
   @Override
   public void play() {
@@ -48,55 +49,57 @@ public class GuiViewImpl extends JFrame implements IGuiView {
   @Override
   public void reset() {
     this.displayPanel.reset();
+    this.repaint();
   }
 
   @Override
-  public Note.Pitch getPitchAtCursor() {
-    return null;
+  public void addMouseListener(MouseListener m) {
+    this.displayPanel.addMouseListener(m);
+  }
+
+  @Override
+  public int getPitchAtCursor() {
+    return this.displayPanel.getPitchAtCursor(this.borderBuffer);
   }
 
   @Override
   public int getBeatAtCursor() {
-    return 0;
+    return this.displayPanel.getBeatAtCursor(this.borderBuffer);
   }
 
   @Override
   public void update() {
-
+    this.displayPanel.updatePanel();
+    this.repaint();
   }
 
   @Override
   public void scrollRight() {
     this.displayPanel.shift("right");
+    this.repaint();
   }
 
   @Override
   public void scrollLeft() {
     this.displayPanel.shift("left");
+    this.repaint();
   }
 
   @Override
   public void scrollUp() {
     this.displayPanel.shift("up");
+    this.repaint();
   }
 
   @Override
   public void scrollDown() {
     this.displayPanel.shift("down");
-  }
-
-  @Override
-  public void goToStart() {
-
+    this.repaint();
   }
 
   @Override
   public void goToEnd() {
-
+    this.displayPanel.goToEnd();
+    this.repaint();
   }
-
-//  @Override
-//  public Dimension getPreferredSize() {
-//    return new Dimension(displayPanel.getWidth() + 50, displayPanel.getHeight() + 50);
-//  }
 }

@@ -18,7 +18,7 @@ public class NoteSquaresTest {
    */
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSetNoteColor_negativeIndex() {
-    NoteSquares noteSquare = new NoteSquares();
+    NoteSquares noteSquare = new NoteSquares(4);
     noteSquare.setNoteColor(-1, Color.BLACK);
   }
 
@@ -27,7 +27,7 @@ public class NoteSquaresTest {
    */
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSetNoteColor_indexTooHigh() {
-    NoteSquares noteSquare = new NoteSquares();
+    NoteSquares noteSquare = new NoteSquares(4);
     noteSquare.setNoteColor(4, Color.BLACK);
   }
 
@@ -36,7 +36,7 @@ public class NoteSquaresTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void testSetNoteColor_nullInput() {
-    NoteSquares noteSquare = new NoteSquares();
+    NoteSquares noteSquare = new NoteSquares(4);
     noteSquare.setNoteColor(0, null);
   }
 
@@ -45,7 +45,7 @@ public class NoteSquaresTest {
    */
   @Test
   public void testGetPreferredSize() throws Exception {
-    JPanel noteSquare = new NoteSquares();
+    JPanel noteSquare = new NoteSquares(4);
     assertEquals(new Dimension(NoteSquares.PREF_W * 4, NoteSquares.PREF_H),
             noteSquare.getPreferredSize());
   }

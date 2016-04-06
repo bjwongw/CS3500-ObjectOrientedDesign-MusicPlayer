@@ -113,7 +113,6 @@ public class MidiView implements IMusicView {
       throw new IllegalStateException("Cannot play the Midi model without providing a model (via" +
               " initialize) first!");
     }
-
     this.timer = new Timer();
     this.timer.scheduleAtFixedRate(new PlayBeat(), 0, this.model.getTempo() / 1000);
   }
