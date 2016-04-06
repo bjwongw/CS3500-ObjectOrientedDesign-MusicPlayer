@@ -29,8 +29,12 @@ public class CompositionViewPanel extends JPanel {
   // the total range of beats to display
   private final int displayedBeats = 48;
 
+  // the number of beats per cell
+  // TODO remove the major numbers and replace with beatsPerCell field
+  private final int beatsPerCell = 4;
+
   // the number of columns to show at a time
-  private final int numColumns = displayedBeats / 4;
+  private final int numColumns = displayedBeats / beatsPerCell;
 
   // the number of rows to show at a time
   private final int numRows = 32;
@@ -39,7 +43,7 @@ public class CompositionViewPanel extends JPanel {
   private final int cellHeight = 20;
 
   // the width of each cell containing notes (pixels)
-  private final int cellWidth = cellHeight * 4;
+  private final int cellWidth = cellHeight * beatsPerCell;
 
   // the width of the space to the left of the note grid (pixels)
   private final int horizontalBuffer = 40;
@@ -48,9 +52,6 @@ public class CompositionViewPanel extends JPanel {
   private final int verticalBuffer = 20;
 
   private final IMusicModel model;
-  private JPanel pitchPanel;
-  private JPanel beatPanel;
-  private JPanel notesPanel;
 
   /**
    * Constructs the CompositionViewPanel.
@@ -66,10 +67,15 @@ public class CompositionViewPanel extends JPanel {
     this.updatePanel();
   }
 
+  /**
+   * Updates this panel by removing the previous components (if any), and creating new
+   * panels of the pitches, beats, and notes.
+   */
   public void updatePanel() {
-    this.pitchPanel = createPitchPanel();
-    this.beatPanel = createBeatPanel();
-    this.notesPanel = createNotesPanel();
+    this.removeAll();
+    JPanel pitchPanel = createPitchPanel();
+    JPanel beatPanel = createBeatPanel();
+    JPanel notesPanel = createNotesPanel();
 
     GridBagLayout gridBag = new GridBagLayout();
     GridBagConstraints constraints = new GridBagConstraints();
@@ -179,7 +185,7 @@ public class CompositionViewPanel extends JPanel {
     for (int i = 0; i < rows; i++) {
       panelHolder.add(new ArrayList<>());
       for (int j = 0; j < this.numColumns; j++) {
-        NoteSquares squares = new NoteSquares();
+        NoteSquares squares = new NoteSquares(beatsPerCell);
         squares.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelHolder.get(i).add(squares);
         notesP.add(panelHolder.get(i).get(j));
@@ -210,10 +216,6 @@ public class CompositionViewPanel extends JPanel {
           List<NoteSquares> pitchList = notesP.get(pitchIndex);
           int start = n.getStart() - columnStart;
           pitchList.get(start / 4).setNoteColor(start % 4, Color.BLACK);
-//          int maxBoundary = this.displayedBeats;
-//          for (int j = start + 1; j < start + n.getDuration() && j < maxBoundary; j++) {
-//            pitchList.get(j / 4).setNoteColor(j % 4, new Color(42, 255, 55));
-//          }
         }
       }
       List<Note> sustainedNotes = new ArrayList<>(model.sustainedNotes(i));
@@ -230,9 +232,14 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
+   * Shifts the view of this panel. The valid options are the following (in the exact case):
+   * "left", "right", "up", or "down". Giving the argument "left" will decrease the beat interval,
+   * and giving the argument "right" will do the opposite. The argument "up" will increase the
+   * highest pitch displayed, and "down" will decrease the pitch range.
    *
-   * @param direction
-   * @throws IllegalArgumentException
+   * @param direction the direction to shift the view
+   * @throws IllegalArgumentException if the given direction is not one of: left, right, up, or
+   * down
    */
   public void shift(String direction) {
     switch(direction) {
@@ -261,7 +268,9 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
-   *
+   * Resets this view panel, setting the starting beat at 0, the highest pitch as the highest
+   * pitch in the model, and the rowStart field at 0. The panel is then updated to reflect these
+   * changes.
    */
   public void reset() {
     this.rowStart = 0;
@@ -271,10 +280,11 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
+   * Returns the pitch (in MIDI format) at the cursor's Y location.
    *
-   * @param externalVertBuffer
-   * @return
-   * @throws IllegalStateException
+   * @param externalVertBuffer the buffer from any external panels or frames holding this panel
+   * @return the pitch (in MIDI format) at the cursor's Y location
+   * @throws IllegalStateException if the mouse's Y coordinate is outside of the pitch display range
    */
   public int getPitchAtCursor(int externalVertBuffer) {
     Point mousePos = this.getMousePosition();
@@ -290,19 +300,40 @@ public class CompositionViewPanel extends JPanel {
   }
 
   /**
+   * Returns the beat at the cursor's X location.
    *
-   * @param externalHorizBuffer
-   * @return
-   * @throws IllegalStateException
+   * @param externalHorizBuffer the buffer from any external panels or frames holding this panel
+   * @return the beat at the cursor's X location
+   * @throws IllegalStateException if the mouse's X coordinate is outside of the beat display range
    */
-  //TODO finish this
   public int getBeatAtCursor(int externalHorizBuffer) {
     Point mousePos = this.getMousePosition();
     int mouseX = (int) mousePos.getX();
     mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer;
     if (mouseX >= 0) {
-      mouseX /= cellWidth;
+      mouseX /= cellWidth; // cellWidth reflects the width of four beats
+      return mouseX / beatsPerCell;
     }
-    return 0;
+    else {
+      throw new IllegalStateException("Mouse Y coordinate is outside the pitch display range");
+    }
+  }
+
+  /**
+   * Displays the end of the model. The last beat played will be in the farthest right cell
+   * displayed. The columnStart field is set to enable this view, and the panel is updated.
+   */
+  public void goToEnd() {
+    int finalBeat = this.model.finalBeat();
+    int displayedSections = this.displayedBeats / beatsPerCell;
+    int sectionsToFinalBeat = finalBeat / beatsPerCell;
+    int offset = sectionsToFinalBeat - displayedSections + 1; // +1 because beats are displayed
+                                                              // starting at 0
+    if (offset <= 0) {
+      this.columnStart = 0;
+    } else {
+      this.columnStart = offset * beatsPerCell;
+    }
+    this.updatePanel();
   }
 }

@@ -12,18 +12,20 @@ import javax.swing.*;
 public class NoteSquares extends JPanel {
   static final int PREF_W = 20;
   static final int PREF_H = PREF_W;
+  private final int numSquares;
 
   //guaranteed to be only four Rectangles
   //NOTE: may want to change this invariant in the future so it can be of any size
-  private final List<Color> notes = new ArrayList<>(4);
+  private final List<Color> notes = new ArrayList<>();
 
   /**
    * Constructs a NoteSquares object
    */
-  public NoteSquares() {
+  public NoteSquares(int numSquares) {
     super();
+    this.numSquares = numSquares;
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < numSquares; i++) {
       this.notes.add(getBackground());
     }
   }
@@ -36,7 +38,7 @@ public class NoteSquares extends JPanel {
    */
   public void setNoteColor(int index, Color color) {
     if (index < 0 || index > notes.size()) {
-      throw new IndexOutOfBoundsException("Must give an int between 0 and 3");
+      throw new IndexOutOfBoundsException("Must give a valid index");
     } else if (color == null) {
       throw new IllegalArgumentException("Cannot give a null Color");
     } else {
@@ -46,7 +48,7 @@ public class NoteSquares extends JPanel {
 
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension(PREF_W * 4, PREF_H);
+    return new Dimension(PREF_W * numSquares, PREF_H);
   }
 
   @Override
