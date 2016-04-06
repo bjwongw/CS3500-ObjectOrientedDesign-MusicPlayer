@@ -32,6 +32,7 @@ public class MidiView implements IMusicView {
   private IMusicModel model;
   private Queue<Integer> channels;
   private int currentBeat = 0;
+  private Timer timer;
 
   public MidiView() throws MidiUnavailableException {
     this(MidiSystem.getSynthesizer());
@@ -112,43 +113,27 @@ public class MidiView implements IMusicView {
       throw new IllegalStateException("Cannot play the Midi model without providing a model (via" +
               " initialize) first!");
     }
-    int currentBeat = 0;
-
-    while (currentBeat <= this.model.finalBeat()) {
-//      this.update(currentBeat);
-      try {
-        Thread.sleep(Integer.toUnsignedLong(model.getTempo() / 1000));
-      } catch (InterruptedException e) {
-        //TODO what to do here
-      }
-      currentBeat += 1;
-    }
-    int wait = 0;
-    for (Note n : model.notesToPlay(model.finalBeat())) {
-      wait = Math.max(n.getDuration(), wait);
-    }
-    try {
-      Thread.sleep(Integer.toUnsignedLong(wait * model.getTempo() / 1000));
-    } catch (InterruptedException e) {
-      //TODO what to do here
-    }
-    synth.close();
+    this.timer = new Timer();
+    this.timer.scheduleAtFixedRate(new PlayBeat(), 0, this.model.getTempo() / 1000);
   }
 
   @Override
   public void pause() {
+    if(this.timer != null) {
+      this.timer.cancel();
+    }
   }
 
   @Override
   public void reset() {
-
+    this.currentBeat = 0;
   }
 
   @Override
   public void initialize(IMusicModel m) {
     this.model = m;
     channels.clear();
-    play();
+    this.play();
   }
 
   private class PlayBeat extends TimerTask{
@@ -156,6 +141,8 @@ public class MidiView implements IMusicView {
       for (Note n : model.notesToPlay(currentBeat)) {
         playNote(n);
       }
+      currentBeat += 1;
+      System.out.println("Playing beat!");
     }
   }
 
