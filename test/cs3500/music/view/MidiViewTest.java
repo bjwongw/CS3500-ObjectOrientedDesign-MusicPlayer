@@ -28,7 +28,7 @@ public class MidiViewTest {
   StringBuilder expected = new StringBuilder();
   Synthesizer synth = new MidiView.MockSynthesizer(log);
   MidiView view = new MidiView(synth);
-  IMusicModel model = new GenericMusicModel(0);
+  IMusicModel model = new GenericMusicModel(1000);
 
   /**
    * Adds a note to the end of both the model and the expected log of notes played
@@ -75,7 +75,7 @@ public class MidiViewTest {
    * Tests that a melody of notes is played correctly, and in order.
    */
   @Test
-  public void melodyTest() {
+  public void melodyTest() throws InterruptedException {
     expected.append("Synthesizer opened\n");
     int start = 0;
     for (int p = 0; p < 12; p++) {
@@ -93,11 +93,11 @@ public class MidiViewTest {
     }
 
     this.view.initialize(this.model);
-    expected.append("Synthesizer closed\n");
+    this.view.play();
+    Thread.sleep(1000);
     assertEquals(expected.toString(), log.toString());
     assertTrue(compareLogs(log, expected));
     assertTrue(compareLogs(expected, log));
-
   }
 
   /**
@@ -105,7 +105,7 @@ public class MidiViewTest {
    * expected.
    */
   @Test
-  public void melodyPlus1Test() {
+  public void melodyPlus1Test() throws InterruptedException {
     for (int p = 0; p < 12; p++) {
       for (int o = 0; o < 3; o++) {
         for (int d = 1; d < 3; d++) {
@@ -120,9 +120,12 @@ public class MidiViewTest {
     }
     expected.append("Synthesizer opened\n");
     this.view.initialize(this.model);
-    expected.append("Synthesizer closed\n");
+    this.view.play();
+    Thread.sleep(1000);
     model.addNote(new Note(Note.Pitch.A, 6, 3, 2, 1, 0));
     this.view.initialize(this.model);
+    this.view.play();
+    Thread.sleep(1000);
     assertFalse(compareLogs(expected, log));
   }
 
@@ -130,7 +133,7 @@ public class MidiViewTest {
    * Tests that a harmony of notes is played correctly, no notes getting skipped.
    */
   @Test
-  public void harmonyTest() {
+  public void harmonyTest() throws InterruptedException {
     for (int s = 0; s < 4; s++) {
       for (int p = 0; p < 12; p++) {
         for (int o = 0; o < 3; o++) {
@@ -146,7 +149,8 @@ public class MidiViewTest {
     }
     expected.append("Synthesizer opened\n");
     this.view.initialize(this.model);
-    expected.append("Synthesizer closed\n");
+    this.view.play();
+    Thread.sleep(1000);
     assertTrue(compareLogs(expected, log));
     assertTrue(compareLogs(log, expected));
   }
@@ -155,7 +159,7 @@ public class MidiViewTest {
    * Verifies that little lamb is played correctly.
    */
   @Test
-  public void littleLambTest() throws FileNotFoundException {
+  public void littleLambTest() throws FileNotFoundException, InterruptedException {
     IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), new
             GenericMusicModel.Builder());
 
@@ -166,7 +170,8 @@ public class MidiViewTest {
 
     expected.append("Synthesizer opened\n");
     this.view.initialize(this.model);
-    expected.append("Synthesizer closed\n");
+    this.view.play();
+    Thread.sleep(1000);
     assertTrue(compareLogs(expected, log));
     assertTrue(compareLogs(log, expected));
   }
