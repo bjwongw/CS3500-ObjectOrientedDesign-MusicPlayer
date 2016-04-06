@@ -1,5 +1,6 @@
 package cs3500.music;
 
+import java.io.Externalizable;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -72,13 +73,18 @@ public class MusicEditor {
 
   public static void main(String[] args) throws IOException, MidiUnavailableException {
 
-    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
+    try {
+      main2("mystery-3.txt");
+    } catch (Exception e) {
 
-    IMusicModel emptyModel = new GenericMusicModel(10000);
-    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
-    IMusicView view = new GuiViewImpl();
-//    view.initialize(emptyModel);
-    view.initialize(m);
+    }
+//    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
+//    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
+//
+//    IMusicModel emptyModel = new GenericMusicModel(10000);
+//    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
+//    IMusicView view = new GuiViewImpl();
+////    view.initialize(emptyModel);
+//    view.initialize(m);
   }
 }
