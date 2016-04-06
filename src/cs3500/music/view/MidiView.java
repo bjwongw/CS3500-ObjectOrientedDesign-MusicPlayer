@@ -126,14 +126,15 @@ public class MidiView implements IMusicView {
 
   @Override
   public void reset() {
+    this.pause();
     this.currentBeat = 0;
   }
 
   @Override
   public void initialize(IMusicModel m) {
+    this.reset();
     this.model = m;
     channels.clear();
-    this.play();
   }
 
   private class PlayBeat extends TimerTask{
@@ -142,7 +143,6 @@ public class MidiView implements IMusicView {
         playNote(n);
       }
       currentBeat += 1;
-      System.out.println("Playing beat!");
     }
   }
 
