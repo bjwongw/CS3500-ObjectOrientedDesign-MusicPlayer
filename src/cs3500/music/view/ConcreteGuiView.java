@@ -1,6 +1,7 @@
 package cs3500.music.view;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ public class ConcreteGuiView extends JPanel {
   // the highest pitch to be displayed
   private int rowStartMidi;
 
-  // the total range of beats to display
+  // the max range of beats to display
   private final int displayedBeats = 48;
 
   // the number of beats per cell
@@ -229,6 +230,25 @@ public class ConcreteGuiView extends JPanel {
         }
       }
     }
+  }
+
+  void drawRedLine(int beat) {
+    int x;
+    int yTop;
+    int yBottom;
+    if (beat == columnStart + displayedBeats) {
+      x = horizontalBuffer;
+      yTop = verticalBuffer;
+      yBottom = 0;
+    } else {
+      x = 0;
+      yTop = 0;
+      yBottom = 0;
+    }
+    double xDouble = (double) x;
+    double yTopDouble = (double) yTop;
+    double yBottomDouble = (double) yBottom;
+    Line2D line = new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
   }
 
   /**

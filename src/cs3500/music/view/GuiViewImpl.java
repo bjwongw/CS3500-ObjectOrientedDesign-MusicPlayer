@@ -1,5 +1,7 @@
 package cs3500.music.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import cs3500.music.model.IMusicModel;
@@ -9,11 +11,13 @@ import cs3500.music.model.IMusicModel;
  */
 public class GuiViewImpl extends JFrame implements GuiView {
 
+  private final static int timerTimeInMilliseconds = 1000;
+  private final int borderBuffer = 20;
   private IMusicModel model;
   private ConcreteGuiView displayPanel;
   private int currentTime;
-  private final static int timerTimeInMilliseconds = 1000;
-  private final int borderBuffer = 20;
+  private Timer timer;
+  private boolean isPlaying;
 
   /**
    * Creates a new GuiViewImpl
@@ -21,6 +25,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
   public GuiViewImpl() {
     super("Music Player"); // sets the title of the frame
     this.currentTime = 0;
+    this.isPlaying = false;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
   }
 
@@ -33,23 +38,37 @@ public class GuiViewImpl extends JFrame implements GuiView {
     pack();
     this.setSize(this.getWidth() + this.borderBuffer, this.getHeight() + this.borderBuffer);
     this.setVisible(true);
+    this.timer = new Timer(model.getTempo() / timerTimeInMilliseconds, new ActionListener() {
+      @Override public void actionPerformed(ActionEvent e) {
+        if (isPlaying) {
+          currentTime += 1;
+//          displayPanel.adjustRedLine(currentTime);
+          repaint();
+        }
+      }
+    });
+    timer.setInitialDelay(0);
   }
 
   // TODO: ADD RED LINE!
 
   @Override
   public void play() {
-
+    this.isPlaying = true;
+    this.timer.start();
   }
 
   @Override
   public void pause() {
-
+    this.isPlaying = false;
+    this.timer.stop();
   }
 
   @Override
   public void reset() {
+    this.isPlaying = false;
     this.displayPanel.reset();
+    this.timer.restart();
     this.repaint();
   }
 

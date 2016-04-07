@@ -81,7 +81,7 @@ public class MusicEditor {
 
     IMusicModel emptyModel = new GenericMusicModel(10000);
     emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
-    View view = new GuiViewImpl();
+    GuiView view = new GuiViewImpl();
 //    view.initialize(emptyModel);
     view.initialize(m);
   }
