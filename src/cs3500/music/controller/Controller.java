@@ -39,7 +39,6 @@ public class Controller implements IController {
    * Binds functions to the handlers and inserts the handlers into the view.
    */
   private void initialize() {
-    // TODO jump to beginning or end using HOME and END keys
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE, new PausePlay());
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_R, new Reset());
 
@@ -105,7 +104,6 @@ public class Controller implements IController {
   private class Move {
     private class Up implements Runnable {
       public void run() {
-        System.out.println("Moving up!");
         view.scrollUp();
       }
     }
@@ -180,7 +178,9 @@ public class Controller implements IController {
                   view.getBeatAtCursor(), duration, 1, 60));
           resetOnNextInput = true;
           view.update();
-        } catch (IllegalStateException e) {}
+        } catch (IllegalStateException e) {
+          // do nothing
+        }
       }
     }
 
@@ -214,9 +214,6 @@ public class Controller implements IController {
       public void run() {
         int beat = view.getBeatAtCursor();
         int p = view.getPitchAtCursor();
-        System.out.println(beat);
-        System.out.println(Note.midiToPitch(p));
-        System.out.println(Note.midiToOctave(p));
         for (Note n : model.notesToPlay(beat)) {
           if (n.getMidiPitch() == p) {
             note = n;
@@ -229,17 +226,18 @@ public class Controller implements IController {
 
     private class PutDown implements Runnable {
       public void run() {
-        if(isMoving) {
-          int beat = view.getBeatAtCursor();
-          int p = view.getPitchAtCursor();
-          model.removeNote(note);
-          model.addNote(new Note(Note.midiToPitch(p), Note.midiToOctave(p),
-                  beat, note.getDuration(), note.getInstrument(), note.getVolume()));
-          System.out.println("I made it here!");
+        if (note != null) {
+          if(isMoving) {
+            int beat = view.getBeatAtCursor();
+            int p = view.getPitchAtCursor();
+            model.removeNote(note);
+            model.addNote(new Note(Note.midiToPitch(p), Note.midiToOctave(p),
+              beat, note.getDuration(), note.getInstrument(), note.getVolume()));
+          }
+          isMoving = false;
+          note = null;
+          view.update();
         }
-        isMoving = false;
-        view.update();
-        System.out.println("I updated!");
       }
     }
   }

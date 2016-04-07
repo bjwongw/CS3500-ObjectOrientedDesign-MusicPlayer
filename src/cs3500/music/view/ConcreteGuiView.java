@@ -53,7 +53,6 @@ public class ConcreteGuiView extends JPanel {
   private int rowStartMidi;
 
   private final IMusicModel model;
-
   private int currentTime;
 
   /**
@@ -183,7 +182,6 @@ public class ConcreteGuiView extends JPanel {
    * @return a JPanel representing all the notes in this ConcreteGuiView's model.
    */
   private JPanel createNotesPanel() {
-    int pitchRows = model.getPitchRange().size();
     JPanel notesP = new JPanel(new GridLayout(this.numRows, this.numColumns));
     notesP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     List<List<NoteSquares>> panelHolder = new ArrayList<>();
@@ -237,7 +235,6 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
-  // TODO red line disappears when screen shifts
   private Line2D getTimeLine() {
     if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
       int xViewPos = currentTime - columnStart;
@@ -247,7 +244,6 @@ public class ConcreteGuiView extends JPanel {
       double xDouble = (double) x;
       double yTopDouble = (double) yTop;
       double yBottomDouble = (double) yBottom;
-      System.out.println("X: " + x + ", yTop: " + yTop + ", yBottom: " + yBottom);
       return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
     } else {
       throw new IllegalStateException("View is out of sync with current time");
@@ -364,7 +360,7 @@ public class ConcreteGuiView extends JPanel {
     int mouseX = (int) mousePos.getX();
     mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer + beatsPerCell;
     if (mouseX >= 0) {
-      mouseX /= (cellWidth / beatsPerCell);
+      mouseX /= beatSquareDim;
       return this.columnStart + mouseX;
     }
     else {
