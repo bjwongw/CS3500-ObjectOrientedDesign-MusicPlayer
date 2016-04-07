@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
 
-import cs3500.music.controller.Controller;
+import cs3500.music.controller.GuiController;
 import cs3500.music.controller.IController;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
@@ -85,6 +85,6 @@ public class MusicEditor {
     IMusicModel emptyModel = new GenericMusicModel(10000);
     GuiView view = new CompositeView(m);
 
-    IController c = new Controller(m, view);
+    IController c = new GuiController(m, view);
   }
 }

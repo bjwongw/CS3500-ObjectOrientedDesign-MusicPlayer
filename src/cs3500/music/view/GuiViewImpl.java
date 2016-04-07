@@ -9,13 +9,14 @@ import cs3500.music.model.IMusicModel;
  */
 public class GuiViewImpl extends JFrame implements GuiView {
 
-  private final static int timerTimeInMilliseconds = 1000;
+  // the extra buffer surrounding any components this frame holds
   private final int borderBuffer = 20;
+
+  // invariant: this will always be a positive integer
   private int currentTime = 0;
-  private boolean isPlaying = false;
+
   private IMusicModel model;
   private ConcreteGuiView displayPanel;
-  private Timer timer;
 
   /**
    * Creates a new GuiViewImpl
@@ -34,33 +35,18 @@ public class GuiViewImpl extends JFrame implements GuiView {
     pack();
     this.setSize(this.getWidth() + this.borderBuffer, this.getHeight() + this.borderBuffer);
     this.setVisible(true);
-    this.timer = new Timer(model.getTempo() / timerTimeInMilliseconds, e -> {
-      if (isPlaying) {
-        currentTime += 1;
-        displayPanel.setBeatBar(currentTime);
-      }
-    });
-    timer.setInitialDelay(0);
   }
 
   @Override
-  public void play() {
-    this.isPlaying = true;
-    this.timer.start();
-  }
+  public void play() { }
 
   @Override
-  public void pause() {
-    this.isPlaying = false;
-    this.timer.stop();
-  }
+  public void pause() { }
 
   @Override
   public void reset() {
-    this.isPlaying = false;
-    this.displayPanel.reset();
     this.currentTime = 0;
-    this.timer.restart();
+    this.displayPanel.reset();
     this.validate();
     this.repaint();
   }
@@ -136,8 +122,8 @@ public class GuiViewImpl extends JFrame implements GuiView {
 
   @Override
   public void moveBeatIndicator() {
-    this.displayPanel.setBeatBar(this.currentTime + 1);
     this.currentTime += 1;
+    this.displayPanel.setBeatBar(this.currentTime);
     this.validate();
     this.repaint();
   }

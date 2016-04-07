@@ -13,7 +13,7 @@ import cs3500.music.view.GuiView;
  * then left click</li> <li>MoveNote: Right click and hold, release where you want</li>
  * <li>JumpToStart: Home</li> <li>JumpToEnd: End</li> </ul>
  */
-public class Controller implements IController {
+public class GuiController implements IController {
 
   private final IMusicModel model;
   private final GuiView view;
@@ -26,7 +26,7 @@ public class Controller implements IController {
    * @param model the model to use
    * @param view  the view to control
    */
-  public Controller(IMusicModel model, GuiView view) {
+  public GuiController(IMusicModel model, GuiView view) {
     this.model = model;
     this.view = view;
     this.keyboardHandler = new KeyboardHandler();
