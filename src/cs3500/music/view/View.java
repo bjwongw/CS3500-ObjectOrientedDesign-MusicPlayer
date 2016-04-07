@@ -1,5 +1,7 @@
 package cs3500.music.view;
 
+import java.util.TimerTask;
+
 import cs3500.music.model.IMusicModel;
 
 /**
@@ -29,4 +31,13 @@ public interface View {
    * Resets the view to paused on beat 0, awaiting input.
    */
   void reset();
+
+  /**
+   * Adds the provided handler to the view, getting run on every occurrence of a beat, if this view
+   * supports it.
+   *
+   * @param r the handler
+   * @return true if the handler was added, false if the view does not support beats or ticks
+   */
+  boolean addTickHandler(Runnable r);
 }

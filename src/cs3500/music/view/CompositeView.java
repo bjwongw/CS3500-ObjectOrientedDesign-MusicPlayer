@@ -54,6 +54,12 @@ public class CompositeView implements GuiView {
   }
 
   @Override
+  public boolean addTickHandler(Runnable r) {
+    this.midiViewImpl.addTickHandler(r);
+    return true;
+  }
+
+  @Override
   public void addKeyListener(KeyListener k) {
     this.guiViewImpl.addKeyListener(k);
   }
@@ -108,7 +114,7 @@ public class CompositeView implements GuiView {
   }
 
   @Override
-  public void moveBeatIndicator(int beat) {
-    this.guiViewImpl.moveBeatIndicator(beat);
+  public void moveBeatIndicator() {
+    this.guiViewImpl.moveBeatIndicator();
   }
 }

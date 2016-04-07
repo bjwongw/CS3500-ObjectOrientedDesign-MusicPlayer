@@ -65,11 +65,19 @@ public class GuiController implements IController {
 
     this.view.addKeyListener(this.keyboardHandler);
     this.view.addMouseListener(this.mouseHandler);
+    this.view.addTickHandler(new OnTick());
   }
 
   @Override
   public void start() {
     view.initialize(this.model);
+  }
+
+  private class OnTick implements Runnable {
+    @Override
+    public void run() {
+      view.moveBeatIndicator();
+    }
   }
 
   /**
