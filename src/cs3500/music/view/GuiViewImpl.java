@@ -135,8 +135,9 @@ public class GuiViewImpl extends JFrame implements GuiView {
   }
 
   @Override
-  public void moveBeatIndicator(int beat) {
-    this.displayPanel.setBeatBar(beat);
+  public void moveBeatIndicator() {
+    this.displayPanel.setBeatBar(this.currentTime + 1);
+    this.currentTime += 1;
     this.validate();
     this.repaint();
   }
