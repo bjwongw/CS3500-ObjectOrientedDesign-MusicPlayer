@@ -1,8 +1,10 @@
 package cs3500.music.view;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import javax.swing.*;
 import cs3500.music.model.IMusicModel;
 
@@ -42,7 +44,8 @@ public class GuiViewImpl extends JFrame implements GuiView {
       @Override public void actionPerformed(ActionEvent e) {
         if (isPlaying) {
           currentTime += 1;
-//          displayPanel.adjustRedLine(currentTime);
+          Line2D line = displayPanel.getTimeLine(currentTime);
+          validate();
           repaint();
         }
       }
@@ -68,7 +71,9 @@ public class GuiViewImpl extends JFrame implements GuiView {
   public void reset() {
     this.isPlaying = false;
     this.displayPanel.reset();
+    this.currentTime = 0;
     this.timer.restart();
+    this.validate();
     this.repaint();
   }
 
@@ -133,4 +138,13 @@ public class GuiViewImpl extends JFrame implements GuiView {
     this.validate();
     this.repaint();
   }
+
+//  @Override
+//  public void paintComponents(Graphics g) {
+//    super.paintComponents(g);
+//    Graphics2D g2 = (Graphics2D) g;
+//    g2.setColor(Color.RED);
+//    g2.draw(displayPanel.getTimeLine(currentTime));
+//    g2.drawString("HELLOOOOOOO", 50, 50);
+//  }
 }

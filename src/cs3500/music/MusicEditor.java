@@ -79,17 +79,16 @@ public class MusicEditor {
 //    } catch (Exception e) {
 //
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
+
+    // NOTE df-ttfaf.txt won't run because it has at least one note with a duration < 1
+    IMusicModel m = MusicReader.parseFile(new FileReader("zoot-zl.txt"), b);
 
     IMusicModel emptyModel = new GenericMusicModel(10000);
     emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
 
-//    GuiView view = new GuiViewImpl();
-//    view.initialize(emptyModel);
-//    view.initialize(m);
 
     GuiView view = new CompositeView(m);
-//
+
     IController c = new Controller(m, view);
   }
 }

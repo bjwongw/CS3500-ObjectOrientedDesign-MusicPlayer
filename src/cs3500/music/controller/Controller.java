@@ -44,7 +44,7 @@ public class Controller implements IController {
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_R, new Reset());
 
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_HOME, new GoToStart());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DELETE, new GoToEnd());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_END, new GoToEnd());
 
     Move c = new Move();
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_UP, c.new Up());

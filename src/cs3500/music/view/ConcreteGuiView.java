@@ -39,11 +39,14 @@ public class ConcreteGuiView extends JPanel {
   // the number of rows to show at a time
   private final int numRows = 32;
 
+  // the square dimensions of each beat representation
+  private final int beatSquareDim = 20;
+
   // the height of each cell containing notes (pixels)
-  private final int cellHeight = 20;
+  private final int cellHeight = beatSquareDim;
 
   // the width of each cell containing notes (pixels)
-  private final int cellWidth = cellHeight * beatsPerCell;
+  private final int cellWidth = beatSquareDim * beatsPerCell;
 
   // the width of the space to the left of the note grid (pixels)
   private final int horizontalBuffer = 40;
@@ -233,23 +236,18 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
-  void drawRedLine(int beat) {
-    int x;
-    int yTop;
-    int yBottom;
+  Line2D getTimeLine(int beat) {
+    int x = horizontalBuffer + (beat * beatSquareDim);
+    int yTop = verticalBuffer;
+    int yBottom = verticalBuffer + (numRows * beatSquareDim);
     if (beat == columnStart + displayedBeats) {
-      x = horizontalBuffer;
-      yTop = verticalBuffer;
-      yBottom = 0;
-    } else {
-      x = 0;
-      yTop = 0;
-      yBottom = 0;
+      this.columnStart += displayedBeats; // SIDE EFFECT!
+      this.updatePanel();
     }
     double xDouble = (double) x;
     double yTopDouble = (double) yTop;
     double yBottomDouble = (double) yBottom;
-    Line2D line = new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
+    return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
   }
 
   /**
@@ -262,7 +260,7 @@ public class ConcreteGuiView extends JPanel {
    * @throws IllegalArgumentException if the given direction is not one of: left, right, up, or
    * down
    */
-  // TODO find the error with vertical shifting
+  // TODO allow you to shift outside the bounds of the song
   public void shift(String direction) {
     switch(direction) {
       case "left" :
@@ -276,12 +274,12 @@ public class ConcreteGuiView extends JPanel {
       case "up" :
         if (this.rowStart - 1 >= 0) {
           this.rowStart -= 1;
-          this.rowStartMidi -= 1;
+          this.rowStartMidi += 1;
         }
         break;
       case "down" :
         this.rowStart += 1;
-        this.rowStartMidi += 1;
+        this.rowStartMidi -= 1;
         break;
       default :
         throw new IllegalArgumentException("Invalid direction");
@@ -311,7 +309,7 @@ public class ConcreteGuiView extends JPanel {
   public int getPitchAtCursor(int externalVertBuffer) {
     Point mousePos = this.getMousePosition();
     int mouseY = (int) mousePos.getY();
-    mouseY = mouseY - externalVertBuffer - this.verticalBuffer;
+    mouseY = mouseY - externalVertBuffer - this.verticalBuffer + beatsPerCell;
     if (mouseY >= 0) {
       mouseY /= cellHeight;
       return this.rowStartMidi - mouseY;
@@ -331,7 +329,7 @@ public class ConcreteGuiView extends JPanel {
   public int getBeatAtCursor(int externalHorizBuffer) {
     Point mousePos = this.getMousePosition();
     int mouseX = (int) mousePos.getX();
-    mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer;
+    mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer + beatsPerCell;
     if (mouseX >= 0) {
       mouseX /= (cellWidth / beatsPerCell);
       return mouseX;
