@@ -139,6 +139,11 @@ public class GuiViewImpl extends JFrame implements GuiView {
     this.repaint();
   }
 
+  @Override
+  public void moveBeatIndicator(int beat) {
+
+  }
+
 //  @Override
 //  public void paintComponents(Graphics g) {
 //    super.paintComponents(g);

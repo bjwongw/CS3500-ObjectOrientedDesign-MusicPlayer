@@ -110,4 +110,9 @@ public class CompositeView implements GuiView {
   public void goToEnd() {
     this.guiViewImpl.goToEnd();
   }
+
+  @Override
+  public void moveBeatIndicator(int beat) {
+
+  }
 }

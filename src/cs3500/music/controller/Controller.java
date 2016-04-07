@@ -174,11 +174,13 @@ public class Controller implements IController {
 
     private class Add implements Runnable {
       public void run() {
-        model.addNote(new Note(Note.midiToPitch(view.getPitchAtCursor()),
-                Note.midiToOctave(view.getPitchAtCursor()),
-                view.getBeatAtCursor(), duration, 1, 60));
-        resetOnNextInput = true;
-        view.update();
+        try {
+          model.addNote(new Note(Note.midiToPitch(view.getPitchAtCursor()),
+                  Note.midiToOctave(view.getPitchAtCursor()),
+                  view.getBeatAtCursor(), duration, 1, 60));
+          resetOnNextInput = true;
+          view.update();
+        } catch (IllegalStateException e) {}
       }
     }
 
@@ -193,6 +195,7 @@ public class Controller implements IController {
       public void run() {
         if (resetOnNextInput) {
           duration = input;
+          resetOnNextInput = false;
         } else {
           duration = 10 * duration + input;
         }
