@@ -68,4 +68,9 @@ public interface GuiView extends View {
    * Scrolls the view to the end of the piece.
    */
   void goToEnd();
+
+  /**
+   * Moves beat indicator to the given beat.
+   */
+  void moveBeatIndicator(int beat);
 }

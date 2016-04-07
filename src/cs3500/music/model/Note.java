@@ -63,7 +63,8 @@ public final class Note implements Comparable<Note> {
    */
   public Note(Pitch pitch, int octave, int start, int duration, int instrument, int volume) {
     if (start < 0 || octave < 0 || octave >= 100 || duration < 1 || pitch == null) {
-      throw new IllegalArgumentException("Impossible arguments!");
+      throw new IllegalArgumentException(String.format("Impossible arguments! Pitch: %s, Octave: %d, Start: %d, Duration: %d, Instrument: %d, Volume: %d",
+              pitch.toString(), octave, start, duration, instrument, volume));
     }
 
     this.pitch = pitch;
