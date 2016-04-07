@@ -80,7 +80,7 @@ public class MusicEditor {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
 
     // NOTE df-ttfaf.txt won't run because it has at least one note with a duration < 1
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-1.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
 
     IMusicModel emptyModel = new GenericMusicModel(10000);
     GuiView view = new CompositeView(m);

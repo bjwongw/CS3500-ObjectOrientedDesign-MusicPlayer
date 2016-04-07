@@ -92,7 +92,7 @@ public class MidiView implements View {
         return i;
       }
     }
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 32; i++) {
       if (channelArray[i] != null && !this.channels.contains(i)) {
         channelArray[i].programChange(instrument);
         this.channels.add(i);
@@ -115,7 +115,7 @@ public class MidiView implements View {
               " initialize) first!");
     }
     this.timer = new Timer();
-    this.timer.scheduleAtFixedRate(new PlayBeat(), 0, this.model.getTempo() / 1000);
+    this.timer.schedule(new PlayBeat(), 0, this.model.getTempo() / 1000);
   }
 
   @Override
