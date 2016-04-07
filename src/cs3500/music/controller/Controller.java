@@ -211,6 +211,9 @@ public class Controller implements IController {
       public void run() {
         int beat = view.getBeatAtCursor();
         int p = view.getPitchAtCursor();
+        System.out.println(beat);
+        System.out.println(Note.midiToPitch(p));
+        System.out.println(Note.midiToOctave(p));
         for (Note n : model.notesToPlay(beat)) {
           if (n.getMidiPitch() == p) {
             note = n;
@@ -229,9 +232,11 @@ public class Controller implements IController {
           model.removeNote(note);
           model.addNote(new Note(Note.midiToPitch(p), Note.midiToOctave(p),
                   beat, note.getDuration(), note.getInstrument(), note.getVolume()));
+          System.out.println("I made it here!");
         }
         isMoving = false;
         view.update();
+        System.out.println("I updated!");
       }
     }
   }

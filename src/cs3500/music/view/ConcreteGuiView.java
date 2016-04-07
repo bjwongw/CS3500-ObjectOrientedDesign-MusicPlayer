@@ -65,6 +65,7 @@ public class ConcreteGuiView extends JPanel {
     this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
     this.columnStart = 0;
     this.updatePanel();
+    this.setDoubleBuffered(true);
   }
 
   /**
@@ -261,6 +262,7 @@ public class ConcreteGuiView extends JPanel {
    * @throws IllegalArgumentException if the given direction is not one of: left, right, up, or
    * down
    */
+  // TODO find the error with vertical shifting
   public void shift(String direction) {
     switch(direction) {
       case "left" :
@@ -331,11 +333,11 @@ public class ConcreteGuiView extends JPanel {
     int mouseX = (int) mousePos.getX();
     mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer;
     if (mouseX >= 0) {
-      mouseX /= cellWidth; // cellWidth reflects the width of four beats
-      return mouseX / beatsPerCell;
+      mouseX /= (cellWidth / beatsPerCell);
+      return mouseX;
     }
     else {
-      throw new IllegalStateException("Mouse Y coordinate is outside the pitch display range");
+      throw new IllegalStateException("Mouse X coordinate is outside the beat display range");
     }
   }
 

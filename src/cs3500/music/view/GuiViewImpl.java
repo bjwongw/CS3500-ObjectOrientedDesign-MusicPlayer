@@ -90,30 +90,35 @@ public class GuiViewImpl extends JFrame implements GuiView {
   @Override
   public void update() {
     this.displayPanel.updatePanel();
+    this.validate();
     this.repaint();
   }
 
   @Override
   public void scrollRight() {
     this.displayPanel.shift("right");
+    this.validate();
     this.repaint();
   }
 
   @Override
   public void scrollLeft() {
     this.displayPanel.shift("left");
+    this.validate();
     this.repaint();
   }
 
   @Override
   public void scrollUp() {
     this.displayPanel.shift("up");
+    this.validate();
     this.repaint();
   }
 
   @Override
   public void scrollDown() {
     this.displayPanel.shift("down");
+    this.validate();
     this.repaint();
   }
 
@@ -125,6 +130,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
   @Override
   public void goToEnd() {
     this.displayPanel.goToEnd();
+    this.validate();
     this.repaint();
   }
 }
