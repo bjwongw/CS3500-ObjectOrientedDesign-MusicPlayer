@@ -16,7 +16,7 @@ public class CompositeView implements GuiView {
 
   /**
    * Constructs a CompositeView
-   * @param m the model to base the view around
+   * @param m the music model to view
    */
   public CompositeView(IMusicModel m) {
     try {

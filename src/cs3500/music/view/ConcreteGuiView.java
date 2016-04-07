@@ -49,16 +49,10 @@ public class ConcreteGuiView extends JPanel {
   // the lowest beat displayed
   private int columnStart;
 
-  // the offset from the highest pitch in the model
-  // a value of 0 indicates that the highest pitch is the first pitch displayed
-  // a value of 1 indicates that the second highest pitch is the first pitch displayed, etc.
-  private int rowStart;
-
   // the highest pitch to be displayed
   private int rowStartMidi;
 
   private final IMusicModel model;
-
   private int currentTime;
 
   /**
@@ -69,9 +63,8 @@ public class ConcreteGuiView extends JPanel {
   ConcreteGuiView(IMusicModel model) {
     super();
     this.model = model;
-    this.rowStart = 0;
     try {
-      this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
+      this.rowStartMidi = model.getHighestNote().getMidiPitch();
     } catch (IllegalStateException e) {
       this.rowStartMidi = defaultStartMidi;
     }
@@ -114,7 +107,7 @@ public class ConcreteGuiView extends JPanel {
   /**
    * Creates a JPanel to represent the range of Pitches in this ConcreteGuiView's model. They
    * are stacked vertically. The maximum number of pitches displayed are equal to this view's
-   * numRows field. The first pitch displayed is the pitch associated with the rowStart field.
+   * numRows field. The first pitch displayed is the pitch associated with the rowStartMidi field.
    *
    * @return a JPanel representing the range of Pitches vertically
    */
@@ -189,7 +182,6 @@ public class ConcreteGuiView extends JPanel {
    * @return a JPanel representing all the notes in this ConcreteGuiView's model.
    */
   private JPanel createNotesPanel() {
-    int pitchRows = model.getPitchRange().size();
     JPanel notesP = new JPanel(new GridLayout(this.numRows, this.numColumns));
     notesP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     List<List<NoteSquares>> panelHolder = new ArrayList<>();
@@ -243,33 +235,45 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
-  // TODO red line disappears when screen shifts
   private Line2D getTimeLine() {
-    int x = horizontalBuffer + (currentTime * beatSquareDim) + 10; // 10 is externalBuffer/2
-    int yTop = verticalBuffer + 10; // 10 is externalBuffer/2
-    int yBottom = verticalBuffer + (numRows * beatSquareDim) + 10;
-    if (currentTime == columnStart + displayedBeats) {
-      this.columnStart += displayedBeats; // SIDE EFFECT!
-      this.updatePanel();
+    if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
+      int xViewPos = currentTime - columnStart;
+      int x = horizontalBuffer + (xViewPos * beatSquareDim) + 10; // 10 is externalBuffer/2
+      int yTop = verticalBuffer + 10; // 10 is externalBuffer/2
+      int yBottom = verticalBuffer + (numRows * beatSquareDim) + 10;
+      double xDouble = (double) x;
+      double yTopDouble = (double) yTop;
+      double yBottomDouble = (double) yBottom;
+      return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
+    } else {
+      throw new IllegalStateException("View is out of sync with current time");
     }
-    double xDouble = (double) x;
-    double yTopDouble = (double) yTop;
-    double yBottomDouble = (double) yBottom;
-    System.out.println("X: " + x + ", yTop: " + yTop + ", yBottom: " + yBottom);
-    return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
   }
 
-  void setCurrentTime(int time) {
-    this.currentTime = time;
+  public void setBeatBar(int beat) {
+    if (beat < 0) {
+      throw new IllegalArgumentException("Cannot have a negative beat");
+    }
+    this.currentTime = beat;
+    if (currentTime >= columnStart + displayedBeats || currentTime < columnStart) {
+      this.columnStart = beat - (beat % beatsPerCell); // SIDE EFFECT!
+      this.updatePanel();
+    }
+    this.revalidate();
+    this.repaint();
   }
 
   @Override
   public void paint(Graphics g) {
     super.paint(g);
-    Graphics2D g2 = (Graphics2D) g;
-    g2.setColor(Color.RED);
-    g2.setStroke(new BasicStroke(2));
-    g2.draw(getTimeLine());
+    try {
+      Graphics2D g2 = (Graphics2D) g;
+      g2.setColor(Color.RED);
+      g2.setStroke(new BasicStroke(2));
+      g2.draw(getTimeLine());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      // do nothing
+    }
   }
 
   /**
@@ -293,11 +297,9 @@ public class ConcreteGuiView extends JPanel {
         this.columnStart += beatsPerCell;
         break;
       case "up" :
-          this.rowStart -= 1;
           this.rowStartMidi += 1;
         break;
       case "down" :
-        this.rowStart += 1;
         this.rowStartMidi -= 1;
         break;
       default :
@@ -312,9 +314,9 @@ public class ConcreteGuiView extends JPanel {
    * changes.
    */
   public void reset() {
-    this.rowStart = 0;
-    this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
+    this.rowStartMidi = model.getHighestNote().getMidiPitch();
     this.columnStart = 0;
+    this.currentTime = 0;
     this.updatePanel();
   }
 
@@ -358,7 +360,7 @@ public class ConcreteGuiView extends JPanel {
     int mouseX = (int) mousePos.getX();
     mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer + beatsPerCell;
     if (mouseX >= 0) {
-      mouseX /= (cellWidth / beatsPerCell);
+      mouseX /= beatSquareDim;
       return this.columnStart + mouseX;
     }
     else {

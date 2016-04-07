@@ -37,9 +37,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
     this.timer = new Timer(model.getTempo() / timerTimeInMilliseconds, e -> {
       if (isPlaying) {
         currentTime += 1;
-        displayPanel.setCurrentTime(currentTime);
-        validate();
-        repaint();
+        displayPanel.setBeatBar(currentTime);
       }
     });
     timer.setInitialDelay(0);
@@ -132,6 +130,13 @@ public class GuiViewImpl extends JFrame implements GuiView {
   @Override
   public void goToEnd() {
     this.displayPanel.goToEnd();
+    this.validate();
+    this.repaint();
+  }
+
+  @Override
+  public void moveBeatIndicator(int beat) {
+    this.displayPanel.setBeatBar(beat);
     this.validate();
     this.repaint();
   }

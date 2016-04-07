@@ -10,7 +10,6 @@ import cs3500.music.controller.Controller;
 import cs3500.music.controller.IController;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
 import cs3500.music.view.*;
@@ -81,14 +80,11 @@ public class MusicEditor {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
 
     // NOTE df-ttfaf.txt won't run because it has at least one note with a duration < 1
-    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-1.txt"), b);
 
     IMusicModel emptyModel = new GenericMusicModel(10000);
-//    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
+    GuiView view = new CompositeView(m);
 
-
-    GuiView view = new CompositeView(emptyModel);
-
-//    IController c = new Controller(m, view);
+    IController c = new Controller(m, view);
   }
 }

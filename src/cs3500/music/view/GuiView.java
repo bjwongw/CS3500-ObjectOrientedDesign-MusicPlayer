@@ -23,14 +23,14 @@ public interface GuiView extends View {
   /**
    * Gets the pitch of the row that the cursor is resting on.
    * @return the MIDI pitch of the row
-   * @throws IllegalArgumentException if the position is outside of the panel
+   * @throws IllegalStateException if the position is outside of the view
    */
   int getPitchAtCursor();
 
   /**
    * Gets the beat of the column that the cursor is resting on.
    * @return the beat of the column
-   * @throws IllegalArgumentException if the position is outside of the panel
+   * @throws IllegalStateException if the position is outside of the view
    */
   int getBeatAtCursor();
 
