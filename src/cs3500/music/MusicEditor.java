@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
 
+import cs3500.music.controller.Controller;
+import cs3500.music.controller.IController;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
@@ -79,10 +81,8 @@ public class MusicEditor {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
     IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 
-    IMusicModel emptyModel = new GenericMusicModel(10000);
-    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
-    View view = new GuiViewImpl();
-//    view.initialize(emptyModel);
-    view.initialize(m);
+    GuiView view = new CompositeView(m);
+
+    IController c = new Controller(m, view);
   }
 }

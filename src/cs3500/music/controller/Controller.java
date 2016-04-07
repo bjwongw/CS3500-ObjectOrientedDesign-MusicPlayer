@@ -3,6 +3,7 @@ package cs3500.music.controller;
 import java.awt.event.KeyEvent;
 
 import cs3500.music.model.GenericMusicModel;
+import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
 import cs3500.music.view.GuiView;
 
@@ -14,7 +15,7 @@ import cs3500.music.view.GuiView;
  */
 public class Controller implements IController {
 
-  private final GenericMusicModel model;
+  private final IMusicModel model;
   private final GuiView view;
   private final KeyboardHandler keyboardHandler;
   private final MouseHandler mouseHandler;
@@ -25,7 +26,7 @@ public class Controller implements IController {
    * @param model the model to use
    * @param view  the view to control
    */
-  public Controller(GenericMusicModel model, GuiView view) {
+  public Controller(IMusicModel model, GuiView view) {
     this.model = model;
     this.view = view;
     this.keyboardHandler = new KeyboardHandler();
@@ -45,17 +46,18 @@ public class Controller implements IController {
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_HOME, new GoToStart());
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DELETE, new GoToEnd());
 
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.TYPED, KeyEvent.VK_UP, new Move().new Up());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.TYPED, KeyEvent.VK_DOWN, new Move().new Down());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.TYPED, KeyEvent.VK_LEFT, new Move().new Left());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.TYPED, KeyEvent.VK_RIGHT, new Move().new Right());
+    Move c = new Move();
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_UP, c.new Up());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DOWN, c.new Down());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_LEFT, c.new Left());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_RIGHT, c.new Right());
 
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_D, new Delete());
 
     AddNote a = new AddNote();
-    this.mouseHandler.addHandler(MouseHandler.EVENT_TYPE.RELEASED, a.new Add());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_A, a.new Add());
     for (int i = 0; i < 10; i++) {
-      this.mouseHandler.addHandler(MouseHandler.EVENT_TYPE.RELEASED, a.new Input(i));
+      this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, 48 + i, a.new Input(i));
     }
 
     MoveNote b = new MoveNote();
@@ -103,6 +105,7 @@ public class Controller implements IController {
   private class Move {
     private class Up implements Runnable {
       public void run() {
+        System.out.println("Moving up!");
         view.scrollUp();
       }
     }
@@ -154,6 +157,7 @@ public class Controller implements IController {
       for (Note n : model.notesToPlay(beat)) {
         if (n.getMidiPitch() == p) {
           model.removeNote(n);
+          view.update();
           break;
         }
       }
@@ -174,6 +178,7 @@ public class Controller implements IController {
                 Note.midiToOctave(view.getPitchAtCursor()),
                 view.getBeatAtCursor(), duration, 1, 60));
         resetOnNextInput = true;
+        view.update();
       }
     }
 
@@ -226,6 +231,7 @@ public class Controller implements IController {
                   beat, note.getDuration(), note.getInstrument(), note.getVolume()));
         }
         isMoving = false;
+        view.update();
       }
     }
   }

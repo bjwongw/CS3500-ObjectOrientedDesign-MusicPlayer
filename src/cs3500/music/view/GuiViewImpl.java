@@ -99,6 +99,11 @@ public class GuiViewImpl extends JFrame implements GuiView {
   }
 
   @Override
+  public void goToStart() {
+
+  }
+
+  @Override
   public void goToEnd() {
     this.displayPanel.goToEnd();
     this.repaint();
