@@ -5,6 +5,8 @@ import cs3500.music.model.IMusicModel;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
+import javax.sound.midi.MidiUnavailableException;
+
 /**
  * A view that has both a visual and audio component.
  */
@@ -18,9 +20,15 @@ public class CompositeView implements GuiView {
    * @param midiViewImpl the MIDI view (audio portion of the composite view)
    * @param guiViewImpl the GUI view (visual portion of the composite view)
    */
-  public CompositeView(View midiViewImpl, GuiView guiViewImpl) {
-    this.midiViewImpl = midiViewImpl;
-    this.guiViewImpl = guiViewImpl;
+  public CompositeView(IMusicModel m) {
+    try {
+      this.midiViewImpl = new MidiView();
+    } catch (MidiUnavailableException e) {
+      throw new RuntimeException(e);
+    }
+    this.guiViewImpl = new GuiViewImpl();
+    this.midiViewImpl.initialize(m);
+    this.guiViewImpl.initialize(m);
   }
 
   @Override
@@ -94,8 +102,12 @@ public class CompositeView implements GuiView {
   }
 
   @Override
+  public void goToStart() {
+    this.guiViewImpl.goToStart();
+  }
+
+  @Override
   public void goToEnd() {
-//    this.midiViewImpl.endSong();
     this.guiViewImpl.goToEnd();
   }
 }

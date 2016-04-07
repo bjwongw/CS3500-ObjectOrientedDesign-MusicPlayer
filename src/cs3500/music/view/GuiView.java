@@ -60,6 +60,11 @@ public interface GuiView extends View {
   void scrollDown();
 
   /**
+   * Scrolls the view to the start of the piece.
+   */
+  void goToStart();
+
+  /**
    * Scrolls the view to the end of the piece.
    */
   void goToEnd();
