@@ -94,8 +94,12 @@ public class CompositeView implements GuiView {
   }
 
   @Override
+  public void goToStart() {
+    this.guiViewImpl.goToStart();
+  }
+
+  @Override
   public void goToEnd() {
-//    this.midiViewImpl.endSong();
     this.guiViewImpl.goToEnd();
   }
 }
