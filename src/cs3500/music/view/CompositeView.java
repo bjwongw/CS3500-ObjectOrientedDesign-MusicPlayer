@@ -16,8 +16,7 @@ public class CompositeView implements GuiView {
 
   /**
    * Constructs a CompositeView
-   * @param midiViewImpl the MIDI view (audio portion of the composite view)
-   * @param guiViewImpl the GUI view (visual portion of the composite view)
+   * @param m the music model to view
    */
   public CompositeView(IMusicModel m) {
     try {
@@ -106,5 +105,10 @@ public class CompositeView implements GuiView {
   @Override
   public void goToEnd() {
     this.guiViewImpl.goToEnd();
+  }
+
+  @Override
+  public void moveBeatIndicator(int beat) {
+    this.guiViewImpl.moveBeatIndicator(beat);
   }
 }
