@@ -56,6 +56,8 @@ public class ConcreteGuiView extends JPanel {
 
   private final IMusicModel model;
 
+  private int currentTime;
+
   /**
    * Constructs the ConcreteGuiView.
    *
@@ -67,6 +69,7 @@ public class ConcreteGuiView extends JPanel {
     this.rowStart = 0;
     this.rowStartMidi = model.getHighestNote().getMidiPitch() - rowStart;
     this.columnStart = 0;
+    this.currentTime = 0;
     this.updatePanel();
     this.setDoubleBuffered(true);
   }
@@ -212,6 +215,17 @@ public class ConcreteGuiView extends JPanel {
    */
   private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
     for (int i = columnStart; i < columnStart + displayedBeats; i++) {
+      List<Note> sustainedNotes = new ArrayList<>(model.sustainedNotes(i));
+      Collections.sort(sustainedNotes);
+      for (Note n : sustainedNotes) {
+        int pitchIndex = this.rowStartMidi - n.getMidiPitch();
+        if (pitchIndex >= 0 && pitchIndex < numRows) {
+          List<NoteSquares> pitchList = notesP.get(pitchIndex);
+          int start = i - columnStart;
+          pitchList.get(start / beatsPerCell).setNoteColor(start % beatsPerCell,
+            new Color(42, 255, 55));
+        }
+      }
       List<Note> noteList = new ArrayList<>(model.notesToPlay(i));
       Collections.sort(noteList);
       for (Note n : noteList) {
@@ -222,32 +236,36 @@ public class ConcreteGuiView extends JPanel {
           pitchList.get(start / beatsPerCell).setNoteColor(start % beatsPerCell, Color.BLACK);
         }
       }
-      List<Note> sustainedNotes = new ArrayList<>(model.sustainedNotes(i));
-      Collections.sort(noteList);
-      for (Note n : sustainedNotes) {
-        int pitchIndex = this.rowStartMidi - n.getMidiPitch();
-        if (pitchIndex >= 0 && pitchIndex < numRows) {
-          List<NoteSquares> pitchList = notesP.get(pitchIndex);
-          int start = i - columnStart;
-          pitchList.get(start / beatsPerCell).setNoteColor(start % beatsPerCell,
-            new Color(42, 255, 55));
-        }
-      }
     }
   }
 
-  Line2D getTimeLine(int beat) {
-    int x = horizontalBuffer + (beat * beatSquareDim);
-    int yTop = verticalBuffer;
-    int yBottom = verticalBuffer + (numRows * beatSquareDim);
-    if (beat == columnStart + displayedBeats) {
+  // TODO red line disappears when screen shifts
+  private Line2D getTimeLine() {
+    int x = horizontalBuffer + (currentTime * beatSquareDim) + 10; // 10 is externalBuffer/2
+    int yTop = verticalBuffer + 10; // 10 is externalBuffer/2
+    int yBottom = verticalBuffer + (numRows * beatSquareDim) - 10;
+    if (currentTime == columnStart + displayedBeats) {
       this.columnStart += displayedBeats; // SIDE EFFECT!
       this.updatePanel();
     }
     double xDouble = (double) x;
     double yTopDouble = (double) yTop;
     double yBottomDouble = (double) yBottom;
+    System.out.println("X: " + x + ", yTop: " + yTop + ", yBottom: " + yBottom);
     return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
+  }
+
+  void setCurrentTime(int time) {
+    this.currentTime = time;
+  }
+
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+    Graphics2D g2 = (Graphics2D) g;
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(2));
+    g2.draw(getTimeLine());
   }
 
   /**
