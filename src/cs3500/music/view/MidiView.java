@@ -33,6 +33,7 @@ public class MidiView implements View {
   private Queue<Integer> channels;
   private int currentBeat = 0;
   private Timer timer;
+  private Runnable handler;
 
   public MidiView() throws MidiUnavailableException {
     this(MidiSystem.getSynthesizer());
@@ -131,6 +132,12 @@ public class MidiView implements View {
   }
 
   @Override
+  public boolean addTickHandler(Runnable r) {
+    this.handler = r;
+    return true;
+  }
+
+  @Override
   public void initialize(IMusicModel m) {
     this.reset();
     this.model = m;
@@ -143,6 +150,10 @@ public class MidiView implements View {
         playNote(n);
       }
       currentBeat += 1;
+
+      if(!(handler == null)) {
+        handler.run();
+      }
     }
   }
 

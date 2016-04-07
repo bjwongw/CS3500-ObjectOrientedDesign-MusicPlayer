@@ -70,7 +70,7 @@ public interface GuiView extends View {
   void goToEnd();
 
   /**
-   * Moves beat indicator to the given beat.
+   * Moves beat indicator to the next beat
    */
-  void moveBeatIndicator(int beat);
+  void moveBeatIndicator();
 }

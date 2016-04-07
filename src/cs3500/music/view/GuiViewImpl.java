@@ -68,6 +68,11 @@ public class GuiViewImpl extends JFrame implements GuiView {
   }
 
   @Override
+  public boolean addTickHandler(Runnable r) {
+    return false;
+  }
+
+  @Override
   public void addMouseListener(MouseListener m) {
     this.displayPanel.addMouseListener(m);
   }

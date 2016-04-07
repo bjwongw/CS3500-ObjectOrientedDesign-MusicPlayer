@@ -195,4 +195,9 @@ public class ConsoleViewImpl implements View {
   public void reset() {
 
   }
+
+  @Override
+  public boolean addTickHandler(Runnable r) {
+    return false;
+  }
 }
