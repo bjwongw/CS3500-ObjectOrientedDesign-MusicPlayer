@@ -84,11 +84,11 @@ public class MusicEditor {
     IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
 
     IMusicModel emptyModel = new GenericMusicModel(10000);
-    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
+//    emptyModel.addNote(new Note(Note.Pitch.C_SHARP, 3, 1, 1, 1, 1));
 
 
-    GuiView view = new CompositeView(m);
+    GuiView view = new CompositeView(emptyModel);
 
-    IController c = new Controller(m, view);
+//    IController c = new Controller(m, view);
   }
 }

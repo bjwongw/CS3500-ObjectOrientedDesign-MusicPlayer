@@ -10,7 +10,6 @@ import javax.sound.midi.MidiUnavailableException;
 /**
  * A view that has both a visual and audio component.
  */
-// TODO review MIDI functionality for the method implemented here
 public class CompositeView implements GuiView {
   private final View midiViewImpl;
   private final GuiView guiViewImpl;
@@ -57,7 +56,6 @@ public class CompositeView implements GuiView {
 
   @Override
   public void addKeyListener(KeyListener k) {
-//    this.midiViewImpl.addKeyListener(k);
     this.guiViewImpl.addKeyListener(k);
   }
 
@@ -77,7 +75,6 @@ public class CompositeView implements GuiView {
 
   @Override
   public void update() {
-//    this.midiViewImpl.update();
     this.guiViewImpl.update();
   }
 
