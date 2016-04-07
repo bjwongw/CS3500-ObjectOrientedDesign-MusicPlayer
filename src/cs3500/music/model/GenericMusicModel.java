@@ -70,7 +70,10 @@ public class GenericMusicModel implements IMusicModel {
     @Override
     public CompositionBuilder<IMusicModel> addNote(int start, int end, int instrument, int pitch,
                                                    int volume) {
-      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start + 1,
+      if(end - start == 0) {
+        end += 1;
+      }
+      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
               instrument, volume));
       return this;
     }
