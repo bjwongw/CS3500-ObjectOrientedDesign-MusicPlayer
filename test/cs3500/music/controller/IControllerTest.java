@@ -20,6 +20,7 @@ public class IControllerTest {
 
   @Test
   public void scrollViewTest() {
+    controller.start();
     view.sendKeyBoardInput(MockIGuiView.INPUT_TYPE.PRESSED, KeyEvent.VK_UP, 0, 0);
     view.sendKeyBoardInput(MockIGuiView.INPUT_TYPE.PRESSED, KeyEvent.VK_DOWN, 0, 0);
     view.sendKeyBoardInput(MockIGuiView.INPUT_TYPE.PRESSED, KeyEvent.VK_LEFT, 0, 0);
@@ -43,6 +44,7 @@ public class IControllerTest {
 
   @Test
   public void PausePlayTest() {
+    controller.start();
     for(int i = 0; i < 5; i ++) {
       view.sendKeyBoardInput(MockIGuiView.INPUT_TYPE.PRESSED, KeyEvent.VK_SPACE, 0, 0);
     }
@@ -61,6 +63,7 @@ public class IControllerTest {
 
   @Test
   public void ResetTest() {
+    controller.start();
     for(int i = 0; i < 5; i ++) {
       view.sendKeyBoardInput(MockIGuiView.INPUT_TYPE.PRESSED, KeyEvent.VK_R, 0, 0);
     }
@@ -79,6 +82,7 @@ public class IControllerTest {
 
   @Test
   public void DeleteTest() {
+    controller.start();
     StringBuilder exp = new StringBuilder();
     for(int i = 20; i < 30; i ++) {
       for(int j = 0; j < 10; j ++) {
@@ -98,6 +102,7 @@ public class IControllerTest {
 
   @Test
   public void AddNoteTest() {
+    controller.start();
     StringBuilder exp = new StringBuilder();
     for(int n = 1; n < 10; n ++){
       for(int i = 20; i < 30; i ++) {
@@ -117,6 +122,7 @@ public class IControllerTest {
 
   @Test
   public void MoveNoteTest() {
+    controller.start();
     StringBuilder exp = new StringBuilder();
     for(int i = 20; i < 30; i ++) {
       for (int j = 0; j < 10; j ++) {

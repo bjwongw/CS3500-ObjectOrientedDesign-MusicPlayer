@@ -78,8 +78,8 @@ public class GuiController implements IController {
 
   @Override
   public void start() {
-    view.initialize(this.model);
     this.initialize();
+    view.initialize(this.model);
   }
 
   /**

@@ -145,7 +145,7 @@ public class MockIGuiView implements GuiView {
 
   @Override
   public void initialize(IMusicModel m) {
-    this.log.append("Initializing\n");
+
   }
 
   @Override
