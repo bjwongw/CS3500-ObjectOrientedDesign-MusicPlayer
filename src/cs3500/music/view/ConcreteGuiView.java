@@ -82,11 +82,19 @@ public class ConcreteGuiView extends JPanel {
     this.setDoubleBuffered(true);
   }
 
-  public void setExternalHorizontalBuffer(int buffer) {
+  /**
+   * Sets the externalHorizontalBuffer to the given buffer size
+   * @param buffer the external buffer size
+   */
+  void setExternalHorizontalBuffer(int buffer) {
     this.externalHorizontalBuffer = buffer;
   }
 
-  public void setExternalVerticalBuffer(int buffer) {
+  /**
+   * Sets the externalVerticalBuffer to the given buffer size
+   * @param buffer the external buffer size
+   */
+  void setExternalVerticalBuffer(int buffer) {
     this.externalVerticalBuffer = buffer;
   }
 
@@ -121,11 +129,11 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent the range of Pitches in this ConcreteGuiView's model. They
-   * are stacked vertically. The maximum number of pitches displayed are equal to this view's
-   * numRows field. The first pitch displayed is the pitch associated with the rowStartMidi field.
+   * Creates a JPanel to represent the range of Pitches starting from the rowStartMidi field. They
+   * are stacked vertically. The number of pitches displayed are equal to this view's
+   * numRows field.
    *
-   * @return a JPanel representing the range of Pitches vertically
+   * @return a JPanel representing the range of pitches vertically
    */
   private JPanel createPitchPanel() {
     int dim = NoteSquares.PREF_H;
@@ -144,11 +152,11 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent the range of beats in this ConcreteGuiView's model. The
+   * Creates a JPanel to represent the range of beats in starting from the columnStart field. The
    * beat labels are measured in increments of 16, starting from 0. Each beat label spans the width
    * of four NoteSquares panels.
    *
-   * @return a JPanel representing the beats in this ConcreteGuiView's model, starting from 0
+   * @return a JPanel representing beats, starting from this ConcreteGuiView's columnStart position
    * and increasing in increments of 16 horizontally
    */
   private JPanel createBeatPanel() {
@@ -191,11 +199,12 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent all the notes contained in this ConcreteGuiView's model.
+   * Creates a JPanel to represent the notes contained in this ConcreteGuiView's model.
    * The layout of this panel is a GridLayout, each cell containing four beats (four quarter
    * notes).
    *
-   * @return a JPanel representing all the notes in this ConcreteGuiView's model.
+   * @return a JPanel representing the notes in this ConcreteGuiView's model (constrained to the
+   * size of this view)
    */
   private JPanel createNotesPanel() {
     JPanel notesP = new JPanel(new GridLayout(this.numRows, this.numColumns));
@@ -219,9 +228,6 @@ public class ConcreteGuiView extends JPanel {
    * notes from this ConcreteGuiView's model. Each start beat of a Note is associated with a
    * black square in the NoteSquare, and each sustained beat for that same Note is represented as a
    * green square (with color value of RGB(42, 255, 55)).
-   *
-   * NOTE: may need to control for invariants, such as the notesP parameter being the wrong size in
-   * comparison to the model field in this ConcreteGuiView.
    *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */
@@ -251,6 +257,13 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
+  /**
+   * Creates a vertical line representing the current position in time that fits within the
+   * notesPanel.
+   *
+   * @return a vertical line representing the current position in time
+   * @throws IllegalStateException if the view is out of sync with the current time
+   */
   private Line2D getTimeLine() {
     if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
       int xViewPos = currentTime - columnStart;
@@ -266,6 +279,14 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
+  /**
+   * Sets the current time to the given beat and repaints this panel, effectively setting the
+   * beat bar at the given beat. If the view does not contain the given beat, it is shifted so
+   * that the beat is displayed in the view.
+   *
+   * @param beat the beat to set the beat bar at
+   * @throws IllegalArgumentException if the given beat is negative
+   */
   void setBeatBar(int beat) {
     if (beat < 0) {
       throw new IllegalArgumentException("Cannot have a negative beat");
@@ -277,19 +298,6 @@ public class ConcreteGuiView extends JPanel {
     }
     this.revalidate();
     this.repaint();
-  }
-
-  @Override
-  public void paint(Graphics g) {
-    super.paint(g);
-    try {
-      Graphics2D g2 = (Graphics2D) g;
-      g2.setColor(Color.RED);
-      g2.setStroke(new BasicStroke(2));
-      g2.draw(getTimeLine());
-    } catch (IllegalArgumentException | IllegalStateException e) {
-      // do nothing
-    }
   }
 
   /**
@@ -326,11 +334,15 @@ public class ConcreteGuiView extends JPanel {
 
   /**
    * Resets this view panel, setting the starting beat at 0, the highest pitch as the highest
-   * pitch in the model, and the rowStart field at 0. The panel is then updated to reflect these
-   * changes.
+   * pitch in the model (or C4 if there are no notes in the model). The panel is then updated to
+   * reflect these changes.
    */
   public void reset() {
-    this.rowStartMidi = model.getHighestNote().getMidiPitch();
+    try {
+      this.rowStartMidi = model.getHighestNote().getMidiPitch();
+    } catch (IllegalStateException e) {
+      this.rowStartMidi = defaultStartMidi;
+    }
     this.columnStart = 0;
     this.currentTime = 0;
     this.updatePanel();
@@ -398,5 +410,18 @@ public class ConcreteGuiView extends JPanel {
       this.columnStart = offset * beatsPerCell;
     }
     this.updatePanel();
+  }
+
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+    try {
+      Graphics2D g2 = (Graphics2D) g;
+      g2.setColor(Color.RED);
+      g2.setStroke(new BasicStroke(2));
+      g2.draw(getTimeLine());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      // do nothing
+    }
   }
 }
