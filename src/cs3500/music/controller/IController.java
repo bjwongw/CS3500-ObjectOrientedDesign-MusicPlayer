@@ -11,7 +11,5 @@ public interface IController {
   /**
    * Initializes the view to await input/start playing etc.
    */
-  public void start();
-
-
+  void start();
 }

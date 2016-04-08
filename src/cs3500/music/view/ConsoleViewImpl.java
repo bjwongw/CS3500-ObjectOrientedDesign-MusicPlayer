@@ -183,17 +183,17 @@ public class ConsoleViewImpl implements View {
 
   @Override
   public void play() {
-
+    // do nothing
   }
 
   @Override
   public void pause() {
-
+    // do nothing
   }
 
   @Override
   public void reset() {
-
+    // do nothing
   }
 
   @Override

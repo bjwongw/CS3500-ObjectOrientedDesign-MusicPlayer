@@ -8,15 +8,15 @@ import javax.sound.midi.MidiUnavailableException;
 public class ViewFactory {
 
   /**
-   * Constructs an View using the implementation specified by type.
+   * Constructs a View using the implementation specified by type.
    *
    * <ul> <li>console: a ConsoleViewImpl object</li> <li>midi: a MidiView object</li> <li>gui: a
-   * GuiViewImpl object</li> </ul>
+   * GuiViewImpl object</li> <li>composite: a CompositeView object</li> </ul>
    *
    * @param type the implementation to use
    * @return an instance of the chosen implementation
    */
-  public static View construct(String type) {
+  public static View constructView(String type) {
 
     View view;
 
@@ -34,11 +34,37 @@ public class ViewFactory {
       case "gui":
         view = new GuiViewImpl();
         break;
+      case "composite":
+        view = new CompositeView();
+        break;
       default:
         throw new IllegalArgumentException(String.format("ViewFactory string not recognized: %s",
                 type));
     }
+    return view;
+  }
 
+  /**
+   * Constructs a GuiView using the implementation specified by type.
+   *
+   * <ul> <li>gui: a GuiViewImpl object</li> <li>composite: a CompositeView object</li> </ul>
+   *
+   * @param type the implementation to use
+   * @return an instance of the chosen implementation
+   */
+  public static GuiView constructGui(String type) {
+    GuiView view;
+    switch (type) {
+      case "gui":
+        view = new GuiViewImpl();
+        break;
+      case "composite":
+        view = new CompositeView();
+        break;
+      default:
+        throw new IllegalArgumentException(String.format("ViewFactory string not recognized: %s",
+          type));
+    }
     return view;
   }
 }

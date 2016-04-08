@@ -1,7 +1,5 @@
 package cs3500.music.view;
 
-import java.util.TimerTask;
-
 import cs3500.music.model.IMusicModel;
 
 /**
@@ -10,8 +8,8 @@ import cs3500.music.model.IMusicModel;
 public interface View {
 
   /**
-   * Initializes the view and provides it, playing it immediately if its a static view. If it is a
-   * dynamic view, provides it paused awaiting user input.
+   * Initializes the view and provides it, playing it immediately if it's a static view. If it is a
+   * dynamic view, the view is provided and then awaits user input.
    *
    * @param m the model to base the view on
    */

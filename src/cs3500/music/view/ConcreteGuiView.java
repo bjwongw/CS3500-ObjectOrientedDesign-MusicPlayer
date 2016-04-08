@@ -53,16 +53,24 @@ public class ConcreteGuiView extends JPanel {
   private int rowStartMidi;
 
   private final IMusicModel model;
+  private int externalHorizontalBuffer;
+  private int externalVerticalBuffer;
   private int currentTime;
 
   /**
-   * Constructs the ConcreteGuiView.
+   * Constructs a ConcreteGuiView
    *
    * @param model the music model to represent
+   * @param externalHorizBuffer the horizontal buffer surrounding this panel from components
+   *                            holding this panel
+   * @param externalVertBuffer the vertical buffer surrounding this panel from components holding
+   *                           this panel
    */
-  ConcreteGuiView(IMusicModel model) {
+  ConcreteGuiView(IMusicModel model, int externalHorizBuffer, int externalVertBuffer) {
     super();
     this.model = model;
+    this.externalHorizontalBuffer = externalHorizBuffer;
+    this.externalVerticalBuffer = externalVertBuffer;
     try {
       this.rowStartMidi = model.getHighestNote().getMidiPitch();
     } catch (IllegalStateException e) {
@@ -105,11 +113,11 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent the range of Pitches in this ConcreteGuiView's model. They
-   * are stacked vertically. The maximum number of pitches displayed are equal to this view's
-   * numRows field. The first pitch displayed is the pitch associated with the rowStartMidi field.
+   * Creates a JPanel to represent the range of Pitches starting from the rowStartMidi field. They
+   * are stacked vertically. The number of pitches displayed are equal to this view's
+   * numRows field.
    *
-   * @return a JPanel representing the range of Pitches vertically
+   * @return a JPanel representing the range of pitches vertically
    */
   private JPanel createPitchPanel() {
     int dim = NoteSquares.PREF_H;
@@ -128,11 +136,11 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent the range of beats in this ConcreteGuiView's model. The
+   * Creates a JPanel to represent the range of beats in starting from the columnStart field. The
    * beat labels are measured in increments of 16, starting from 0. Each beat label spans the width
    * of four NoteSquares panels.
    *
-   * @return a JPanel representing the beats in this ConcreteGuiView's model, starting from 0
+   * @return a JPanel representing beats, starting from this ConcreteGuiView's columnStart position
    * and increasing in increments of 16 horizontally
    */
   private JPanel createBeatPanel() {
@@ -175,11 +183,12 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a JPanel to represent all the notes contained in this ConcreteGuiView's model.
+   * Creates a JPanel to represent the notes contained in this ConcreteGuiView's model.
    * The layout of this panel is a GridLayout, each cell containing four beats (four quarter
    * notes).
    *
-   * @return a JPanel representing all the notes in this ConcreteGuiView's model.
+   * @return a JPanel representing the notes in this ConcreteGuiView's model (constrained to the
+   * size of this view)
    */
   private JPanel createNotesPanel() {
     JPanel notesP = new JPanel(new GridLayout(this.numRows, this.numColumns));
@@ -203,9 +212,6 @@ public class ConcreteGuiView extends JPanel {
    * notes from this ConcreteGuiView's model. Each start beat of a Note is associated with a
    * black square in the NoteSquare, and each sustained beat for that same Note is represented as a
    * green square (with color value of RGB(42, 255, 55)).
-   *
-   * NOTE: may need to control for invariants, such as the notesP parameter being the wrong size in
-   * comparison to the model field in this ConcreteGuiView.
    *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */
@@ -235,12 +241,97 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
+  /**
+   * Sets the externalHorizontalBuffer to the given buffer size
+   * @param buffer the external buffer size
+   */
+  void setExternalHorizontalBuffer(int buffer) {
+    this.externalHorizontalBuffer = buffer;
+  }
+
+  /**
+   * Sets the externalVerticalBuffer to the given buffer size
+   * @param buffer the external buffer size
+   */
+  void setExternalVerticalBuffer(int buffer) {
+    this.externalVerticalBuffer = buffer;
+  }
+
+  /**
+   * Resets this view panel, setting the starting beat at 0, the highest pitch as the highest
+   * pitch in the model (or C4 if there are no notes in the model). The panel is then updated to
+   * reflect these changes.
+   */
+  public void reset() {
+    try {
+      this.rowStartMidi = model.getHighestNote().getMidiPitch();
+    } catch (IllegalStateException e) {
+      this.rowStartMidi = defaultStartMidi;
+    }
+    this.columnStart = 0;
+    this.currentTime = 0;
+    this.updatePanel();
+  }
+
+  /**
+   * Returns the pitch (in MIDI format) at the cursor's Y location.
+   *
+   * @return the pitch (in MIDI format) at the cursor's Y location
+   * @throws IllegalStateException if the mouse's Y coordinate is outside of the pitch display range
+   * or if the input is null
+   */
+  public int getPitchAtCursor() {
+    Point mousePos = this.getMousePosition();
+    if (mousePos == null) {
+      throw new IllegalStateException("Mouse is outside the frame");
+    }
+    int mouseY = (int) mousePos.getY();
+    mouseY = mouseY - externalVerticalBuffer - this.verticalBuffer + beatsPerCell;
+    if (mouseY >= 0) {
+      mouseY /= cellHeight;
+      return this.rowStartMidi - mouseY;
+    }
+    else {
+      throw new IllegalStateException("Mouse Y coordinate is outside the pitch display range");
+    }
+  }
+
+  /**
+   * Returns the beat at the cursor's X location.
+   *
+   * @return the beat at the cursor's X location
+   * @throws IllegalStateException if the mouse's X coordinate is outside of the beat display range
+   * or if the input is null
+   */
+  public int getBeatAtCursor() {
+    Point mousePos = this.getMousePosition();
+    if (mousePos == null) {
+      throw new IllegalStateException("Mouse is outside the frame");
+    }
+    int mouseX = (int) mousePos.getX();
+    mouseX = mouseX - externalHorizontalBuffer - this.horizontalBuffer + beatsPerCell;
+    if (mouseX >= 0) {
+      mouseX /= beatSquareDim;
+      return this.columnStart + mouseX;
+    }
+    else {
+      throw new IllegalStateException("Mouse X coordinate is outside the beat display range");
+    }
+  }
+
+  /**
+   * Creates a vertical line representing the current position in time that fits within the
+   * notesPanel.
+   *
+   * @return a vertical line representing the current position in time
+   * @throws IllegalStateException if the view is out of sync with the current time
+   */
   private Line2D getTimeLine() {
     if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
       int xViewPos = currentTime - columnStart;
-      int x = horizontalBuffer + (xViewPos * beatSquareDim) + 10; // 10 is externalBuffer/2
-      int yTop = verticalBuffer + 10; // 10 is externalBuffer/2
-      int yBottom = verticalBuffer + (numRows * beatSquareDim) + 10;
+      int x = horizontalBuffer + (xViewPos * beatSquareDim) + (externalHorizontalBuffer / 2);
+      int yTop = verticalBuffer + (externalVerticalBuffer / 2);
+      int yBottom = verticalBuffer + (numRows * beatSquareDim) + (externalVerticalBuffer / 2);
       double xDouble = (double) x;
       double yTopDouble = (double) yTop;
       double yBottomDouble = (double) yBottom;
@@ -250,7 +341,15 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
-  public void setBeatBar(int beat) {
+  /**
+   * Sets the current time to the given beat and repaints this panel, effectively setting the
+   * beat bar at the given beat. If the view does not contain the given beat, it is shifted so
+   * that the beat is displayed in the view.
+   *
+   * @param beat the beat to set the beat bar at
+   * @throws IllegalArgumentException if the given beat is negative
+   */
+  void setBeatBar(int beat) {
     if (beat < 0) {
       throw new IllegalArgumentException("Cannot have a negative beat");
     }
@@ -263,24 +362,13 @@ public class ConcreteGuiView extends JPanel {
     this.repaint();
   }
 
-  @Override
-  public void paint(Graphics g) {
-    super.paint(g);
-    try {
-      Graphics2D g2 = (Graphics2D) g;
-      g2.setColor(Color.RED);
-      g2.setStroke(new BasicStroke(2));
-      g2.draw(getTimeLine());
-    } catch (IllegalArgumentException | IllegalStateException e) {
-      // do nothing
-    }
-  }
-
   /**
    * Shifts the view of this panel. The valid options are the following (in the exact case):
    * "left", "right", "up", or "down". Giving the argument "left" will decrease the beat interval,
    * and giving the argument "right" will do the opposite. The argument "up" will increase the
    * highest pitch displayed, and "down" will decrease the pitch range.
+   *
+   * <p>You cannot move left past beat 0, and you cannot move down past C0.</p>
    *
    * @param direction the direction to shift the view
    * @throws IllegalArgumentException if the given direction is not one of: left, right, up, or
@@ -300,72 +388,14 @@ public class ConcreteGuiView extends JPanel {
           this.rowStartMidi += 1;
         break;
       case "down" :
-        this.rowStartMidi -= 1;
+        if (Note.midiToOctave(this.rowStartMidi - numRows) >= 0) {
+          this.rowStartMidi -= 1;
+        }
         break;
       default :
         throw new IllegalArgumentException("Invalid direction");
     }
     this.updatePanel();
-  }
-
-  /**
-   * Resets this view panel, setting the starting beat at 0, the highest pitch as the highest
-   * pitch in the model, and the rowStart field at 0. The panel is then updated to reflect these
-   * changes.
-   */
-  public void reset() {
-    this.rowStartMidi = model.getHighestNote().getMidiPitch();
-    this.columnStart = 0;
-    this.currentTime = 0;
-    this.updatePanel();
-  }
-
-  /**
-   * Returns the pitch (in MIDI format) at the cursor's Y location.
-   *
-   * @param externalVertBuffer the buffer from any external panels or frames holding this panel
-   * @return the pitch (in MIDI format) at the cursor's Y location
-   * @throws IllegalStateException if the mouse's Y coordinate is outside of the pitch display range
-   * or if the input is null
-   */
-  public int getPitchAtCursor(int externalVertBuffer) {
-    Point mousePos = this.getMousePosition();
-    if (mousePos == null) {
-      throw new IllegalStateException("Mouse is outside the frame");
-    }
-    int mouseY = (int) mousePos.getY();
-    mouseY = mouseY - externalVertBuffer - this.verticalBuffer + beatsPerCell;
-    if (mouseY >= 0) {
-      mouseY /= cellHeight;
-      return this.rowStartMidi - mouseY;
-    }
-    else {
-      throw new IllegalStateException("Mouse Y coordinate is outside the pitch display range");
-    }
-  }
-
-  /**
-   * Returns the beat at the cursor's X location.
-   *
-   * @param externalHorizBuffer the buffer from any external panels or frames holding this panel
-   * @return the beat at the cursor's X location
-   * @throws IllegalStateException if the mouse's X coordinate is outside of the beat display range
-   * or if the input is null
-   */
-  public int getBeatAtCursor(int externalHorizBuffer) {
-    Point mousePos = this.getMousePosition();
-    if (mousePos == null) {
-      throw new IllegalStateException("Mouse is outside the frame");
-    }
-    int mouseX = (int) mousePos.getX();
-    mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer + beatsPerCell;
-    if (mouseX >= 0) {
-      mouseX /= beatSquareDim;
-      return this.columnStart + mouseX;
-    }
-    else {
-      throw new IllegalStateException("Mouse X coordinate is outside the beat display range");
-    }
   }
 
   /**
@@ -384,5 +414,18 @@ public class ConcreteGuiView extends JPanel {
       this.columnStart = offset * beatsPerCell;
     }
     this.updatePanel();
+  }
+
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+    try {
+      Graphics2D g2 = (Graphics2D) g;
+      g2.setColor(Color.RED);
+      g2.setStroke(new BasicStroke(2));
+      g2.draw(getTimeLine());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      // do nothing
+    }
   }
 }

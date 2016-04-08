@@ -1,10 +1,8 @@
 package cs3500.music.view;
 
 import cs3500.music.model.IMusicModel;
-
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-
 import javax.sound.midi.MidiUnavailableException;
 
 /**
@@ -16,17 +14,14 @@ public class CompositeView implements GuiView {
 
   /**
    * Constructs a CompositeView
-   * @param m the music model to view
    */
-  public CompositeView(IMusicModel m) {
+  public CompositeView() {
     try {
       this.midiViewImpl = new MidiView();
     } catch (MidiUnavailableException e) {
       throw new RuntimeException(e);
     }
     this.guiViewImpl = new GuiViewImpl();
-    this.midiViewImpl.initialize(m);
-    this.guiViewImpl.initialize(m);
   }
 
   @Override
