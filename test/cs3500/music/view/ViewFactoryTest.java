@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class ViewFactoryTest {
 
   /**
-   * Test for the construct method. Ensures that you can't just give it any string.
+   * Test for the constructView method. Ensures that you can't just give it any string.
    */
   @Test(expected = IllegalArgumentException.class)
   public void badStringTest() {
@@ -18,12 +18,31 @@ public class ViewFactoryTest {
   }
 
   /**
-   * Tests for the construct method.
+   * Tests for the constructView method
    */
   @Test
-  public void correctClassTest() {
+  public void testConstructView() {
     assertTrue(ViewFactory.constructView("console") instanceof ConsoleViewImpl);
     assertTrue(ViewFactory.constructView("midi") instanceof MidiView);
     assertTrue(ViewFactory.constructView("gui") instanceof GuiViewImpl);
+    assertTrue(ViewFactory.constructGui("gui") instanceof GuiViewImpl);
+    assertTrue(ViewFactory.constructGui("composite") instanceof CompositeView);
+  }
+
+  /**
+   * Test for the constructGui method. Ensures that you can't just give it any string.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testConstructGui_badInput() {
+    ViewFactory.constructGui("This isn't valid");
+  }
+
+  /**
+   * Tests for the constructGui method
+   */
+  @Test
+  public void testConstructGui() {
+    assertTrue(ViewFactory.constructGui("gui") instanceof GuiViewImpl);
+    assertTrue(ViewFactory.constructGui("composite") instanceof CompositeView);
   }
 }

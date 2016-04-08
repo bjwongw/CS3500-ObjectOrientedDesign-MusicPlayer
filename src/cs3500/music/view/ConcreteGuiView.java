@@ -83,22 +83,6 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Sets the externalHorizontalBuffer to the given buffer size
-   * @param buffer the external buffer size
-   */
-  void setExternalHorizontalBuffer(int buffer) {
-    this.externalHorizontalBuffer = buffer;
-  }
-
-  /**
-   * Sets the externalVerticalBuffer to the given buffer size
-   * @param buffer the external buffer size
-   */
-  void setExternalVerticalBuffer(int buffer) {
-    this.externalVerticalBuffer = buffer;
-  }
-
-  /**
    * Updates this panel by removing the previous components (if any), and creating new
    * panels of the pitches, beats, and notes.
    */
@@ -258,78 +242,19 @@ public class ConcreteGuiView extends JPanel {
   }
 
   /**
-   * Creates a vertical line representing the current position in time that fits within the
-   * notesPanel.
-   *
-   * @return a vertical line representing the current position in time
-   * @throws IllegalStateException if the view is out of sync with the current time
+   * Sets the externalHorizontalBuffer to the given buffer size
+   * @param buffer the external buffer size
    */
-  private Line2D getTimeLine() {
-    if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
-      int xViewPos = currentTime - columnStart;
-      int x = horizontalBuffer + (xViewPos * beatSquareDim) + (externalHorizontalBuffer / 2);
-      int yTop = verticalBuffer + (externalVerticalBuffer / 2);
-      int yBottom = verticalBuffer + (numRows * beatSquareDim) + (externalVerticalBuffer / 2);
-      double xDouble = (double) x;
-      double yTopDouble = (double) yTop;
-      double yBottomDouble = (double) yBottom;
-      return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
-    } else {
-      throw new IllegalStateException("View is out of sync with current time");
-    }
+  void setExternalHorizontalBuffer(int buffer) {
+    this.externalHorizontalBuffer = buffer;
   }
 
   /**
-   * Sets the current time to the given beat and repaints this panel, effectively setting the
-   * beat bar at the given beat. If the view does not contain the given beat, it is shifted so
-   * that the beat is displayed in the view.
-   *
-   * @param beat the beat to set the beat bar at
-   * @throws IllegalArgumentException if the given beat is negative
+   * Sets the externalVerticalBuffer to the given buffer size
+   * @param buffer the external buffer size
    */
-  void setBeatBar(int beat) {
-    if (beat < 0) {
-      throw new IllegalArgumentException("Cannot have a negative beat");
-    }
-    this.currentTime = beat;
-    if (currentTime >= columnStart + displayedBeats || currentTime < columnStart) {
-      this.columnStart = beat - (beat % beatsPerCell); // SIDE EFFECT!
-      this.updatePanel();
-    }
-    this.revalidate();
-    this.repaint();
-  }
-
-  /**
-   * Shifts the view of this panel. The valid options are the following (in the exact case):
-   * "left", "right", "up", or "down". Giving the argument "left" will decrease the beat interval,
-   * and giving the argument "right" will do the opposite. The argument "up" will increase the
-   * highest pitch displayed, and "down" will decrease the pitch range.
-   *
-   * @param direction the direction to shift the view
-   * @throws IllegalArgumentException if the given direction is not one of: left, right, up, or
-   * down
-   */
-  public void shift(String direction) {
-    switch(direction) {
-      case "left" :
-        if (this.columnStart - beatsPerCell >= 0) {
-          this.columnStart -= beatsPerCell;
-        }
-        break;
-      case "right" : // make it stop at the end of the piece
-        this.columnStart += beatsPerCell;
-        break;
-      case "up" :
-          this.rowStartMidi += 1;
-        break;
-      case "down" :
-        this.rowStartMidi -= 1;
-        break;
-      default :
-        throw new IllegalArgumentException("Invalid direction");
-    }
-    this.updatePanel();
+  void setExternalVerticalBuffer(int buffer) {
+    this.externalVerticalBuffer = buffer;
   }
 
   /**
@@ -392,6 +317,85 @@ public class ConcreteGuiView extends JPanel {
     else {
       throw new IllegalStateException("Mouse X coordinate is outside the beat display range");
     }
+  }
+
+  /**
+   * Creates a vertical line representing the current position in time that fits within the
+   * notesPanel.
+   *
+   * @return a vertical line representing the current position in time
+   * @throws IllegalStateException if the view is out of sync with the current time
+   */
+  private Line2D getTimeLine() {
+    if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
+      int xViewPos = currentTime - columnStart;
+      int x = horizontalBuffer + (xViewPos * beatSquareDim) + (externalHorizontalBuffer / 2);
+      int yTop = verticalBuffer + (externalVerticalBuffer / 2);
+      int yBottom = verticalBuffer + (numRows * beatSquareDim) + (externalVerticalBuffer / 2);
+      double xDouble = (double) x;
+      double yTopDouble = (double) yTop;
+      double yBottomDouble = (double) yBottom;
+      return new Line2D.Double(xDouble, yTopDouble, xDouble, yBottomDouble);
+    } else {
+      throw new IllegalStateException("View is out of sync with current time");
+    }
+  }
+
+  /**
+   * Sets the current time to the given beat and repaints this panel, effectively setting the
+   * beat bar at the given beat. If the view does not contain the given beat, it is shifted so
+   * that the beat is displayed in the view.
+   *
+   * @param beat the beat to set the beat bar at
+   * @throws IllegalArgumentException if the given beat is negative
+   */
+  void setBeatBar(int beat) {
+    if (beat < 0) {
+      throw new IllegalArgumentException("Cannot have a negative beat");
+    }
+    this.currentTime = beat;
+    if (currentTime >= columnStart + displayedBeats || currentTime < columnStart) {
+      this.columnStart = beat - (beat % beatsPerCell); // SIDE EFFECT!
+      this.updatePanel();
+    }
+    this.revalidate();
+    this.repaint();
+  }
+
+  /**
+   * Shifts the view of this panel. The valid options are the following (in the exact case):
+   * "left", "right", "up", or "down". Giving the argument "left" will decrease the beat interval,
+   * and giving the argument "right" will do the opposite. The argument "up" will increase the
+   * highest pitch displayed, and "down" will decrease the pitch range.
+   *
+   * <p>You cannot move left past beat 0, and you cannot move down past C0.</p>
+   *
+   * @param direction the direction to shift the view
+   * @throws IllegalArgumentException if the given direction is not one of: left, right, up, or
+   * down
+   */
+  public void shift(String direction) {
+    switch(direction) {
+      case "left" :
+        if (this.columnStart - beatsPerCell >= 0) {
+          this.columnStart -= beatsPerCell;
+        }
+        break;
+      case "right" : // make it stop at the end of the piece
+        this.columnStart += beatsPerCell;
+        break;
+      case "up" :
+          this.rowStartMidi += 1;
+        break;
+      case "down" :
+        if (Note.midiToOctave(this.rowStartMidi - numRows) >= 0) {
+          this.rowStartMidi -= 1;
+        }
+        break;
+      default :
+        throw new IllegalArgumentException("Invalid direction");
+    }
+    this.updatePanel();
   }
 
   /**

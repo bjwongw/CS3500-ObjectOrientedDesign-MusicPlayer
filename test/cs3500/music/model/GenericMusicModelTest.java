@@ -476,6 +476,36 @@ public class GenericMusicModelTest {
   }
 
   /**
+   * Test for the method sustainedNotes Ensures that you cannot give a negative integer as the input
+   * beat.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testSustainedNotes_negativeBeat() {
+    initData();
+    musicModel1.addNote(cSharp7);
+    musicModel1.sustainedNotes(-1);
+  }
+
+  /**
+   * Test for the method sustainedNotes when there are not matching notes/no notes in the model.
+   */
+  @Test
+  public void testSustainedNotes_noNotes() {
+    initData();
+    assertEquals(new HashSet<>(), musicModel1.sustainedNotes(0));
+  }
+
+  @Test
+  public void testSustainedNotes_beat1() {
+    initData();
+    musicModel1.addNote(c0); // c0 starts at beat 0 and plays through 3
+    musicModel1.addNote(b10); // b10 starts at beat 33 and plays through 39
+    Set<Note> sustained = musicModel1.sustainedNotes(2);
+    assertEquals(1, sustained.size());
+    assertTrue(sustained.contains(c0));
+  }
+
+  /**
    * Tests for the method combinePieces when one or both of the models are empty.
    */
   @Test

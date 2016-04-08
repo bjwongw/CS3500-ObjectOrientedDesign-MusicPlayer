@@ -27,7 +27,7 @@ public class MusicEditor {
    * @throws IOException              on bad file
    * @throws InvalidMidiDataException when midi cannot be accessed
    */
-  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main(String[] args) throws IOException, InvalidMidiDataException {
 
     if (args.length < 3) {
       System.out.println("Arguments: file, view type, explicit view");
@@ -45,13 +45,19 @@ public class MusicEditor {
       file = new FileReader(args[0]);
       IMusicModel m = MusicReader.parseFile(file, b);
       String viewType = args[1];
+      String explicitView = args[2];
 
       if (viewType == "generic") {
-        View view = ViewFactory.constructView(args[2]);
+        View view = ViewFactory.constructView(explicitView);
         view.initialize(m);
       } else if (viewType == "gui") {
-        GuiView guiView = ViewFactory.constructGui(args[2]);
-        guiView.initialize(m);
+        GuiView guiView = ViewFactory.constructGui(explicitView);
+        if (explicitView == "composite") {
+          IController c = new GuiController(m, guiView);
+          c.start();
+        } else {
+          guiView.initialize(m);
+        }
       }
 
     } catch (FileNotFoundException | IllegalArgumentException e) {
@@ -59,9 +65,9 @@ public class MusicEditor {
     }
   }
 
-  public static void main(String[] args) throws IOException, MidiUnavailableException {
+  public static void main3(String[] args) throws IOException, MidiUnavailableException {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("df-ttfaf.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
 
     GuiView view = new CompositeView();
     IController c = new GuiController(m, view);
