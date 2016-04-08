@@ -53,16 +53,24 @@ public class ConcreteGuiView extends JPanel {
   private int rowStartMidi;
 
   private final IMusicModel model;
+  private int externalHorizontalBuffer;
+  private int externalVerticalBuffer;
   private int currentTime;
 
   /**
-   * Constructs the ConcreteGuiView.
+   * Constructs a ConcreteGuiView
    *
    * @param model the music model to represent
+   * @param externalHorizBuffer the horizontal buffer surrounding this panel from components
+   *                            holding this panel
+   * @param externalVertBuffer the vertical buffer surrounding this panel from components holding
+   *                           this panel
    */
-  ConcreteGuiView(IMusicModel model) {
+  ConcreteGuiView(IMusicModel model, int externalHorizBuffer, int externalVertBuffer) {
     super();
     this.model = model;
+    this.externalHorizontalBuffer = externalHorizBuffer;
+    this.externalVerticalBuffer = externalVertBuffer;
     try {
       this.rowStartMidi = model.getHighestNote().getMidiPitch();
     } catch (IllegalStateException e) {
@@ -72,6 +80,14 @@ public class ConcreteGuiView extends JPanel {
     this.currentTime = 0;
     this.updatePanel();
     this.setDoubleBuffered(true);
+  }
+
+  public void setExternalHorizontalBuffer(int buffer) {
+    this.externalHorizontalBuffer = buffer;
+  }
+
+  public void setExternalVerticalBuffer(int buffer) {
+    this.externalVerticalBuffer = buffer;
   }
 
   /**
@@ -238,9 +254,9 @@ public class ConcreteGuiView extends JPanel {
   private Line2D getTimeLine() {
     if (this.currentTime >= columnStart && this.currentTime < columnStart + displayedBeats) {
       int xViewPos = currentTime - columnStart;
-      int x = horizontalBuffer + (xViewPos * beatSquareDim) + 10; // 10 is externalBuffer/2
-      int yTop = verticalBuffer + 10; // 10 is externalBuffer/2
-      int yBottom = verticalBuffer + (numRows * beatSquareDim) + 10;
+      int x = horizontalBuffer + (xViewPos * beatSquareDim) + (externalHorizontalBuffer / 2);
+      int yTop = verticalBuffer + (externalVerticalBuffer / 2);
+      int yBottom = verticalBuffer + (numRows * beatSquareDim) + (externalVerticalBuffer / 2);
       double xDouble = (double) x;
       double yTopDouble = (double) yTop;
       double yBottomDouble = (double) yBottom;
@@ -250,7 +266,7 @@ public class ConcreteGuiView extends JPanel {
     }
   }
 
-  public void setBeatBar(int beat) {
+  void setBeatBar(int beat) {
     if (beat < 0) {
       throw new IllegalArgumentException("Cannot have a negative beat");
     }
@@ -323,18 +339,17 @@ public class ConcreteGuiView extends JPanel {
   /**
    * Returns the pitch (in MIDI format) at the cursor's Y location.
    *
-   * @param externalVertBuffer the buffer from any external panels or frames holding this panel
    * @return the pitch (in MIDI format) at the cursor's Y location
    * @throws IllegalStateException if the mouse's Y coordinate is outside of the pitch display range
    * or if the input is null
    */
-  public int getPitchAtCursor(int externalVertBuffer) {
+  public int getPitchAtCursor() {
     Point mousePos = this.getMousePosition();
     if (mousePos == null) {
       throw new IllegalStateException("Mouse is outside the frame");
     }
     int mouseY = (int) mousePos.getY();
-    mouseY = mouseY - externalVertBuffer - this.verticalBuffer + beatsPerCell;
+    mouseY = mouseY - externalVerticalBuffer - this.verticalBuffer + beatsPerCell;
     if (mouseY >= 0) {
       mouseY /= cellHeight;
       return this.rowStartMidi - mouseY;
@@ -347,18 +362,17 @@ public class ConcreteGuiView extends JPanel {
   /**
    * Returns the beat at the cursor's X location.
    *
-   * @param externalHorizBuffer the buffer from any external panels or frames holding this panel
    * @return the beat at the cursor's X location
    * @throws IllegalStateException if the mouse's X coordinate is outside of the beat display range
    * or if the input is null
    */
-  public int getBeatAtCursor(int externalHorizBuffer) {
+  public int getBeatAtCursor() {
     Point mousePos = this.getMousePosition();
     if (mousePos == null) {
       throw new IllegalStateException("Mouse is outside the frame");
     }
     int mouseX = (int) mousePos.getX();
-    mouseX = mouseX - externalHorizBuffer - this.horizontalBuffer + beatsPerCell;
+    mouseX = mouseX - externalHorizontalBuffer - this.horizontalBuffer + beatsPerCell;
     if (mouseX >= 0) {
       mouseX /= beatSquareDim;
       return this.columnStart + mouseX;

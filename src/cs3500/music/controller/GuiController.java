@@ -1,8 +1,6 @@
 package cs3500.music.controller;
 
 import java.awt.event.KeyEvent;
-
-import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
 import cs3500.music.view.GuiView;
@@ -39,22 +37,30 @@ public class GuiController implements IController {
    * Binds functions to the handlers and inserts the handlers into the view.
    */
   private void initialize() {
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE, new PausePlay());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE,
+      new PausePlay());
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_R, new Reset());
 
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_HOME, new GoToStart());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_END, new GoToEnd());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_HOME,
+      new GoToStart());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_END,
+      new GoToEnd());
 
     Move c = new Move();
     this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_UP, c.new Up());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DOWN, c.new Down());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_LEFT, c.new Left());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_RIGHT, c.new Right());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DOWN,
+      c.new Down());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_LEFT,
+      c.new Left());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_RIGHT,
+      c.new Right());
 
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_D, new Delete());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_D,
+      new Delete());
 
     AddNote a = new AddNote();
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_A, a.new Add());
+    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_A,
+      a.new Add());
     for (int i = 0; i < 10; i++) {
       this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, 48 + i, a.new Input(i));
     }
@@ -73,6 +79,9 @@ public class GuiController implements IController {
     view.initialize(this.model);
   }
 
+  /**
+   * Runnable that determines what to do on a clock tick
+   */
   private class OnTick implements Runnable {
     @Override
     public void run() {
@@ -86,6 +95,7 @@ public class GuiController implements IController {
   private class PausePlay implements Runnable {
     private boolean isPlaying = false;
 
+    @Override
     public void run() {
       if (isPlaying) {
         view.pause();
@@ -101,6 +111,8 @@ public class GuiController implements IController {
    * Resets the view. Suggested bound to R.
    */
   private class Reset implements Runnable {
+
+    @Override
     public void run() {
       view.reset();
     }
@@ -111,24 +123,28 @@ public class GuiController implements IController {
    */
   private class Move {
     private class Up implements Runnable {
+      @Override
       public void run() {
         view.scrollUp();
       }
     }
 
     private class Down implements Runnable {
+      @Override
       public void run() {
         view.scrollDown();
       }
     }
 
     private class Left implements Runnable {
+      @Override
       public void run() {
         view.scrollLeft();
       }
     }
 
     private class Right implements Runnable {
+      @Override
       public void run() {
         view.scrollRight();
       }
@@ -139,6 +155,7 @@ public class GuiController implements IController {
    * Scrolls the view to the start.
    */
   private class GoToStart implements Runnable {
+    @Override
     public void run() {
       view.goToStart();
     }
@@ -148,6 +165,7 @@ public class GuiController implements IController {
    * Scrolls the view to the end.
    */
   private class GoToEnd implements Runnable {
+    @Override
     public void run() {
       view.goToEnd();
     }
@@ -157,6 +175,7 @@ public class GuiController implements IController {
    * Deletes the note under the cursor.
    */
   private class Delete implements Runnable {
+    @Override
     public void run() {
       int beat = view.getBeatAtCursor();
       int p = view.getPitchAtCursor();
@@ -178,7 +197,12 @@ public class GuiController implements IController {
     private int duration = 1;
     private boolean resetOnNextInput = true;
 
+
+    /**
+     * Adds a Note to the IMusicModel
+     */
     private class Add implements Runnable {
+      @Override
       public void run() {
         try {
           model.addNote(new Note(Note.midiToPitch(view.getPitchAtCursor()),
@@ -192,14 +216,22 @@ public class GuiController implements IController {
       }
     }
 
-    private class Input implements Runnable {
 
+    /**
+     * Handles duration inputs
+     */
+    private class Input implements Runnable {
       private int input;
 
+      /**
+       * Constructs an Input
+       * @param input the numeric input (representing note duration)
+       */
       public Input(int input) {
         this.input = input;
       }
 
+      @Override
       public void run() {
         if (resetOnNextInput) {
           duration = input;
@@ -218,7 +250,11 @@ public class GuiController implements IController {
     private Note note;
     private boolean isMoving = false;
 
+    /**
+     * Grabs the note at the cursor's position
+     */
     private class PickUp implements Runnable {
+      @Override
       public void run() {
         int beat = view.getBeatAtCursor();
         int p = view.getPitchAtCursor();
@@ -232,7 +268,11 @@ public class GuiController implements IController {
       }
     }
 
+    /**
+     * Places the held note at the cursor's position
+     */
     private class PutDown implements Runnable {
+      @Override
       public void run() {
         if (note != null) {
           if(isMoving) {

@@ -14,6 +14,10 @@ public class KeyboardHandler implements KeyListener {
   private final Map<Integer, Runnable> keyPressedMap;
   private final Map<Integer, Runnable> keyReleasedMap;
 
+
+  /**
+   * The types of events that a keyboard could have
+   */
   public enum EVENT_TYPE{
     TYPED, PRESSED, RELEASED
   }
@@ -28,7 +32,8 @@ public class KeyboardHandler implements KeyListener {
   }
 
   /**
-   * Adds the given runnable to this KeyboardHandler and associates it with the key and event type given.
+   * Adds the given runnable to this KeyboardHandler and associates it with the key and event type
+   * given.
    * @param t the type of event
    * @param key the key typed/pressed/released
    * @param r the runnable to run under the above conditions
@@ -51,7 +56,6 @@ public class KeyboardHandler implements KeyListener {
       default:
         throw new IllegalArgumentException("EVENT_TYPE is null.");
     }
-
     map.put(key, r);
   }
 

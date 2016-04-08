@@ -5,7 +5,7 @@ import javax.swing.*;
 import cs3500.music.model.IMusicModel;
 
 /**
- * The visual view for a composition
+ * The GUI view for a composition
  */
 public class GuiViewImpl extends JFrame implements GuiView {
 
@@ -29,7 +29,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
   @Override
   public void initialize(IMusicModel m) {
     this.model = m;
-    this.displayPanel = new ConcreteGuiView(model);
+    this.displayPanel = new ConcreteGuiView(model, borderBuffer, borderBuffer);
     getContentPane().add(displayPanel);
     this.setResizable(false);
     pack();
@@ -63,12 +63,12 @@ public class GuiViewImpl extends JFrame implements GuiView {
 
   @Override
   public int getPitchAtCursor() {
-    return this.displayPanel.getPitchAtCursor(this.borderBuffer);
+    return this.displayPanel.getPitchAtCursor();
   }
 
   @Override
   public int getBeatAtCursor() {
-    return this.displayPanel.getBeatAtCursor(this.borderBuffer);
+    return this.displayPanel.getBeatAtCursor();
   }
 
   @Override
