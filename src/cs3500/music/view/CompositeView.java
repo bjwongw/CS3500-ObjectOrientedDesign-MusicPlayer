@@ -26,8 +26,8 @@ public class CompositeView implements GuiView {
 
   @Override
   public void initialize(IMusicModel m) {
-    this.guiViewImpl.initialize(m);
     this.midiViewImpl.initialize(m);
+    this.guiViewImpl.initialize(m);
   }
 
   @Override

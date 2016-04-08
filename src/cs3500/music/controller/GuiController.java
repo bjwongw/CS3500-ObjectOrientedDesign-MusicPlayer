@@ -78,8 +78,8 @@ public class GuiController implements IController {
 
   @Override
   public void start() {
-    this.initialize();
     view.initialize(this.model);
+    this.initialize();
   }
 
   /**
@@ -180,14 +180,18 @@ public class GuiController implements IController {
   private class Delete implements Runnable {
     @Override
     public void run() {
-      int beat = view.getBeatAtCursor();
-      int p = view.getPitchAtCursor();
-      for (Note n : model.notesToPlay(beat)) {
-        if (n.getMidiPitch() == p) {
-          model.removeNote(n);
-          view.update();
-          break;
+      try {
+        int beat = view.getBeatAtCursor();
+        int p = view.getPitchAtCursor();
+        for (Note n : model.notesToPlay(beat)) {
+          if (n.getMidiPitch() == p) {
+            model.removeNote(n);
+            view.update();
+            break;
+          }
         }
+      } catch (IllegalStateException e) {
+
       }
     }
   }
@@ -259,15 +263,19 @@ public class GuiController implements IController {
     private class PickUp implements Runnable {
       @Override
       public void run() {
-        int beat = view.getBeatAtCursor();
-        int p = view.getPitchAtCursor();
-        for (Note n : model.notesToPlay(beat)) {
-          if (n.getMidiPitch() == p && n.getStart() == beat) {
-            note = n;
-            break;
+        try {
+          int beat = view.getBeatAtCursor();
+          int p = view.getPitchAtCursor();
+          for (Note n : model.notesToPlay(beat)) {
+            if (n.getMidiPitch() == p && n.getStart() == beat) {
+              note = n;
+              break;
+            }
           }
+          isMoving = true;
+        } catch (IllegalStateException e) {
+
         }
-        isMoving = true;
       }
     }
 
@@ -278,15 +286,19 @@ public class GuiController implements IController {
       @Override
       public void run() {
         if (note != null) {
-          if (isMoving) {
-            int beat = view.getBeatAtCursor();
-            int p = view.getPitchAtCursor();
-            model.editNote(note, new Note(Note.midiToPitch(p), Note.midiToOctave(p),
-                    beat, note.getDuration(), note.getInstrument(), note.getVolume()));
+          try {
+            if (isMoving) {
+              int beat = view.getBeatAtCursor();
+              int p = view.getPitchAtCursor();
+              model.editNote(note, new Note(Note.midiToPitch(p), Note.midiToOctave(p),
+                      beat, note.getDuration(), note.getInstrument(), note.getVolume()));
+            }
+            isMoving = false;
+            note = null;
+            view.update();
+          } catch (IllegalStateException e) {
+
           }
-          isMoving = false;
-          note = null;
-          view.update();
         }
       }
     }
