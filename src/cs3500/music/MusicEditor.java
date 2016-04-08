@@ -11,10 +11,8 @@ import cs3500.music.controller.GuiController;
 import cs3500.music.controller.IController;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
-import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicReader;
 import cs3500.music.view.*;
-import javax.sound.midi.MidiUnavailableException;
 
 public class MusicEditor {
 
@@ -61,15 +59,5 @@ public class MusicEditor {
     } catch (FileNotFoundException | IllegalArgumentException e) {
       System.out.println(e.getMessage());
     }
-  }
-
-  public static void main2(String[] args) throws IOException, MidiUnavailableException {
-    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
-
-
-    GuiView view = new CompositeView();
-    IController c = new GuiController(m, view);
-    c.start();
   }
 }
