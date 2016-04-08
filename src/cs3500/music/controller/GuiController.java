@@ -39,24 +39,35 @@ public class GuiController implements IController {
    * Binds functions to the handlers and inserts the handlers into the view.
    */
   private void initialize() {
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE, new PausePlay());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_R, new Reset());
+    this.keyboardHandler.
+            addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE, new PausePlay());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_R, new Reset());
 
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_HOME, new GoToStart());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_END, new GoToEnd());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_HOME, new GoToStart());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_END, new GoToEnd());
 
     Move c = new Move();
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_UP, c.new Up());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DOWN, c.new Down());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_LEFT, c.new Left());
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_RIGHT, c.new Right());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_UP, c.new Up());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_DOWN, c.new Down());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_LEFT, c.new Left());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_RIGHT, c.new Right());
 
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_D, new Delete());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_D, new Delete());
 
     AddNote a = new AddNote();
-    this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_A, a.new Add());
+    this.keyboardHandler
+            .addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, KeyEvent.VK_A, a.new Add());
     for (int i = 0; i < 10; i++) {
-      this.keyboardHandler.addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, 48 + i, a.new Input(i));
+      this.keyboardHandler
+              .addHandler(KeyboardHandler.EVENT_TYPE.RELEASED, 48 + i, a.new Input(i));
     }
 
     MoveNote b = new MoveNote();
@@ -223,7 +234,7 @@ public class GuiController implements IController {
         int beat = view.getBeatAtCursor();
         int p = view.getPitchAtCursor();
         for (Note n : model.notesToPlay(beat)) {
-          if (n.getMidiPitch() == p) {
+          if (n.getMidiPitch() == p && n.getStart() == beat) {
             note = n;
             break;
           }
@@ -235,12 +246,11 @@ public class GuiController implements IController {
     private class PutDown implements Runnable {
       public void run() {
         if (note != null) {
-          if(isMoving) {
+          if (isMoving) {
             int beat = view.getBeatAtCursor();
             int p = view.getPitchAtCursor();
-            model.removeNote(note);
-            model.addNote(new Note(Note.midiToPitch(p), Note.midiToOctave(p),
-              beat, note.getDuration(), note.getInstrument(), note.getVolume()));
+            model.editNote(note, new Note(Note.midiToPitch(p), Note.midiToOctave(p),
+                    beat, note.getDuration(), note.getInstrument(), note.getVolume()));
           }
           isMoving = false;
           note = null;

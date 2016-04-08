@@ -92,7 +92,7 @@ public class MidiView implements View {
         return i;
       }
     }
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 16; i++) {
       if (channelArray[i] != null && !this.channels.contains(i)) {
         channelArray[i].programChange(instrument);
         this.channels.add(i);
