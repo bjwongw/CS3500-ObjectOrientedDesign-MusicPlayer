@@ -61,14 +61,4 @@ public class MusicEditor {
       System.out.println(e.getMessage());
     }
   }
-
-  public static void main2(String[] args) throws IOException, MidiUnavailableException {
-    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
-
-
-    GuiView view = new CompositeView();
-    IController c = new GuiController(m, view);
-    c.start();
-  }
 }
