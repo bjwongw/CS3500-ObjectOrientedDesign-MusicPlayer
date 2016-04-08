@@ -73,5 +73,10 @@ COMPOSITION BUILDING:
     to add the note. Once you have placed the note, you can then change the duration again.
 
     If you want to remove a note from the composition, hover your mouse over the start of the note
-    you wish to delete, and press the 'D' key. To move a note, press and hold on the starting beat
-    of the note, then drag your mouse to the new desired position and release.
+    you wish to delete, and press the 'D' key.
+
+    To move a note, press and hold on the starting beat of the note, then drag your mouse to the
+    new desired position and release.
+
+SUGGESTED JAR USAGE:
+    java -jar [jar file] [music file] gui composite

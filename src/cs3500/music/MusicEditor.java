@@ -32,6 +32,7 @@ public class MusicEditor {
 
     if (args.length < 3) {
       System.out.println("Arguments: file, view type, explicit view");
+      System.out.println("Recommended usage: java -jar [jar] [file] gui composite");
       System.out.println("file is a path to a music file");
       System.out.println("view type is one of: generic, gui");
       System.out.println("explicit view (under view) is one of: console, midi, gui, composite");
