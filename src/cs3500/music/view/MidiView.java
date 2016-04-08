@@ -115,7 +115,7 @@ public class MidiView implements View {
               " initialize) first!");
     }
     this.timer = new Timer();
-    this.timer.scheduleAtFixedRate(new PlayBeat(), 0, this.model.getTempo() / 1000);
+    this.timer.schedule(new PlayBeat(), 0, this.model.getTempo() / 1000);
   }
 
   @Override

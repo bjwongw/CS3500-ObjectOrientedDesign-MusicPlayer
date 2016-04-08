@@ -66,6 +66,7 @@ public class MusicEditor {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
     IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 
+
     GuiView view = new CompositeView();
     IController c = new GuiController(m, view);
     c.start();
