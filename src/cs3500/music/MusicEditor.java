@@ -3,6 +3,7 @@ package cs3500.music;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.sound.midi.InvalidMidiDataException;
 
@@ -37,22 +38,18 @@ public class MusicEditor {
       System.out.println("explicit view (under gui) is one of: gui, composite");
       return;
     }
-
-    FileReader file;
-    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-
     try {
-      file = new FileReader(args[0]);
-      IMusicModel m = MusicReader.parseFile(file, b);
+      FileReader file = new FileReader(args[0]);
+      IMusicModel m = MusicReader.parseFile(file, new GenericMusicModel.Builder());
       String viewType = args[1];
       String explicitView = args[2];
-
-      if (viewType == "generic") {
+      if (Objects.equals(viewType, "generic")) {
         View view = ViewFactory.constructView(explicitView);
         view.initialize(m);
-      } else if (viewType == "gui") {
+        view.play();
+      } else if (Objects.equals(viewType, "gui")) {
         GuiView guiView = ViewFactory.constructGui(explicitView);
-        if (explicitView == "composite") {
+        if (Objects.equals(explicitView, "composite")) {
           IController c = new GuiController(m, guiView);
           c.start();
         } else {
@@ -65,9 +62,9 @@ public class MusicEditor {
     }
   }
 
-  public static void main3(String[] args) throws IOException, MidiUnavailableException {
+  public static void main2(String[] args) throws IOException, MidiUnavailableException {
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader("mary-little-lamb.txt"), b);
+    IMusicModel m = MusicReader.parseFile(new FileReader("mystery-2.txt"), b);
 
 
     GuiView view = new CompositeView();
