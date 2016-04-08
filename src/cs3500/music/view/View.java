@@ -9,7 +9,7 @@ public interface View {
 
   /**
    * Initializes the view and provides it, playing it immediately if it's a static view. If it is a
-   * dynamic view, provides it paused awaiting user input.
+   * dynamic view, the view is provided and then awaits user input.
    *
    * @param m the model to base the view on
    */

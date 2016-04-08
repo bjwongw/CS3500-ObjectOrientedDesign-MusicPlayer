@@ -29,8 +29,6 @@ public class GuiController implements IController {
     this.view = view;
     this.keyboardHandler = new KeyboardHandler();
     this.mouseHandler = new MouseHandler();
-
-    this.initialize();
   }
 
   /**
@@ -77,6 +75,7 @@ public class GuiController implements IController {
   @Override
   public void start() {
     view.initialize(this.model);
+    this.initialize();
   }
 
   /**

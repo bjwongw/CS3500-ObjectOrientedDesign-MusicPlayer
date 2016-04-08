@@ -14,7 +14,7 @@ public class ViewFactoryTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void badStringTest() {
-    ViewFactory.construct("Not what you want");
+    ViewFactory.constructView("Not what you want");
   }
 
   /**
@@ -22,8 +22,8 @@ public class ViewFactoryTest {
    */
   @Test
   public void correctClassTest() {
-    assertTrue(ViewFactory.construct("console") instanceof ConsoleViewImpl);
-    assertTrue(ViewFactory.construct("midi") instanceof MidiView);
-    assertTrue(ViewFactory.construct("gui") instanceof GuiViewImpl);
+    assertTrue(ViewFactory.constructView("console") instanceof ConsoleViewImpl);
+    assertTrue(ViewFactory.constructView("midi") instanceof MidiView);
+    assertTrue(ViewFactory.constructView("gui") instanceof GuiViewImpl);
   }
 }

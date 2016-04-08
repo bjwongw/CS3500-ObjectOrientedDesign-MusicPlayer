@@ -18,24 +18,6 @@ import javax.sound.midi.MidiUnavailableException;
 public class MusicEditor {
 
   /**
-   * A method to test all three views at once on the given file.
-   *
-   * @param file the file to run all views on
-   */
-  public static void main2(String file) throws IOException, InvalidMidiDataException {
-    View consoleView = ViewFactory.construct("console");
-    View guiView = ViewFactory.construct("gui");
-    View midiView = ViewFactory.construct("midi");
-
-    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(new FileReader(file), b);
-
-    consoleView.initialize(m);
-    guiView.initialize(m);
-    midiView.initialize(m);
-  }
-
-  /**
    * The main method. Runs a given view on a given file.
    *
    * Arguments: file viewtype file is a path to a music file viewtype is one of console, midi, or
@@ -45,46 +27,44 @@ public class MusicEditor {
    * @throws IOException              on bad file
    * @throws InvalidMidiDataException when midi cannot be accessed
    */
-  public static void main3(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
 
-    if (args.length < 2) {
-      System.out.println("Arguments: file viewtype");
+    if (args.length < 3) {
+      System.out.println("Arguments: file, view type, explicit view");
       System.out.println("file is a path to a music file");
-      System.out.println("viewtype is one of console, midi, or gui");
+      System.out.println("view type is one of: generic, gui");
+      System.out.println("explicit view (under view) is one of: console, midi, gui, composite");
+      System.out.println("explicit view (under gui) is one of: gui, composite");
       return;
     }
 
     FileReader file;
-    View view;
+    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
 
     try {
       file = new FileReader(args[0]);
-      view = ViewFactory.construct(args[1]);
+      IMusicModel m = MusicReader.parseFile(file, b);
+      String viewType = args[1];
+
+      if (viewType == "generic") {
+        View view = ViewFactory.constructView(args[2]);
+        view.initialize(m);
+      } else if (viewType == "gui") {
+        GuiView guiView = ViewFactory.constructGui(args[2]);
+        guiView.initialize(m);
+      }
+
     } catch (FileNotFoundException | IllegalArgumentException e) {
       System.out.println(e.getMessage());
-      return;
     }
-
-    CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-    IMusicModel m = MusicReader.parseFile(file, b);
-
-    view.initialize(m);
   }
 
   public static void main(String[] args) throws IOException, MidiUnavailableException {
-//
-//    try {
-//      main2("mystery-3.txt");
-//    } catch (Exception e) {
-//
     CompositionBuilder<IMusicModel> b = new GenericMusicModel.Builder();
-
-    // NOTE df-ttfaf.txt won't run because it has at least one note with a duration < 1
     IMusicModel m = MusicReader.parseFile(new FileReader("df-ttfaf.txt"), b);
 
-    IMusicModel emptyModel = new GenericMusicModel(10000);
-    GuiView view = new CompositeView(m);
-
+    GuiView view = new CompositeView();
     IController c = new GuiController(m, view);
+    c.start();
   }
 }
