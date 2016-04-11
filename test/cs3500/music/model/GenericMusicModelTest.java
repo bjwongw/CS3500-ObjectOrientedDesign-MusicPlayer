@@ -50,29 +50,29 @@ public class GenericMusicModelTest {
   public void initData() {
     musicModel1 = new GenericMusicModel();
     musicModel2 = new GenericMusicModel();
-    c0 = new Note(Note.Pitch.C, 0, 0, 4, 0, 0);
-    c4 = new Note(Note.Pitch.C, 4, 3, 1, 0, 0);
-    cSharp3 = new Note(Note.Pitch.C_SHARP, 3, 2, 2, 0, 0);
-    cSharp7 = new Note(Note.Pitch.C_SHARP, 7, 10, 3, 0, 0);
-    d3 = new Note(Note.Pitch.D, 3, 13, 4, 0, 0);
-    d6 = new Note(Note.Pitch.D, 6, 0, 1, 0, 0);
-    dSharp0 = new Note(Note.Pitch.D_SHARP, 0, 21, 3, 0, 0);
-    dSharp9 = new Note(Note.Pitch.D_SHARP, 9, 8, 8, 0, 0);
-    e1 = new Note(Note.Pitch.E, 1, 0, 1, 0, 0);
-    e2 = new Note(Note.Pitch.E, 2, 2, 1, 0, 0);
-    f3 = new Note(Note.Pitch.F, 3, 0, 7, 0, 0);
-    f5 = new Note(Note.Pitch.F, 5, 5, 5, 0, 0);
-    fSharp4 = new Note(Note.Pitch.F_SHARP, 4, 6, 2, 0, 0);
-    fSharp9 = new Note(Note.Pitch.F_SHARP, 9, 6, 2, 0, 0);
-    g0 = new Note(Note.Pitch.G, 0, 3, 1, 0, 0);
-    g6 = new Note(Note.Pitch.G, 6, 10, 4, 0, 0);
-    gSharp5 = new Note(Note.Pitch.G_SHARP, 5, 3, 1, 0, 0);
-    gSharp7 = new Note(Note.Pitch.G_SHARP, 7, 40, 2, 0, 0);
-    a8 = new Note(Note.Pitch.A, 8, 32, 2, 0, 0);
-    a10 = new Note(Note.Pitch.A, 10, 32, 2, 0, 0);
-    aSharp4 = new Note(Note.Pitch.A_SHARP, 4, 14, 10, 0, 0);
-    aSharp9 = new Note(Note.Pitch.A_SHARP, 9, 22, 9, 0, 0);
-    b10 = new Note(Note.Pitch.B, 10, 33, 7, 0, 0);
+    c0 = new NoteImpl(Note.Pitch.C, 0, 0, 4, 0, 0);
+    c4 = new NoteImpl(Note.Pitch.C, 4, 3, 1, 0, 0);
+    cSharp3 = new NoteImpl(Note.Pitch.C_SHARP, 3, 2, 2, 0, 0);
+    cSharp7 = new NoteImpl(Note.Pitch.C_SHARP, 7, 10, 3, 0, 0);
+    d3 = new NoteImpl(Note.Pitch.D, 3, 13, 4, 0, 0);
+    d6 = new NoteImpl(Note.Pitch.D, 6, 0, 1, 0, 0);
+    dSharp0 = new NoteImpl(Note.Pitch.D_SHARP, 0, 21, 3, 0, 0);
+    dSharp9 = new NoteImpl(Note.Pitch.D_SHARP, 9, 8, 8, 0, 0);
+    e1 = new NoteImpl(Note.Pitch.E, 1, 0, 1, 0, 0);
+    e2 = new NoteImpl(Note.Pitch.E, 2, 2, 1, 0, 0);
+    f3 = new NoteImpl(Note.Pitch.F, 3, 0, 7, 0, 0);
+    f5 = new NoteImpl(Note.Pitch.F, 5, 5, 5, 0, 0);
+    fSharp4 = new NoteImpl(Note.Pitch.F_SHARP, 4, 6, 2, 0, 0);
+    fSharp9 = new NoteImpl(Note.Pitch.F_SHARP, 9, 6, 2, 0, 0);
+    g0 = new NoteImpl(Note.Pitch.G, 0, 3, 1, 0, 0);
+    g6 = new NoteImpl(Note.Pitch.G, 6, 10, 4, 0, 0);
+    gSharp5 = new NoteImpl(Note.Pitch.G_SHARP, 5, 3, 1, 0, 0);
+    gSharp7 = new NoteImpl(Note.Pitch.G_SHARP, 7, 40, 2, 0, 0);
+    a8 = new NoteImpl(Note.Pitch.A, 8, 32, 2, 0, 0);
+    a10 = new NoteImpl(Note.Pitch.A, 10, 32, 2, 0, 0);
+    aSharp4 = new NoteImpl(Note.Pitch.A_SHARP, 4, 14, 10, 0, 0);
+    aSharp9 = new NoteImpl(Note.Pitch.A_SHARP, 9, 22, 9, 0, 0);
+    b10 = new NoteImpl(Note.Pitch.B, 10, 33, 7, 0, 0);
   }
 
   /**
@@ -119,11 +119,11 @@ public class GenericMusicModelTest {
   @Test
   public void testAddNote_addDuringNote() {
     initData();
-    Note c0_1_6 = new Note(Note.Pitch.C, 0, 1, 6, 0, 0);
+    Note c0_1_6 = new NoteImpl(Note.Pitch.C, 0, 1, 6, 0, 0);
     musicModel1.addNote(c0_1_6);
     assertEquals(6, c0_1_6.getDuration());
     // the following note starts while c0_1_6 is playing
-    Note c0_3_4 = new Note(Note.Pitch.C, 0, 3, 4, 0, 0);
+    Note c0_3_4 = new NoteImpl(Note.Pitch.C, 0, 3, 4, 0, 0);
     musicModel1.addNote(c0_3_4);
     assertEquals(6, c0_1_6.getDuration());
 
@@ -140,10 +140,10 @@ public class GenericMusicModelTest {
   @Test
   public void testAddNote_givenNotePlaysDuringOtherNote() {
     initData();
-    Note d3_5_2 = new Note(Note.Pitch.D, 3, 5, 2, 0, 0);
+    Note d3_5_2 = new NoteImpl(Note.Pitch.D, 3, 5, 2, 0, 0);
     musicModel1.addNote(d3_5_2);
     // the following note is playing through the start of d3_5_2
-    Note d3_3_5 = new Note(Note.Pitch.D, 3, 3, 5, 0, 0);
+    Note d3_3_5 = new NoteImpl(Note.Pitch.D, 3, 3, 5, 0, 0);
     assertEquals(5, d3_3_5.getDuration());
     musicModel1.addNote(d3_3_5);
     // d3_3_5 is kept the same because it is not equivalent to the new note
@@ -162,8 +162,8 @@ public class GenericMusicModelTest {
   @Test
   public void testAddNote_notesHaveSameStart_longerNoteInModel() {
     initData();
-    Note aSharp4_0_7 = new Note(Note.Pitch.A_SHARP, 4, 0, 7, 0, 0);
-    Note aSharp4_0_3 = new Note(Note.Pitch.A_SHARP, 4, 0, 3, 0, 0);
+    Note aSharp4_0_7 = new NoteImpl(Note.Pitch.A_SHARP, 4, 0, 7, 0, 0);
+    Note aSharp4_0_3 = new NoteImpl(Note.Pitch.A_SHARP, 4, 0, 3, 0, 0);
     musicModel1.addNote(aSharp4_0_7);
     assertTrue(musicModel1.getNotes().contains(aSharp4_0_7));
     musicModel1.addNote(aSharp4_0_3);
@@ -178,8 +178,8 @@ public class GenericMusicModelTest {
   @Test
   public void testAddNote_notesHaveSameStart_shorterNoteInModel() {
     initData();
-    Note d10_4_2 = new Note(Note.Pitch.D, 10, 4, 2, 0, 0);
-    Note d10_4_3 = new Note(Note.Pitch.D, 10, 4, 3, 0, 0);
+    Note d10_4_2 = new NoteImpl(Note.Pitch.D, 10, 4, 2, 0, 0);
+    Note d10_4_3 = new NoteImpl(Note.Pitch.D, 10, 4, 3, 0, 0);
     musicModel1.addNote(d10_4_2);
     assertTrue(musicModel1.getNotes().contains(d10_4_2));
     musicModel1.addNote(d10_4_3);
@@ -203,8 +203,8 @@ public class GenericMusicModelTest {
         for (int k = 1; k < 10; k++) {
           for (int t = 1; t < 10; t++) {
             for (int d = 1; d < 10; d++) {
-              musicModel1.addNote(new Note(Note.Pitch.A, i, j, k, d, t));
-              set.add(new Note(Note.Pitch.A, i, j, k, d, t));
+              musicModel1.addNote(new NoteImpl(Note.Pitch.A, i, j, k, d, t));
+              set.add(new NoteImpl(Note.Pitch.A, i, j, k, d, t));
             }
           }
         }
@@ -367,11 +367,11 @@ public class GenericMusicModelTest {
   @Test
   public void testGetHighestNote() {
     initData();
-    musicModel1.addNote(new Note(Note.Pitch.C, 7, 0, 1, 0, 2));
-    musicModel1.addNote(new Note(Note.Pitch.C, 7, 0, 1, 0, 1));
+    musicModel1.addNote(new NoteImpl(Note.Pitch.C, 7, 0, 1, 0, 2));
+    musicModel1.addNote(new NoteImpl(Note.Pitch.C, 7, 0, 1, 0, 1));
     musicModel1.addNote(aSharp4);
     musicModel1.addNote(gSharp5);
-    assertEquals(new Note(Note.Pitch.C, 7, 0, 1, 0, 2), musicModel1.getHighestNote());
+    assertEquals(new NoteImpl(Note.Pitch.C, 7, 0, 1, 0, 2), musicModel1.getHighestNote());
 
     musicModel2.addNote(c4);
     assertEquals(c4, musicModel2.getHighestNote());
@@ -387,12 +387,12 @@ public class GenericMusicModelTest {
 
     musicModel1.addNote(dSharp9);
     musicModel1.addNote(c4);
-    musicModel1.addNote(new Note(Note.Pitch.D, 3, 100, 2, 3, 4));
+    musicModel1.addNote(new NoteImpl(Note.Pitch.D, 3, 100, 2, 3, 4));
     assertEquals(101, musicModel1.finalBeat());
 
-    musicModel2.addNote(new Note(Note.Pitch.C, 3, 37, 1, 4, 2));
-    musicModel2.addNote(new Note(Note.Pitch.C, 3, 10, 3, 4, 2));
-    musicModel2.addNote(new Note(Note.Pitch.C, 3, 34, 9, 4, 2));
+    musicModel2.addNote(new NoteImpl(Note.Pitch.C, 3, 37, 1, 4, 2));
+    musicModel2.addNote(new NoteImpl(Note.Pitch.C, 3, 10, 3, 4, 2));
+    musicModel2.addNote(new NoteImpl(Note.Pitch.C, 3, 34, 9, 4, 2));
     assertEquals(42, musicModel2.finalBeat());
   }
 
@@ -459,9 +459,9 @@ public class GenericMusicModelTest {
   @Test
   public void testNotesToPlay_beat10() {
     initData();
-    Note e5_10_3 = new Note(Note.Pitch.E, 5, 10, 3, 0, 0);
-    Note aSharp6_10_2 = new Note(Note.Pitch.A_SHARP, 6, 10, 2, 0, 0);
-    Note dSharp0_10_1 = new Note(Note.Pitch.D_SHARP, 0, 10, 1, 0, 0);
+    Note e5_10_3 = new NoteImpl(Note.Pitch.E, 5, 10, 3, 0, 0);
+    Note aSharp6_10_2 = new NoteImpl(Note.Pitch.A_SHARP, 6, 10, 2, 0, 0);
+    Note dSharp0_10_1 = new NoteImpl(Note.Pitch.D_SHARP, 0, 10, 1, 0, 0);
     musicModel1.addNote(e5_10_3);
     musicModel1.addNote(cSharp3);
     musicModel1.addNote(f3);

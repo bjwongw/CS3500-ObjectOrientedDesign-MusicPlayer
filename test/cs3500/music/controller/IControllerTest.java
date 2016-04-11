@@ -1,13 +1,13 @@
 package cs3500.music.controller;
 
+import cs3500.music.model.Note;
+import cs3500.music.model.NoteImpl;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 
 import java.awt.event.KeyEvent;
-
-import cs3500.music.model.Note;
 
 /**
  * Tests for the controller
@@ -86,7 +86,7 @@ public class IControllerTest {
     StringBuilder exp = new StringBuilder();
     for(int i = 20; i < 30; i ++) {
       for(int j = 0; j < 10; j ++) {
-        model.addNote(new Note(Note.midiToPitch(i), Note.midiToOctave(i), j, 3, 0, 0));
+        model.addNote(new NoteImpl(Note.midiToPitch(i), Note.midiToOctave(i), j, 3, 0, 0));
         view.sendKeyBoardInput(MockIGuiView.INPUT_TYPE.RELEASED, KeyEvent.VK_D, i, j);
         exp.append(String.format(
                 "AddNote: Pitch: %d, Beat: %d, Length: 3\n" +
@@ -136,7 +136,7 @@ public class IControllerTest {
 
     for(int i = 20; i < 30; i ++) {
       for (int j = 0; j < 10; j ++) {
-        model.addNote(new Note(Note.midiToPitch(i), Note.midiToOctave(i), j, 3, 0, 0));
+        model.addNote(new NoteImpl(Note.midiToPitch(i), Note.midiToOctave(i), j, 3, 0, 0));
         view.sendMouseInput(MockIGuiView.INPUT_TYPE.PRESSED, i, j);
         view.sendMouseInput(MockIGuiView.INPUT_TYPE.RELEASED, i + 10, j + 10);
         exp.append(String.format("AddNote: Pitch: %d, Beat: %d, Length: 3\n" +

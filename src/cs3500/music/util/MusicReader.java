@@ -12,7 +12,7 @@ public class MusicReader {
    * constructing compositions.
    *
    * <p> The input file format consists of two types of lines: <ul> <li>Tempo lines: the keyword
-   * "tempo" followed by a number, describing the tempo in microseconds per beat</li> <li>Note
+   * "tempo" followed by a number, describing the tempo in microseconds per beat</li> <li>NoteImpl
    * lines: the keyword "note" followed by five numbers indicating the start and end times of the
    * note, the instrument, the pitch, and the volume</li> </ul> </p>
    *

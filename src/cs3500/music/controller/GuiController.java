@@ -3,6 +3,7 @@ package cs3500.music.controller;
 import java.awt.event.KeyEvent;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
+import cs3500.music.model.NoteImpl;
 import cs3500.music.view.GuiView;
 
 /**
@@ -206,13 +207,13 @@ public class GuiController implements IController {
 
 
     /**
-     * Adds a Note to the IMusicModel
+     * Adds a NoteImpl to the IMusicModel
      */
     private class Add implements Runnable {
       @Override
       public void run() {
         try {
-          model.addNote(new Note(Note.midiToPitch(view.getPitchAtCursor()),
+          model.addNote(new NoteImpl(Note.midiToPitch(view.getPitchAtCursor()),
                   Note.midiToOctave(view.getPitchAtCursor()),
                   view.getBeatAtCursor(), duration, 1, 60));
           resetOnNextInput = true;
@@ -290,7 +291,7 @@ public class GuiController implements IController {
             if (isMoving) {
               int beat = view.getBeatAtCursor();
               int p = view.getPitchAtCursor();
-              model.editNote(note, new Note(Note.midiToPitch(p), Note.midiToOctave(p),
+              model.editNote(note, new NoteImpl(Note.midiToPitch(p), Note.midiToOctave(p),
                       beat, note.getDuration(), note.getInstrument(), note.getVolume()));
             }
             isMoving = false;

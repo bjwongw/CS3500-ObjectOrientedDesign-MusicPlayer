@@ -1,5 +1,7 @@
 package cs3500.music.view;
 
+import cs3500.music.model.Note;
+import cs3500.music.model.NoteImpl;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -12,7 +14,6 @@ import javax.sound.midi.Synthesizer;
 
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.Note;
 import cs3500.music.util.MusicReader;
 
 import static org.junit.Assert.assertEquals;
@@ -43,7 +44,7 @@ public class MidiViewTest {
    */
   void addNote(Note.Pitch p, int o, int s, int d, int i, int v, IMusicModel model,
                StringBuilder log) {
-    Note n = new Note(p, o, s, d, i, v);
+    Note n = new NoteImpl(p, o, s, d, i, v);
     model.addNote(n);
     log.append(String.format("send call: Command %d, MIDIPitch %d; Volume %d; " +
             "timeStamp %d\n", ShortMessage.NOTE_ON, n.getMidiPitch(), v, -1));
@@ -122,7 +123,7 @@ public class MidiViewTest {
     this.view.initialize(this.model);
     this.view.play();
     Thread.sleep(1000);
-    model.addNote(new Note(Note.Pitch.A, 6, 3, 2, 1, 0));
+    model.addNote(new NoteImpl(Note.Pitch.A, 6, 3, 2, 1, 0));
     this.view.initialize(this.model);
     this.view.play();
     Thread.sleep(1000);

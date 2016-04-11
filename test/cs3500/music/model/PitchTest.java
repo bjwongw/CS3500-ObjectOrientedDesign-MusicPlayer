@@ -23,7 +23,7 @@ public class PitchTest {
   Note.Pitch bPitch = Note.Pitch.B;
 
   /**
-   * Tests for the method toString in Note.Pitch.
+   * Tests for the method toString in NoteImpl.Pitch.
    */
   @Test
   public void testToString() {

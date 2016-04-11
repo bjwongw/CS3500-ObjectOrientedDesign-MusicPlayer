@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,7 +72,7 @@ public class GenericMusicModel implements IMusicModel {
       if(end - start == 0) {
         end += 1;
       }
-      notes.add(new Note(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
+      notes.add(new NoteImpl(Note.midiToPitch(pitch), Note.midiToOctave(pitch), start, end - start,
               instrument, volume));
       return this;
     }
@@ -254,7 +253,7 @@ public class GenericMusicModel implements IMusicModel {
     int lastBeat = finalBeat();
     Set<Note> otherNotes = otherMusic.getNotes();
     for (Note n : otherNotes) {
-      this.addNote(new Note(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
+      this.addNote(new NoteImpl(n.getPitch(), n.getOctave(), n.getStart() + lastBeat, n.getDuration
               (), n.getVolume(), n.getInstrument()));
     }
   }

@@ -21,7 +21,7 @@ public class GenericMusicModelBuilderTest {
           for (int l = 12; l < 36; l++) {
             for (int m = 0; m < 5; m++) {
               b.addNote(i, j, k, l, m);
-              model.addNote(new Note(Note.midiToPitch(l), Note.midiToOctave(l), i, j - i, k, m));
+              model.addNote(new NoteImpl(Note.midiToPitch(l), Note.midiToOctave(l), i, j - i, k, m));
             }
           }
         }
