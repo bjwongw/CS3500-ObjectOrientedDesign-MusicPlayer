@@ -11,7 +11,7 @@ import javax.swing.*;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
 
-/**
+/**te
  * A type of JPanel that is used to display Notes in an IMusicModel.
  */
 public class ConcreteGuiView extends JPanel {
