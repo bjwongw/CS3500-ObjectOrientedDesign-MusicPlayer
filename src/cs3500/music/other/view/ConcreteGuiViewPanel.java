@@ -13,12 +13,12 @@ import java.util.TreeMap;
 
 import javax.swing.*;
 
-import cs3500.music.model.HeadBeat;
-import cs3500.music.model.IBeat;
-import cs3500.music.model.IMusic;
-import cs3500.music.model.Note;
-import cs3500.music.model.Pitch;
-import cs3500.music.model.TailBeat;
+import cs3500.music.other.model.HeadBeat;
+import cs3500.music.other.model.IBeat;
+import cs3500.music.other.model.IMusic;
+import cs3500.music.other.model.Note;
+import cs3500.music.other.model.Pitch;
+import cs3500.music.other.model.TailBeat;
 
 
 /**

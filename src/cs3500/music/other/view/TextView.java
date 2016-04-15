@@ -1,6 +1,6 @@
 package cs3500.music.other.view;
 
-import cs3500.music.model.IMusic;
+import cs3500.music.other.model.IMusic;
 
 /**
  * Created by renyuan on 3/16/16.

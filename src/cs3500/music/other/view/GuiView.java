@@ -2,9 +2,9 @@ package cs3500.music.other.view;
 
 import java.util.ArrayList;
 
-import cs3500.music.controller.ControllerImp;
-import cs3500.music.controller.KeyboardHandler;
-import cs3500.music.model.IMusic;
+import cs3500.music.other.controller.ControllerImp;
+import cs3500.music.other.controller.KeyboardHandler;
+import cs3500.music.other.model.IMusic;
 
 /**
  * Created by renyuan on 3/26/16.

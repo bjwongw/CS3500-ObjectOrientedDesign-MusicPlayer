@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import cs3500.music.controller.ControllerImp;
-import cs3500.music.controller.KeyboardHandler;
-import cs3500.music.model.IMusic;
+import cs3500.music.other.controller.ControllerImp;
+import cs3500.music.other.controller.KeyboardHandler;
+import cs3500.music.other.model.IMusic;
 
 /**
  * A skeleton Frame (i.e., a window) in Swing
