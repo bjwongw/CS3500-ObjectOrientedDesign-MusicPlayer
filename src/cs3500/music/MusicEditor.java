@@ -63,7 +63,7 @@ public class MusicEditor {
   }
 
   public static void main(String[] args) throws IOException, InvalidMidiDataException {
-    FileReader file = new FileReader("df-ttfaf.txt");
+    FileReader file = new FileReader("mary-little-lamb.txt");
     IMusicModel m = MusicReader.parseFile(file, new GenericMusicModel.Builder());
 
     GuiView view = new OtherCompositeViewAdapter();

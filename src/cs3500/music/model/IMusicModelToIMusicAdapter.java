@@ -63,7 +63,11 @@ public class IMusicModelToIMusicAdapter implements IMusic {
     // creates the TreeMaps for the range of Pitches
     TreeMap<Pitch, TreeMap<Integer, IBeat>> result = new TreeMap<>();
     for (int i = lowestPitch; i <= highestPitch; i++) {
-      result.put(new Pitch(i), new TreeMap<>());
+      Pitch p = new Pitch(1);
+      p.setOctave(cs3500.music.model.Note.midiToOctave(i)); // sets the octave
+      p.setPitch(Pitch.MusicPitch.values()[i % 12]); // sets the pitch
+
+      result.put(p, new TreeMap<>());
     }
 
     Set<cs3500.music.model.Note> adapteeNotes = this.adaptee.getNotes();
