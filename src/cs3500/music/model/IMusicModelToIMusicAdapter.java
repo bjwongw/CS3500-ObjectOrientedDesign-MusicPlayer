@@ -65,8 +65,9 @@ public class IMusicModelToIMusicAdapter implements IMusic {
     Pitch result = new Pitch(1);
     result.setOctave(cs3500.music.model.Note.midiToOctave(midiPitch)); // sets the octave
     result.setPitch(Pitch.MusicPitch.values()[midiPitch % 12]); // sets the pitch
+    return result;
   }
-  
+
   @Override
   public TreeMap<Pitch, TreeMap<Integer, IBeat>> getCollections() {
     cs3500.music.model.Note lowestNote = this.adaptee.getLowestNote();
