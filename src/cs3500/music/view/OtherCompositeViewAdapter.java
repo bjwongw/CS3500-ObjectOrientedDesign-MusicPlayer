@@ -14,6 +14,9 @@ import javax.sound.midi.InvalidMidiDataException;
  * Adapts a CompositeView (from other.view) class to a GuiView
  */
 public class OtherCompositeViewAdapter extends CompositeView implements GuiView {
+  IMusicModel m;
+  int scrollOffsetX = 0;
+  int scrollOffsetY = 0;
 
   /**
    * Constructs an OtherCompositeViewAdapter
@@ -24,12 +27,14 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public int getPitchAtCursor() {
-    return 0;
+    System.out.printf("x: %d, y: %d\n", this.getCursorPostion().x, this.getCursorPostion().y);
+    return m.getHighestNote().getMidiPitch() - ((this.getCursorPostion().y - 60 + scrollOffsetY)
+            / 20);
   }
 
   @Override
   public int getBeatAtCursor() {
-    return 0;
+    return (this.getCursorPostion().x - 50 + scrollOffsetX) / 20;
   }
 
   @Override
@@ -39,21 +44,25 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public void scrollRight() {
+    scrollOffsetX += 50;
     this.scrollright();
   }
 
   @Override
   public void scrollLeft() {
+    scrollOffsetX -= 50;
     this.scrollleft();
   }
 
   @Override
   public void scrollUp() {
+    scrollOffsetY -= 50;
     this.scrollup();
   }
 
   @Override
   public void scrollDown() {
+    scrollOffsetY += 50;
     this.scrolldown();
   }
 
@@ -69,11 +78,12 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public void moveBeatIndicator() {
-    
+
   }
 
   @Override
   public void initialize(IMusicModel m) {
+    this.m = m;
     try {
       this.initialize(new IMusicModelToIMusicAdapter(m));
     } catch (InterruptedException | InvalidMidiDataException e) {
