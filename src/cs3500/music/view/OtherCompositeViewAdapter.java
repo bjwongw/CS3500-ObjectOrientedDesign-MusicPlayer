@@ -81,7 +81,7 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public void pause() {
-    this.pause();
+    this.stop();
   }
 
   @Override

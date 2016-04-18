@@ -13,6 +13,7 @@ import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.util.MusicReader;
 import cs3500.music.view.*;
+import cs3500.music.view.GuiView;
 
 public class MusicEditor {
 
@@ -26,7 +27,7 @@ public class MusicEditor {
    * @throws IOException              on bad file
    * @throws InvalidMidiDataException when midi cannot be accessed
    */
-  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
 
     if (args.length < 3) {
       System.out.println("Arguments: file, view type, explicit view");
@@ -59,5 +60,14 @@ public class MusicEditor {
     } catch (FileNotFoundException | IllegalArgumentException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+    FileReader file = new FileReader("df-ttfaf.txt");
+    IMusicModel m = MusicReader.parseFile(file, new GenericMusicModel.Builder());
+
+    GuiView view = new OtherCompositeViewAdapter();
+    IController con = new GuiController(m, view);
+    con.start();
   }
 }
