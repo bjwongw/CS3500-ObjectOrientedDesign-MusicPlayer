@@ -16,7 +16,7 @@ import cs3500.music.other.model.IMusic;
 
 // an combination view of Midi  and visual view.
 public class CompositeView implements GuiView {
-  private GuiView visual;
+  protected GuiView visual;
   private MidiViewImpl midi;
 
 
