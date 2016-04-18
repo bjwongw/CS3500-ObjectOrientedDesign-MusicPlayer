@@ -1,11 +1,11 @@
 package cs3500.music.other.view;
 
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.sound.midi.InvalidMidiDataException;
 
-import cs3500.music.other.controller.ControllerImp;
-import cs3500.music.other.controller.KeyboardHandler;
 import cs3500.music.other.model.IMusic;
 
 /**
@@ -40,7 +40,7 @@ public class CompositeView implements GuiView {
 
 
   @Override
-  public void addKeyListener(KeyboardHandler kbd) {
+  public void addKeyListener(KeyListener kbd) {
     visual.addKeyListener(kbd);
 
   }
@@ -137,7 +137,7 @@ public class CompositeView implements GuiView {
   }
 
   @Override
-  public void addMouseListener(ControllerImp.MouseHandler mh) {
+  public void addMouseListener(MouseListener mh) {
     this.visual.addMouseListener(mh);
   }
 

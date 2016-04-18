@@ -17,45 +17,45 @@ import cs3500.music.model.Note;
 public class ConcreteGuiView extends JPanel {
 
   // the max range of beats to display
-  private final int displayedBeats = 48;
+  protected int displayedBeats = 48;
 
   // the number of beats per cell
-  private final int beatsPerCell = 4;
+  protected final int beatsPerCell = 4;
 
   // the number of columns to show at a time
-  private final int numColumns = displayedBeats / beatsPerCell;
+  protected int numColumns = displayedBeats / beatsPerCell;
 
   // the number of rows to show at a time
-  private final int numRows = 32;
+  protected int numRows = 32;
 
   // the square dimensions of each beat representation
-  private final int beatSquareDim = 20;
+  protected int beatSquareDim = 20;
 
   // the height of each cell containing notes (pixels)
-  private final int cellHeight = beatSquareDim;
+  protected int cellHeight = beatSquareDim;
 
   // the width of each cell containing notes (pixels)
-  private final int cellWidth = beatSquareDim * beatsPerCell;
+  protected final int cellWidth = beatSquareDim * beatsPerCell;
 
   // the width of the space to the left of the note grid (pixels)
-  private final int horizontalBuffer = 40;
+  protected int horizontalBuffer = 40;
 
   // the height of the space above the note (pixels)
-  private final int verticalBuffer = 20;
+  protected int verticalBuffer = 20;
 
   // C4 in MIDI, the default starting point for this view
-  private final int defaultStartMidi = 60;
+  protected int defaultStartMidi = 60;
 
   // the lowest beat displayed
-  private int columnStart;
+  protected int columnStart;
 
   // the highest pitch to be displayed
-  private int rowStartMidi;
+  protected int rowStartMidi;
 
-  private final IMusicModel model;
-  private int externalHorizontalBuffer;
-  private int externalVerticalBuffer;
-  private int currentTime;
+  protected final IMusicModel model;
+  protected int externalHorizontalBuffer;
+  protected int externalVerticalBuffer;
+  protected int currentTime;
 
   /**
    * Constructs a ConcreteGuiView

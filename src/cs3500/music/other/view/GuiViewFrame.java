@@ -3,12 +3,12 @@ package cs3500.music.other.view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
-import cs3500.music.other.controller.ControllerImp;
-import cs3500.music.other.controller.KeyboardHandler;
 import cs3500.music.other.model.IMusic;
 
 /**
@@ -68,7 +68,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements GuiView, ActionL
 
 
   @Override
-  public void addKeyListener(KeyboardHandler kbd) {
+  public void addKeyListener(KeyListener kbd) {
     super.addKeyListener(kbd);
   }
 
@@ -163,7 +163,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements GuiView, ActionL
   }
 
   @Override
-  public void addMouseListener(ControllerImp.MouseHandler mh) {
+  public void addMouseListener(MouseListener mh) {
     this.displayPanel.addMouseListener(mh);
   }
 

@@ -1,9 +1,9 @@
 package cs3500.music.other.view;
 
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import cs3500.music.other.controller.ControllerImp;
-import cs3500.music.other.controller.KeyboardHandler;
 import cs3500.music.other.model.IMusic;
 
 /**
@@ -21,7 +21,7 @@ public interface GuiView extends IMusicView {
    *
    * @param kbd
    */
-  void addKeyListener(KeyboardHandler kbd);
+  void addKeyListener(KeyListener kbd);
 
 
   //set the focus back to the view
@@ -129,7 +129,7 @@ public interface GuiView extends IMusicView {
 
 
   // set the model for the view.
-  void addMouseListener(ControllerImp.MouseHandler mh);
+  void addMouseListener(MouseListener mh);
   /**
    *
    * @param m
