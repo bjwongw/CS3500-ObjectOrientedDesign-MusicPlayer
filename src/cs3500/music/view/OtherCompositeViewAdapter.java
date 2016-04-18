@@ -5,11 +5,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import cs3500.music.model.IMusicModel;
-import cs3500.music.other.view.*;
+import cs3500.music.model.IMusicModelToIMusicAdapter;
 import cs3500.music.other.view.CompositeView;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 /**
- * Created by alex on 4/18/2016.
+ * Adapts a CompositeView (from other.view) class to a GuiView
  */
 public class OtherCompositeViewAdapter extends CompositeView implements GuiView {
 
@@ -65,7 +67,11 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public void initialize(IMusicModel m) {
-    this.initialize(new IMusicModelToIMusicAdapter(m));
+    try {
+      this.initialize(new IMusicModelToIMusicAdapter(m));
+    } catch (InterruptedException | InvalidMidiDataException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
