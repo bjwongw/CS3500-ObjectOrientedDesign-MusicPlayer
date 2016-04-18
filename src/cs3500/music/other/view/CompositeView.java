@@ -1,5 +1,6 @@
 package cs3500.music.other.view;
 
+import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import cs3500.music.other.model.IMusic;
 // an combination view of Midi  and visual view.
 public class CompositeView implements GuiView {
   protected GuiView visual;
-  private MidiViewImpl midi;
+  protected MidiViewImpl midi;
 
 
   public CompositeView() {
@@ -145,5 +146,10 @@ public class CompositeView implements GuiView {
   public void setModel(IMusic m){
     visual.setModel(m);
     midi.setMode(m);
+  }
+
+  @Override
+  public Point getCursorPostion() {
+    return this.visual.getCursorPostion();
   }
 }

@@ -17,7 +17,6 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public int getPitchAtCursor() {
-    this.visual.
     return 0;
   }
 

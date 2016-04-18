@@ -1,5 +1,6 @@
 package cs3500.music.other.view;
 
+import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -136,4 +137,5 @@ public interface GuiView extends IMusicView {
    */
     void setModel(IMusic m);
 
+  Point getCursorPostion();
 }

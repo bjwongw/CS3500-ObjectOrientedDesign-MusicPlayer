@@ -172,5 +172,10 @@ public class GuiViewFrame extends javax.swing.JFrame implements GuiView, ActionL
     displayPanel.setModel(m);
   }
 
+  @Override
+  public Point getCursorPostion() {
+    return this.getMousePosition();
+  }
+
 }
 
