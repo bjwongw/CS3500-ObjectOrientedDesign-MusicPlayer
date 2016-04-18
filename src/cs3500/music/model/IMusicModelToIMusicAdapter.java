@@ -70,7 +70,13 @@ public class IMusicModelToIMusicAdapter implements IMusic {
 
     // creates the HeadBeat and TailBeats for each of the notes in the model
     for (cs3500.music.model.Note n : adapteeNotes) {
-      Pitch pitch = new Pitch(n.getMidiPitch());
+
+      // creates a dummy pitch to mutate because the other implementation assumes different
+      // invariants and has a different scale for pitches
+      Pitch pitch = new Pitch(1);
+      pitch.setOctave(cs3500.music.model.Note.midiToOctave(n.getMidiPitch())); // sets the octave
+      pitch.setPitch(Pitch.MusicPitch.values()[n.getMidiPitch() % 12]); // sets the pitch
+
       TreeMap<Integer, IBeat> beatMap = result.get(pitch);
       int noteEnd = n.getStart() + n.getDuration() - 1;
       IBeat head = new HeadBeat(pitch, n.getStart(), noteEnd, n.getInstrument(), n.getVolume());
