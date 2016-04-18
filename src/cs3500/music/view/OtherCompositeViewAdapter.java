@@ -15,6 +15,13 @@ import javax.sound.midi.InvalidMidiDataException;
  */
 public class OtherCompositeViewAdapter extends CompositeView implements GuiView {
 
+  /**
+   * Constructs an OtherCompositeViewAdapter
+   */
+  public OtherCompositeViewAdapter() {
+    super();
+  }
+
   @Override
   public int getPitchAtCursor() {
     return 0;
@@ -62,7 +69,7 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public void moveBeatIndicator() {
-
+    
   }
 
   @Override
