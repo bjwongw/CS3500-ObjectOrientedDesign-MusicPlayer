@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.IMusicModelToIMusicAdapter;
 import cs3500.music.other.view.CompositeView;
+import cs3500.music.other.view.GuiViewFrame;
+import cs3500.music.other.view.MidiViewImpl;
 
 import javax.sound.midi.InvalidMidiDataException;
 
@@ -27,14 +29,13 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public int getPitchAtCursor() {
-    System.out.printf("x: %d, y: %d\n", this.getCursorPostion().x, this.getCursorPostion().y);
-    return m.getHighestNote().getMidiPitch() - ((this.getCursorPostion().y - 60 + scrollOffsetY)
+    return m.getHighestNote().getMidiPitch() - ((this.getCursorPostion().y - 60 + this.getScrollBary())
             / 20);
   }
 
   @Override
   public int getBeatAtCursor() {
-    return (this.getCursorPostion().x - 50 + scrollOffsetX) / 20;
+    return (this.getCursorPostion().x - 50 + this.getScrollBarx()) / 20;
   }
 
   @Override
@@ -103,8 +104,7 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public void reset() {
-    this.pause();
-    this.goToStart();
+
   }
 
   @Override

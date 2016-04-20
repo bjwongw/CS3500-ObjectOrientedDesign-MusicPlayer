@@ -1,5 +1,6 @@
 package cs3500.music.view;
 
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import cs3500.music.model.IMusicModel;
@@ -18,6 +19,9 @@ public class GuiViewImpl extends JFrame implements GuiView {
   private IMusicModel model;
   private ConcreteGuiView displayPanel;
 
+  private MouseListener mouseListener;
+  private KeyListener keyListener;
+
   /**
    * Creates a new GuiViewImpl
    */
@@ -35,6 +39,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
     pack();
     this.setSize(this.getWidth() + this.borderBuffer, this.getHeight() + this.borderBuffer);
     this.setVisible(true);
+    this.displayPanel.addMouseListener(this.mouseListener);
   }
 
   @Override
@@ -58,7 +63,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
 
   @Override
   public void addMouseListener(MouseListener m) {
-    this.displayPanel.addMouseListener(m);
+    this.mouseListener = m;
   }
 
   @Override

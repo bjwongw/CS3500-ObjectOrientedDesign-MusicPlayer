@@ -16,7 +16,7 @@ CS 3500: Object-Oriented Design
     GuiView, and MidiView. Their TextView is simply a wrapper around a print method that's part of
     their IMusic interface, so we weren't able to adapt this easily. Getting the mouse and key
     events were extremely difficult though. One reason is that our implementation relies on having
-    a method that returns the mouse position, which they didn't initially provide. Furthermore,
+    a methods that report notes under the mouse, which they didn't initially provide. Furthermore,
     their ConcreteGuiViewPanel is full of magic numbers, so it took a lot of reading to figure out
     the dimensions and calculations they were using. This made it extremely difficult to determine
     what beat and pitch the mouse is on at any given time, since we had to work with magic numbers
@@ -55,10 +55,19 @@ CS 3500: Object-Oriented Design
 
     In terms of the views, they were too tightly coupled to their model. From the views, they are
     able to add and delete notes from the model. They even allowed their MidiViewImpl to add and
-    remove notes. We recommend removing this functionality entirely, as the view should at most
-    read from the model, not make changes to it in any way. We're also concerned with their playNote
+    remove notes. We recommend removing this functionality entirely, as the view should be reading
+    from the model, while the controller changes it. We're also concerned with their playNote
     method in their MidiViewImpl. To play the music, they run a for loop from i=0 to i <
     model.size(). In order to pause the music, they set their variable "flag" to false, and the for
     loop just keeps calling --i, so it constantly loops until flag is set back to true so it can
-    advance. We'd suggest just playing a note at a time and avoiding a for loop.
+    advance. This ties up the thread and doesn't allow anything to easily run concurrently with the
+    views.
+
+    In terms of functionality, the views were a bit lacking. Scrolling works (arrow keys), though
+    only in the domain of the piece where notes are defined (cannot scroll indefinitely). Add note
+    (a key) and delete note (d key) both work (type in a number before adding a note to change its
+    length). Move note (left click pickup, left click put down) works. Pause/play works (spacebar).
+    There was no reasonable to implement reset piece. Beyond that, the views could not handle
+    any of the pieces besides mary-little-lamb due to how they store what they need, and even
+    mary-little-lamb took over a GB of RAM.
 
