@@ -2,6 +2,8 @@ package cs3500.music.view;
 
 import org.junit.Test;
 
+import javax.print.attribute.standard.MediaSize;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -44,5 +46,13 @@ public class ViewFactoryTest {
   public void testConstructGui() {
     assertTrue(ViewFactory.constructGui("gui") instanceof GuiViewImpl);
     assertTrue(ViewFactory.constructGui("composite") instanceof CompositeView);
+  }
+
+  /**
+   * Tests for the constructOther method
+   */
+  @Test
+  public void testConstructOther() {
+    assertTrue(ViewFactory.constructOther("composite") instanceof OtherCompositeViewAdapter);
   }
 }

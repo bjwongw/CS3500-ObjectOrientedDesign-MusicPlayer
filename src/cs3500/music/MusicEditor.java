@@ -27,15 +27,16 @@ public class MusicEditor {
    * @throws IOException              on bad file
    * @throws InvalidMidiDataException when midi cannot be accessed
    */
-  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main(String[] args) throws IOException, InvalidMidiDataException {
 
     if (args.length < 3) {
       System.out.println("Arguments: file, view type, explicit view");
       System.out.println("Recommended usage: java -jar [jar] [file] gui composite");
       System.out.println("file is a path to a music file");
-      System.out.println("view type is one of: generic, gui");
-      System.out.println("explicit view (under view) is one of: console, midi, gui, composite");
+      System.out.println("view type is one of: generic, gui, other");
+      System.out.println("explicit view (under generic) is one of: console, midi, gui, composite");
       System.out.println("explicit view (under gui) is one of: gui, composite");
+      System.out.println("explicit view (under other) is one of: composite --ONLY SONG THAT WORKS: mary-little-lamb.txt");
       return;
     }
     try {
@@ -55,6 +56,10 @@ public class MusicEditor {
         } else {
           guiView.initialize(m);
         }
+      } else if (Objects.equals(viewType, "other")) {
+        GuiView view = ViewFactory.constructOther(explicitView);
+        IController c = new GuiController(m, view);
+        c.start();
       }
 
     } catch (FileNotFoundException | IllegalArgumentException e) {
@@ -62,7 +67,7 @@ public class MusicEditor {
     }
   }
 
-  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
     FileReader file = new FileReader("mary-little-lamb.txt");
     IMusicModel m = MusicReader.parseFile(file, new GenericMusicModel.Builder());
 

@@ -67,4 +67,21 @@ public class ViewFactory {
     }
     return view;
   }
+
+  /**
+   * Constructs a GuiView using the HW08 provided views based on the specified type.
+   *
+   * Currently only "composite" is possible
+   * @param type the type of view to provide
+   * @return the view
+   */
+  public static GuiView constructOther(String type) {
+    switch(type) {
+      case "composite":
+        return new OtherCompositeViewAdapter();
+      default:
+        throw new IllegalArgumentException(String.format("ViewFactory string not recognized: %s",
+                type));
+    }
+  }
 }
