@@ -138,4 +138,9 @@ public interface GuiView extends IMusicView {
     void setModel(IMusic m);
 
   Point getCursorPostion();
+
+
+  int getScrollBarx();
+
+  int getScrollBary();
 }

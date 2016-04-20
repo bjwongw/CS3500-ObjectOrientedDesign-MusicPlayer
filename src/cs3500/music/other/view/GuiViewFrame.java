@@ -177,5 +177,15 @@ public class GuiViewFrame extends javax.swing.JFrame implements GuiView, ActionL
     return this.getMousePosition();
   }
 
+  @Override
+  public int getScrollBarx() {
+    return jsp.getHorizontalScrollBar().getValue();
+  }
+
+  @Override
+  public int getScrollBary() {
+    return jsp.getVerticalScrollBar().getValue();
+  }
+
 }
 

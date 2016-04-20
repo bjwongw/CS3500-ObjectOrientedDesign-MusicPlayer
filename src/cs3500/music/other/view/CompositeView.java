@@ -152,4 +152,14 @@ public class CompositeView implements GuiView {
   public Point getCursorPostion() {
     return this.visual.getCursorPostion();
   }
+
+  @Override
+  public int getScrollBarx() {
+    return visual.getScrollBarx();
+  }
+
+  @Override
+  public int getScrollBary() {
+    return visual.getScrollBary();
+  }
 }
