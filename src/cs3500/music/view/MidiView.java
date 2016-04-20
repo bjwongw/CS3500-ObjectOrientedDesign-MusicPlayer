@@ -146,9 +146,7 @@ public class MidiView implements View {
 
   private class PlayBeat extends TimerTask{
     public void run() {
-      for (Note n : model.notesToPlay(currentBeat)) {
-        playNote(n);
-      }
+      model.notesToPlay(currentBeat).forEach(MidiView.this::playNote);
       currentBeat += 1;
 
       if(!(handler == null)) {

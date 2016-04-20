@@ -1,7 +1,7 @@
 Alex Aubuchon & Brendon Wong
 CS 3500: Object-Oriented Design
 
-                                MUSIC PLAYER README
+                                    MUSIC PLAYER README
 
 +--------------------------------------------------------------------------------------------------+
 | Changes made from previous homework assignments                                                  |

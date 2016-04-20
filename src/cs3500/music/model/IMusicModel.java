@@ -10,7 +10,7 @@ public interface IMusicModel {
 
   /**
    * Adds the given note to the IMusicModel. If the given note is the same as one already in the
-   * model (by NoteImpl.equals(...)), it will not be added.
+   * model (by Note.equals(...)), it will not be added.
    *
    * @param note the given note to add to the model
    */
@@ -102,8 +102,8 @@ public interface IMusicModel {
   Set<Note> sustainedNotes(int beat);
 
   /**
-   * Overlays the given IMusicModel on top of this music model. NoteImpl collisions are dealt with in
-   * the same way as addNote. Allows these models to be played simultaneously.
+   * Overlays the given IMusicModel on top of this music model. Note collisions are dealt with
+   * in the same way as addNote. Allows these models to be played simultaneously.
    *
    * @param otherMusic the music model to combine with this model
    */

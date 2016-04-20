@@ -1,0 +1,64 @@
+Alex Aubuchon & Brendon Wong
+CS 3500: Object-Oriented Design
+
+                            CODE REVIEW (OF OUR PROVIDERS' CODE)
+
+    The code we received was certainly a challenge. We quickly found that our providers' views were
+    tightly coupled to their model. They did make sure that their views dealt with their IMusic
+    interface and not the model implementation, but their views unfortunately rely on their Note,
+    Pitch, HeadBeat, and TailBeat classes. Before we asked them to make the change, some of their
+    views also relied on their ControllerImp.MouseHandler. Furthermore, their addKeyListener and
+    addMouseListener methods took in a KeyHandler and MouseHandler, respectively. We had to request
+    that they change these to KeyListener and MouseListeners, since that is how the Java
+    implementation works.
+
+    Once we were able to adapt our model to theirs, it was fairly easy to render the CompositeView,
+    GuiView, and MidiView. Their TextView is simply a wrapper around a print method that's part of
+    their IMusic interface, so we weren't able to adapt this easily. Getting the mouse and key
+    events were extremely difficult though. One reason is that our implementation relies on having
+    a method that returns the mouse position, which they didn't initially provide. Furthermore,
+    their ConcreteGuiViewPanel is full of magic numbers, so it took a lot of reading to figure out
+    the dimensions and calculations they were using. This made it extremely difficult to determine
+    what beat and pitch the mouse is on at any given time, since we had to work with magic numbers
+    and a lot of unorganized calculations. On that same vein, documentation of their methods,
+    classes, and interfaces were lacking, to say the least. Furthermore, they omitted the @Override
+    tags on most of their implemented methods, which made it difficult to determine when a method
+    was coming from the interface or if it was only in the given class.
+
+    It took us a while to understand why they had the IBeat interface with the HeadBeat and TailBeat
+    implementations. We determined that they used this to make the textual printing of music easier
+    as well as a way to distinguish the start of a note vs. sustained part of the note. The most
+    surprising part of this all is that they also had a Note class, which was barely used. They use
+    a Note to add notes into a model, but that Note is then decomposed into a HeadBeat and
+    TailBeats. All of the information between Note, HeadBeat, and TailBeat easily could have been
+    contained in just the Note class. One thing that made us worried is that they used instanceof
+    in their ConcreteGuiViewPanel to distinguish between a HeadBeat and TailBeat. There's even
+    casting used too (in their PaintComponent, remove, and removeAll methods). We also found them
+    casting doubles to ints in their Pitch class (I don't think they realized that Java divisions
+    on integers automatically floor the resulting quotient). Another critique of their Pitch class
+    is the ordering they used for pitches. They started their enum with C("C", 1), and went up from
+    there to B("B", 12). However, when they determined the rank, they used a switch statement,
+    taking the given PitchNumber % 12, making the first pitch B (since 12 % 12 == 0), instead of C.
+    Fortunately, they didn't control their invariants when they gave the public setOctave() and
+    setPitch() methods, so we were able to create dummy pitches and then set them to the appropriate
+    values (it's not a good thing they didn't control their invariants, but it worked for us as
+    an exploit).
+
+    Another adaptation quirk was overriding their getCollections method. They stored their notes
+    as a TreeMap<Pitch, TreeMap<Integer, IBeat>>. Fun, right? This would have been fine if they had
+    a way to just give us a bag of notes which didn't reveal their underlying storage of notes,
+    but getCollections method returned the TreeMap<...> structure. As such, we had to create this
+    structure and convert each of our notes into a HeadBeat and TailBeat each time we wanted to call
+    getCollections (frequently). Going forward, we'd suggest a cleaner method of note storage (we
+    are partial to the Map<Integer, Set<Note>>) since it lends itself to quick retrieval of notes
+    at a given time and isn't difficult to turn into one big set of notes.
+
+    In terms of the views, they were too tightly coupled to their model. From the views, they are
+    able to add and delete notes from the model. They even allowed their MidiViewImpl to add and
+    remove notes. We recommend removing this functionality entirely, as the view should at most
+    read from the model, not make changes to it in any way. We're also concerned with their playNote
+    method in their MidiViewImpl. To play the music, they run a for loop from i=0 to i <
+    model.size(). In order to pause the music, they set their variable "flag" to false, and the for
+    loop just keeps calling --i, so it constantly loops until flag is set back to true so it can
+    advance. We'd suggest just playing a note at a time and avoiding a for loop.
+
