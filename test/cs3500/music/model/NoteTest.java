@@ -326,7 +326,8 @@ public class NoteTest {
     assertEquals(false, d3.equals(d6));
     assertEquals(false, a10.equals(c0));
     assertEquals(false, e1.equals(new NoteImpl(Note.Pitch.E, 1, 0, 2, 0, 0)));
-    assertEquals(false, new NoteImpl(Note.Pitch.E, 1, 0, 2, 0, 0).equals(new NoteImpl(Note.Pitch.E, 1, 1, 2, 0, 0)));
+    assertEquals(false, new NoteImpl(Note.Pitch.E, 1, 0, 2, 0, 0).equals(new NoteImpl(Note.Pitch.E,
+      1, 1, 2, 0, 0)));
   }
 
   /**
