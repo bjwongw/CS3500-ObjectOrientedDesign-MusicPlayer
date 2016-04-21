@@ -67,13 +67,4 @@ public class MusicEditor {
       System.out.println(e.getMessage());
     }
   }
-
-  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
-    FileReader file = new FileReader("mary-little-lamb.txt");
-    IMusicModel m = MusicReader.parseFile(file, new GenericMusicModel.Builder());
-
-    GuiView view = new OtherCompositeViewAdapter();
-    IController con = new GuiController(m, view);
-    con.start();
-  }
 }

@@ -70,6 +70,6 @@ CS 3500: Object-Oriented Design
     There was no reasonable to implement reset piece. Beyond that, the views could not handle
     any of the pieces besides mary-little-lamb due to how they store what they need, and even
     mary-little-lamb took over a GB of RAM. As a last note, the view interface had no way of
-    updating the view to a changed model, so changes happend, but are only visible when the view is
+    updating the view to a changed model, so changes happened, but are only visible when the view is
     playing.
 
