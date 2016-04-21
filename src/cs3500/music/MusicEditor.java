@@ -36,7 +36,8 @@ public class MusicEditor {
       System.out.println("view type is one of: generic, gui, other");
       System.out.println("explicit view (under generic) is one of: console, midi, gui, composite");
       System.out.println("explicit view (under gui) is one of: gui, composite");
-      System.out.println("explicit view (under other) is one of: composite --ONLY SONG THAT WORKS: mary-little-lamb.txt");
+      System.out.println("explicit view (under other) is one of: composite --ONLY SONG THAT " +
+              "WORKS: mary-little-lamb.txt");
       return;
     }
     try {

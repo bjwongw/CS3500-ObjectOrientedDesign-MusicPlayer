@@ -1,16 +1,10 @@
 package cs3500.music.view;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.sound.midi.InvalidMidiDataException;
 
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.IMusicModelToIMusicAdapter;
 import cs3500.music.other.view.CompositeView;
-import cs3500.music.other.view.GuiViewFrame;
-import cs3500.music.other.view.MidiViewImpl;
-
-import javax.sound.midi.InvalidMidiDataException;
 
 /**
  * Adapts a CompositeView (from other.view) class to a GuiView
@@ -29,7 +23,8 @@ public class OtherCompositeViewAdapter extends CompositeView implements GuiView 
 
   @Override
   public int getPitchAtCursor() {
-    return m.getHighestNote().getMidiPitch() - ((this.getCursorPostion().y - 60 + this.getScrollBary())
+    return m.getHighestNote().getMidiPitch() - ((this.getCursorPostion().y - 60 + this
+            .getScrollBary())
             / 20);
   }
 
