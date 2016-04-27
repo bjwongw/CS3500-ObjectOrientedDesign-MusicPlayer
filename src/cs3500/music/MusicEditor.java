@@ -11,7 +11,10 @@ import cs3500.music.controller.GuiController;
 import cs3500.music.controller.IController;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
+import cs3500.music.model.IRepeatModel;
+import cs3500.music.model.RepeatModel;
 import cs3500.music.util.MusicReader;
+import cs3500.music.util.RepeatMusicReader;
 import cs3500.music.view.*;
 import cs3500.music.view.GuiView;
 
@@ -27,7 +30,7 @@ public class MusicEditor {
    * @throws IOException              on bad file
    * @throws InvalidMidiDataException when midi cannot be accessed
    */
-  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+  public static void main2(String[] args) throws IOException, InvalidMidiDataException {
 
     if (args.length < 3) {
       System.out.println("Arguments: file, view type, explicit view");
@@ -66,5 +69,14 @@ public class MusicEditor {
     } catch (FileNotFoundException | IllegalArgumentException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+    FileReader file = new FileReader("mary-repeat.txt");
+    IRepeatModel m = RepeatMusicReader.parseFile(file, new RepeatModel.Builder());
+
+    GuiView view = ViewFactory.constructRepeatCompositeView(m);
+    IController controller = new GuiController(m, view);
+    controller.start();
   }
 }

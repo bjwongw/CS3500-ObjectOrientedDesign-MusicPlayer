@@ -31,9 +31,9 @@ public class MidiView implements View {
   private final Receiver receiver;
   private IMusicModel model;
   private Queue<Integer> channels;
-  private int currentBeat = 0;
-  private Timer timer;
-  private Runnable handler;
+  protected int currentBeat = 0;
+  public Timer timer;
+  protected Runnable handler;
 
   public MidiView() throws MidiUnavailableException {
     this(MidiSystem.getSynthesizer());
@@ -58,7 +58,7 @@ public class MidiView implements View {
    *
    * @param n the note to play
    */
-  private void playNote(Note n) {
+  protected void playNote(Note n) {
     MidiMessage start;
     MidiMessage stop;
     try {

@@ -9,8 +9,8 @@ import javax.sound.midi.MidiUnavailableException;
  * A view that has both a visual and audio component.
  */
 public class CompositeView implements GuiView {
-  private final View midiViewImpl;
-  private final GuiView guiViewImpl;
+  protected View midiViewImpl;
+  protected GuiView guiViewImpl;
 
   /**
    * Constructs a CompositeView

@@ -2,6 +2,8 @@ package cs3500.music.view;
 
 import javax.sound.midi.MidiUnavailableException;
 
+import cs3500.music.model.IRepeatModel;
+
 /**
  * A factory of the views this package provides.
  */
@@ -83,5 +85,14 @@ public class ViewFactory {
         throw new IllegalArgumentException(String.format("ViewFactory string not recognized: %s",
                 type));
     }
+  }
+
+  /**
+   * Constructs a Repeat composite view on the given model.
+   * @param r the repeat model
+   * @return the view
+   */
+  public static GuiView constructRepeatCompositeView(IRepeatModel r) {
+    return new RepeatCompositeView(r);
   }
 }

@@ -14,7 +14,7 @@ public class GuiViewImpl extends JFrame implements GuiView {
   private final int borderBuffer = 20;
 
   // invariant: this will always be a positive integer
-  private int currentTime = 0;
+  protected int currentTime = 0;
 
   private IMusicModel model;
   private ConcreteGuiView displayPanel;

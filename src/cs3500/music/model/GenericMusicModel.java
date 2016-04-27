@@ -45,7 +45,7 @@ public class GenericMusicModel implements IMusicModel {
    * Builder class for the GenericMusicModel. Implements CompositionBuilder so that it can build
    * the model from files.
    */
-  public static final class Builder implements CompositionBuilder<IMusicModel> {
+  public static class Builder implements CompositionBuilder<IMusicModel> {
 
     private int tempo = 1000;
     private Set<Note> notes = new HashSet<>();
