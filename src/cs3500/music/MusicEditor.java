@@ -9,10 +9,11 @@ import javax.sound.midi.InvalidMidiDataException;
 
 import cs3500.music.controller.GuiController;
 import cs3500.music.controller.IController;
+import cs3500.music.controller.repeats.RepeatController;
 import cs3500.music.model.GenericMusicModel;
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.IRepeatModel;
-import cs3500.music.model.RepeatModel;
+import cs3500.music.model.repeats.IRepeatModel;
+import cs3500.music.model.repeats.RepeatModel;
 import cs3500.music.util.MusicReader;
 import cs3500.music.util.RepeatMusicReader;
 import cs3500.music.view.*;
@@ -76,7 +77,7 @@ public class MusicEditor {
     IRepeatModel m = RepeatMusicReader.parseFile(file, new RepeatModel.Builder());
 
     GuiView view = ViewFactory.constructRepeatCompositeView(m);
-    IController controller = new GuiController(m, view);
+    IController controller = new RepeatController(m, view);
     controller.start();
   }
 }

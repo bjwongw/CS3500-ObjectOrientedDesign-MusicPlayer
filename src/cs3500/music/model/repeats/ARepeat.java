@@ -32,6 +32,11 @@ public abstract class ARepeat implements Repeat{
     return this.beat;
   }
 
+  @Override
+  public boolean isBasic() {
+    return true;
+  }
+
   protected void visit() {
     this.timesVisited += 1;
   }

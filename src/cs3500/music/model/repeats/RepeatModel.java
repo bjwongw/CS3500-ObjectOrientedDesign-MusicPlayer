@@ -1,13 +1,13 @@
-package cs3500.music.model;
+package cs3500.music.model.repeats;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import cs3500.music.model.repeats.GoBackThenSkip;
-import cs3500.music.model.repeats.GoToBeatOnce;
-import cs3500.music.model.repeats.Repeat;
+import cs3500.music.model.GenericMusicModel;
+import cs3500.music.model.Note;
+import cs3500.music.model.NoteImpl;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.RepeatBuilder;
 
@@ -139,6 +139,28 @@ public class RepeatModel extends GenericMusicModel implements IRepeatModel {
     }
 
     return this;
+  }
+
+  @Override
+  public Set<Repeat> getBasicRepeats() {
+    Set<Repeat> out = new HashSet<>();
+    for(Repeat r : this.repeatMap.values()) {
+      if(r.isBasic()) {
+        out.add(r);
+      }
+    }
+    return out;
+  }
+
+  @Override
+  public Map<Integer, Repeat> getAlternateRepeats() {
+    Map<Integer, Repeat> out = new HashMap<>();
+    for(Map.Entry<Integer, Repeat> e : this.repeatMap.entrySet()) {
+      if(!e.getValue().isBasic()) {
+        out.put(e.getKey(), e.getValue());
+      }
+    }
+    return out;
   }
 
   private void addRepeat(Repeat r, int beat) {

@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.Note;
+import cs3500.music.model.repeats.Repeat;
 
 /**te
  * A type of JPanel that is used to display Notes in an IMusicModel.
@@ -56,6 +57,12 @@ public class ConcreteGuiView extends JPanel {
   protected int externalHorizontalBuffer;
   protected int externalVerticalBuffer;
   protected int currentTime;
+
+  protected ConcreteGuiView(IMusicModel m) {
+    super();
+    this.model = m;
+  }
+
 
   /**
    * Constructs a ConcreteGuiView
@@ -215,7 +222,7 @@ public class ConcreteGuiView extends JPanel {
    *
    * @param notesP the grid of NoteSquares to be altered to represent the Notes in this model.
    */
-  private void initializeNotesPanel(List<List<NoteSquares>> notesP) {
+  protected void initializeNotesPanel(List<List<NoteSquares>> notesP) {
     for (int i = columnStart; i < columnStart + displayedBeats; i++) {
       List<Note> sustainedNotes = new ArrayList<>(model.sustainedNotes(i));
       Collections.sort(sustainedNotes);

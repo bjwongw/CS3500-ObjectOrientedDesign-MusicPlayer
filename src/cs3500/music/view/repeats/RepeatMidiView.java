@@ -1,14 +1,14 @@
-package cs3500.music.view;
+package cs3500.music.view.repeats;
 
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.sound.midi.MidiUnavailableException;
 
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.IRepeatModel;
+import cs3500.music.model.repeats.IRepeatModel;
 import cs3500.music.model.Note;
+import cs3500.music.view.MidiView;
 
 /**
  * Created by Alex on 4/27/2016.

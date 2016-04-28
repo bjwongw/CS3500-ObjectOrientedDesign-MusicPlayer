@@ -1,6 +1,9 @@
-package cs3500.music.model;
+package cs3500.music.model.repeats;
 
-import cs3500.music.model.repeats.Repeat;
+import java.util.Map;
+import java.util.Set;
+
+import cs3500.music.model.IMusicModel;
 
 /**
  * Interface to a model that can handle repeats.
@@ -50,6 +53,18 @@ public interface IRepeatModel extends IMusicModel {
    * @return this, for convenience
    */
   IRepeatModel addAlternateRepeat(int goBackBeat, int goBackToBeat, int skipAtBeat);
+
+  /**
+   * Returns a set of all repeats in this piece
+   * @return the set of repeats
+   */
+  Set<Repeat> getBasicRepeats();
+
+  /**
+   * Returns a map of all alternate repeats in this piece to their beat number.
+   * @return the map of repeats
+   */
+  Map<Integer, Repeat> getAlternateRepeats();
 
 
 }

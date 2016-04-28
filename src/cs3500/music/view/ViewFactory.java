@@ -2,7 +2,8 @@ package cs3500.music.view;
 
 import javax.sound.midi.MidiUnavailableException;
 
-import cs3500.music.model.IRepeatModel;
+import cs3500.music.model.repeats.IRepeatModel;
+import cs3500.music.view.repeats.RepeatCompositeView;
 
 /**
  * A factory of the views this package provides.

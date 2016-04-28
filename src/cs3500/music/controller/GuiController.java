@@ -15,8 +15,8 @@ import cs3500.music.view.GuiView;
 public class GuiController implements IController {
 
   private final IMusicModel model;
-  private final GuiView view;
-  private final KeyboardHandler keyboardHandler;
+  protected final GuiView view;
+  protected final KeyboardHandler keyboardHandler;
   private final MouseHandler mouseHandler;
 
   /**
@@ -35,7 +35,7 @@ public class GuiController implements IController {
   /**
    * Binds functions to the handlers and inserts the handlers into the view.
    */
-  private void initialize() {
+  protected void initialize() {
     this.keyboardHandler.
             addHandler(KeyboardHandler.EVENT_TYPE.PRESSED, KeyEvent.VK_SPACE, new PausePlay());
     this.keyboardHandler

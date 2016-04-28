@@ -27,4 +27,9 @@ public class GoBackThenSkip extends ARepeat {
       return this.skipAt + 1;
     }
   }
+
+  @Override
+  public boolean isBasic() {
+    return false;
+  }
 }

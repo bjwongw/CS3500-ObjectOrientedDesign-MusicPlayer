@@ -27,4 +27,10 @@ public interface Repeat {
    */
   int getBeat();
 
+  /**
+   * Returns true if this is a basic repeat
+   * @return above
+   */
+  boolean isBasic();
+
 }

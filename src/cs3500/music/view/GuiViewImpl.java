@@ -11,15 +11,15 @@ import cs3500.music.model.IMusicModel;
 public class GuiViewImpl extends JFrame implements GuiView {
 
   // the extra buffer surrounding any components this frame holds
-  private final int borderBuffer = 20;
+  protected final int borderBuffer = 20;
 
   // invariant: this will always be a positive integer
   protected int currentTime = 0;
 
-  private IMusicModel model;
-  private ConcreteGuiView displayPanel;
+  protected IMusicModel model;
+  protected ConcreteGuiView displayPanel;
 
-  private MouseListener mouseListener;
+  protected MouseListener mouseListener;
   private KeyListener keyListener;
 
   /**
